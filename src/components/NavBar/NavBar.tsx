@@ -1,10 +1,7 @@
 import {
     NavigationMenu,
-    NavigationMenuIndicator,
     NavigationMenuItem,
     NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
     navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import {Button} from "@/components/ui/button";
@@ -29,8 +26,8 @@ function NavBar() {
                     <p className="text-accent text-2xl mr-10">{t('navbar-app-name')}</p>
                     <NavigationMenuList>
                         <MenuItem title={t('navbar-home')} path='/home'/>
-                        <MenuItem title={t('navbar-class-platform')} path='/'/>
-                        <MenuItem title={t('navbar-my-calendar')} path='/myCalendar'/>
+                        <MenuItem title={t('navbar-class-platform')} path='/courses'/>
+                        <MenuItem title={t('navbar-my-calendar')} path='/calendar'/>
                     </NavigationMenuList>
             </NavigationMenu>
             <Button className="bg-accent self-center mr-2">{t('navbar-login-register')}</Button>

@@ -9,6 +9,7 @@ import './i18n.ts'
 
 import App from './App.tsx'
 import Home from './pages/home/home.tsx'
+import Courses from './pages/courses/courses.tsx'
 import MyCalendar from './pages/myCalendar/myCalendar.tsx'
 
 const router = createBrowserRouter([
@@ -21,7 +22,11 @@ const router = createBrowserRouter([
     element: <Home/>,
   },
   {
-    path: "/myCalendar",
+    path: "/courses",
+    element: <Courses/>,
+  },
+  {
+    path: "/calendar",
     element: <MyCalendar/>,
   },
 ]);

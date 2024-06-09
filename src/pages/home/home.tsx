@@ -1,6 +1,5 @@
 import NavBar from "@/components/NavBar/NavBar";
 import { useTranslation } from "react-i18next";
-import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardFooter, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 
