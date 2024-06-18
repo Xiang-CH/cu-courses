@@ -1,17 +1,25 @@
 {
-    "navbar-app-name": "CU转换器",
-    "navbar-home": "主页",
-    "navbar-class-platform": "课程平台",
-    "navbar-my-calendar": "我的课程",
-    "navbar-login-register": "登录/注册",
-
-    "home-today-course": "今日课程",
-    "home-directory": "目录",
-    "home-directory-description": "一些校园内有用的信息",
-    "home-directory-app": "Apps",
-    "home-directory-food": "吃!",
-    "home-directory-bus": "校车",
-    "home-directory-map": "地图",
+    "navbar": {
+        "app-name": "CU转换器",
+        "home": "主页",
+        "courses": "课程平台",
+        "my-calendar": "我的课程",
+        "profile": "个人中心",
+        "settings": "设置",
+        "login-register": "登录/注册",
+        "logout": "登出"
+    },
+    "home": {
+        "today-course": "今日课程",
+        "directory": "目录",
+        "directory-description": "校园应用",
+        "directory-app": "Apps",
+        "directory-food": "吃!",
+        "directory-bus": "校车",
+        "directory-map": "地图",
+        "announcement": "公告",
+        "announcement-description": "校园咨询"
+    },
 
     "course-search": "搜索课程",
     "course-search-placeholder": "搜索课程名称或课程代码",

@@ -8,7 +8,9 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import Calendar from "@/components/calendar/calendar";  
 
 function LocationIcon() {
   return (
@@ -68,6 +70,7 @@ function CourseItem({
   );
 }
 
+const icon_size = "1.5em";
 const directory_contents = [
   {
     title: "app",
@@ -75,8 +78,8 @@ const directory_contents = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="2em"
-        height="2em"
+        width={icon_size}
+        height={icon_size}
         viewBox="0 0 48 48"
       >
         <g fill="none" stroke="#7d2882" strokeWidth={4}>
@@ -101,8 +104,8 @@ const directory_contents = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="2em"
-        height="2em"
+        width={icon_size}
+        height={icon_size}
         viewBox="0 0 20 20"
       >
         <path
@@ -118,8 +121,8 @@ const directory_contents = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="2em"
-        height="2em"
+        width={icon_size}
+        height={icon_size}
         viewBox="0 0 24 24"
       >
         <path
@@ -135,8 +138,8 @@ const directory_contents = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="2em"
-        height="2em"
+        width={icon_size}
+        height={icon_size}
         viewBox="0 0 24 24"
       >
         <path
@@ -148,12 +151,116 @@ const directory_contents = [
   },
 ];
 
+function CurrWeekCard({
+  week,
+  total_weeks,
+}: {
+  week: string;
+  total_weeks: string;
+}) {
+  return (
+    <>
+      {/* Calendar week 卡片 */}
+      <Card className="mb-4 w-full p-1 pb-8 shrink text-parimary-forground bg-primary text-center shadow-lg relative flex-col content-center items-center justify-around justify-items-center">
+        <CardHeader className="mb-7">
+          <CardTitle>WEEK</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="font-bold text-xl">{week}</p>
+          {/* <p className="mt-5 font-light">of {total_weeks}</p> */}
+        </CardContent>
+        <CardFooter className="mt-7">
+          <p className="font-light text-center w-full">of {total_weeks}</p>
+        </CardFooter>
+        <div className="flex justify-around w-full absolute bottom-6 left-0 px-6">
+          <p> . . . </p>
+        </div>
+      </Card>
+    </>
+  );
+}
+
+function TodayCourses({ today_courses }: { today_courses: any[] }) {
+  const { t } = useTranslation();
+  const cur_date = new Date();
+
+  return (
+    <Card className="flex flex-col mb-4 w-full p-4 text-parimary-forground bg-primary text-center shadow-lg relative items-center pt-6">
+      <Calendar showTool={false} selectable={false}/>
+      <div className="flex-1 min-w-36 text-center">
+        <CardHeader className="mb-4">
+          <CardTitle>{t("home.today-course")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="w-full px-8">
+            {today_courses.map((course) => {
+              return <CourseItem {...course} />;
+            })}
+          </div>
+        </CardContent>
+      </div>
+
+    </Card>
+  );
+}
+
+function DirectoryCard() {
+  const { t } = useTranslation();
+  return (
+    <Card className="mb-4 w-full p-1 text-parimary-forground bg-primary text-center shadow-lg relative flex-col content-start">
+      <CardHeader className="">
+        <CardTitle className="text-xl">{t("home.directory")}</CardTitle>
+        <CardDescription>{t("home.directory-description")}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex justify-center">
+        <div className="grid grid-cols-2 gap-4 w-full">
+          {directory_contents.map((content) => {
+            return (
+              <a
+                className="flex-col items-center justify-center px-2 py-3 rounded-lg bg-accent min-w-12"
+                href={content.url}
+              >
+                <div className="w-full flex justify-center">{content.icon}</div>
+                <p className="text-secondary text-sm">
+                  {t("home.directory-" + content.title)}
+                </p>
+              </a>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function AnnouncementCard({ announcements }: { announcements: any[] }) {
+  const { t } = useTranslation();
+  return (
+    <Card className="mb-4 w-full py-1 text-parimary-forground bg-primary text-center shadow-lg relative flex-col content-start">
+      <CardHeader className="">
+        <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
+        <CardDescription>{t("home.announcement-description")}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col justify-center space-y-1.5 text-left">
+        {announcements.map((announcement) => {
+          return (
+            <Card className="w-full h-fit border-none bg-card shadow-none p-1">
+              <CardContent className="flex flex-col justify-between p-0 mx-2">
+                <p className="text-sm font-bold leading-tight">{announcement.title}</p>
+                <p className="text-xs font-light leading-tight">{announcement.date}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </CardContent>
+    </Card>
+  );
+}
+
 function Home() {
   const { t } = useTranslation();
   const week = "11";
   const total_weeks = "12";
-  const cur_week_day = "MON";
-  const cur_date_day = "20";
   const today_course = [
     {
       courseCode: "COMP 1234",
@@ -188,94 +295,37 @@ function Home() {
       location: "MWT 101",
     },
   ];
+  const announcements = [
+    {
+      'title': '申请转主修',
+      'date': '2021-11-11'
+    },{
+      'title': '申请转主修',
+      'date': '2021-11-11'
+    }
+  ]
 
   return (
-    <>
-      <NavBar />
-      <div className="w-screen h-full p-6 text-left">
-        <div className="flex my-4 justify-around w-full h-full space-x-4">
-          {/* Calendar week 卡片 */}
-          <Card className="flex-1 mb-4 min-w-40 max-w-[300px] shrink p-4 text-parimary-forground bg-primary text-center border-black border-3 shadow-lg relative flex-col content-center items-center justify-around justify-items-center">
-            <CardHeader className="mb-4">
-              <CardTitle>WEEK</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-bold text-xl">{week}</p>
-              {/* <p className="mt-5 font-light">of {total_weeks}</p> */}
-            </CardContent>
-            <CardFooter className="mt-5">
-              <p className="font-light text-center w-full">of {total_weeks}</p>
-            </CardFooter>
-            <div className="flex justify-between w-full absolute bottom-4 left-0 px-6">
-              <p>{"<"}</p>
-              <p> . . . </p>
-              <p>{">"}</p>
-            </div>
-          </Card>
+    <div className="flex max-w-full w-full">
+      <NavBar currentPath="/home" />
 
-          {/* 今日卡片 */}
-          <Card className="flex flex-2 mb-4 w-lg max-w-[900px] p-4 text-parimary-forground bg-primary text-center border-black border-3 shadow-lg relative items-center grow">
-            <div className="flex-1 min-w-36 text-center">
-              <CardHeader className="mb-4">
-                <CardTitle>{cur_week_day}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="font-bold text-xl">{cur_date_day}</p>
-              </CardContent>
-              <CardFooter className="mt-5">
-                <p className="font-light text-center w-full">
-                  {t("home-today-course")}
-                </p>
-              </CardFooter>
+      <ScrollArea  className="w-full h-screen text-left px-6">
+        <div className="w-full text-left flex space-x-6 my-6">
+          {/* 左边 */}
+          <div className="flex flex-col mb-4 justify-start w-2/3">
+            <div className="flex w-full space-x-4 relative h-80">
+              <CurrWeekCard week={week} total_weeks={total_weeks} />
+              <DirectoryCard />
+              <AnnouncementCard announcements={announcements}/>
             </div>
-            <Separator orientation="vertical" className="mx-4 bg-black" />
-            <div className="w-full px-4">
-              {today_course.map((course) => {
-                return <CourseItem {...course} />;
-              })}
-            </div>
-          </Card>
-
-          {/* 目录卡片 */}
-          <Card className="flex-3 mb-4 w-1/4 p-1 min-w-52 text-parimary-forground bg-primary text-center border-black border-3 shadow-lg relative flex-col content-center">
-            <CardHeader className="">
-              <CardTitle>{t("home-directory")}</CardTitle>
-              <CardDescription>
-                {t("home-directory-description")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center">
-              <div className="grid grid-cols-2 gap-4 w-3/4">
-                {directory_contents.map((content) => {
-                  return (
-                    <a
-                      className="flex-col items-center justify-center p-4 rounded-lg bg-accent min-w-16"
-                      href={content.url}
-                    >
-                      <div className="w-full flex justify-center">
-                        {content.icon}
-                      </div>
-                      <p className="text-secondary text-sm">
-                        {t("home-directory-" + content.title)}
-                      </p>
-                    </a>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          </div>
+          {/* 右边 */}
+          <div className="w-1/3">
+            <TodayCourses today_courses={today_course} />
+          </div>
         </div>
-
-        <Separator className="my-8 bg-black" />
-
-        <Card className="mb-4 my-4 w-full shrink p-4 text-parimary-forground bg-primary text-center shadow-lg relative flex-col content-center ">
-          <CardHeader className="mb-4 text-left">
-            <CardTitle>Announcments</CardTitle>
-          </CardHeader>
-          <CardContent></CardContent>
-        </Card>
-      </div>
-    </>
+      </ScrollArea>
+    </div>
   );
 }
 

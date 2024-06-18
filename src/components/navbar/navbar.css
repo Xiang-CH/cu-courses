@@ -1,3 +1,7 @@
 .menuItem:hover > div:nth-child(1) {
     filter: invert(100%);
 }
+
+.menuItemInvert > div:nth-child(1) {
+    filter: invert(100%);
+}

@@ -86,8 +86,8 @@ const courseList = [
 function Courses() {
     const { t } = useTranslation();
     return (
-        <>
-            <NavBar/>
+        <div className="flex">
+            <NavBar currentPath="/courses"/>
             <div className="w-full h-full py-10 pl-14 text-left">
                 <div className="flex items-center">
                     <Label className="text-3xl font-black text-secondary">{t('course-search')}</Label>
@@ -170,7 +170,7 @@ function Courses() {
                     <div className="w-16"></div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
