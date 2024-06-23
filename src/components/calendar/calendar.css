@@ -1,31 +1,35 @@
 .calendar {
-  width: 21.15em;
-  height: 26em;
+  width: 88%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+  margin-bottom: 1.5em;
 }
 
 .calendar-header {
+  position: relative;
   width: 100%;
   margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+  margin-top:0.1em;
 }
 
 .title {
   height: 100%;
   display: flex;
-  align-items: center;
+  /*align-items: center;*/
   font-weight: 600;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 .title h2 {
-  margin-left: 0.5em;
+  margin-left: 0;
 }
 
 .tools {
@@ -49,41 +53,52 @@
 }
 
 .calendar-body {
-  width: fit-content;
+  width: 100%;
+  max-width: 21em;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  margin: auto;
 }
 
 .table-header {
   height: 2em;
-  width: fit-content;
+  width: 100%;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: start;
+  padding: 0 1px 0 1px;
 }
 
 .weekday {
   display: flex;
   justify-content: center;
-  width: 3em;
+  width: 14.24%;
   text-align: left;
   font-weight: 500;
 }
 
 .table-content {
-  width: fit-content;
-  /* flex-grow: 1; */
+  position: relative;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: start;
   box-sizing: border-box;
   border: 1px solid #D5D4DF;
 }
 
+.week {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
 .calendar-day {
-  width: 3em;
-  height: 3.4em;
+  width: 14.5%;
+  aspect-ratio: 1/1;
+  /*height: 3.4rem;*/
   position: relative;
   border: 1px solid #D5D4DF;
   display: flex;

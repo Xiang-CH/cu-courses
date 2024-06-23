@@ -3,7 +3,22 @@ import CalendarDays from "./calendar-days";
 import "./calendar.css";
 import arrowRight from "@/assets/arrow-right.svg";
 
-export default function Calendar({ showTool, selectable }: { showTool: Boolean, selectable: Boolean}) {
+interface CalendarDay {
+  currentMonth: boolean;
+  date: Date;
+  month: number;
+  number: number;
+  selected: boolean;
+  year: number;
+}
+
+export default function Calendar({
+  showTool,
+  selectable,
+}: {
+  showTool: boolean;
+  selectable: boolean;
+}) {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
     "January",
@@ -22,24 +37,24 @@ export default function Calendar({ showTool, selectable }: { showTool: Boolean, 
 
   const [currentDay, setCurrentDay] = useState(new Date());
 
-  const changeCurrentDay = (day: any) => {
+  const changeCurrentDay = (day: CalendarDay) => {
     if (!selectable) return;
     setCurrentDay(new Date(day.year, day.month, day.number));
   };
 
-  const changeCurrentMonth = (day: any) => {
-    setCurrentDay(new Date(day.year, day.month, day.number));
-  };
+  // const changeCurrentMonth = (day: any) => {
+  //   setCurrentDay(new Date(day.year, day.month, day.number));
+  // };
 
   const nextDay = () => {
     setCurrentDay(
-      (prevDay) => new Date(prevDay.setDate(prevDay.getDate() + 1))
+      (prevDay) => new Date(prevDay.setDate(prevDay.getDate() + 1)),
     );
   };
 
   const previousDay = () => {
     setCurrentDay(
-      (prevDay) => new Date(prevDay.setDate(prevDay.getDate() - 1))
+      (prevDay) => new Date(prevDay.setDate(prevDay.getDate() - 1)),
     );
   };
 
@@ -53,9 +68,18 @@ export default function Calendar({ showTool, selectable }: { showTool: Boolean, 
         </div>
         {showTool && (
           <div className="tools">
-            <img onClick={previousDay} src={arrowRight} className="leftArrow" />
-
-            <img onClick={nextDay} src={arrowRight} className="rightArrow" />
+            <img
+              alt="left"
+              onClick={previousDay}
+              src={arrowRight}
+              className="leftArrow"
+            />
+            <img
+              alt="Right"
+              onClick={nextDay}
+              src={arrowRight}
+              className="rightArrow"
+            />
           </div>
         )}
       </div>
