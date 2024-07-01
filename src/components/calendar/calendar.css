@@ -7,6 +7,7 @@
   margin-right: auto;
   position: relative;
   margin-bottom: 1.5em;
+  align-items: start;
 }
 
 .calendar-header {

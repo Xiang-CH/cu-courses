@@ -18,7 +18,8 @@
         "directory-bus": "校车",
         "directory-map": "地图",
         "announcement": "公告",
-        "announcement-description": "校园咨询"
+        "announcement-description": "校园咨询",
+        "course": "课程"
     },
 
     "course-search": "搜索课程",

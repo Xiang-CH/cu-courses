@@ -83,7 +83,7 @@ function Icons({ iconName }: { iconName: string }) {
         />
       </svg>
     ),
-    settings: (
+    setting: (
       <svg
         width={icon_size}
         height={icon_size}
@@ -137,7 +137,7 @@ function MenuItem({
         className={`justify-start items-center flex h-10 px-4 font-light hover:text-secondary hover:bg-primary active:text-secondary active:bg-primary menuItem min-w-full rounded-lg ${path == currentPath ? "text-secondary bg-primary menuItemInvert" : "text-secondary-foreground bg-secondary"}`}
       >
         <Icons iconName={iconName} />
-        <span className="md:max-lg:hidden">{title}</span>
+        <span className="hidden lg:block">{title}</span>
       </Link>
     </NavigationMenuItem>
   );
@@ -146,19 +146,19 @@ function MenuItem({
 function NavBar({ currentPath }: { currentPath: string }) {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col h-screen lg:min-w-48 md:min-w-20 md:w-20 bg-secondary relative justify-between px-0">
-      <NavigationMenu className="bg-secondary flex flex-col min-w-full items-start h-fit justify-start">
+    <div className="flex flex-col h-screen lg:w-48 min-w-20 w-20 bg-secondary relative justify-between px-0">
+      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start">
         <div className="my-6 w-full bg-secondary flex flex-start lg:items-start">
           <img
             src={logo}
             alt="logo"
-            className="lg:ml-6 h-11 w-11 rounded-full bg-secondary md:ml-[1.1em]"
+            className="lg:ml-6 h-11 w-11 rounded-full bg-secondary ml-[1.1em]"
           />
         </div>
 
         <div className="h-px bg-background w-full" />
 
-        <NavigationMenuList className="flex flex-col my-5 mx-3 lg:w-full items-start ">
+        <NavigationMenuList className="flex flex-col my-5 mx-3 lg:max-w-full items-center">
           <MenuItem
             title={t("navbar.home")}
             path="/home"
@@ -185,8 +185,8 @@ function NavBar({ currentPath }: { currentPath: string }) {
           />
           <MenuItem
             title={t("navbar.settings")}
-            path="/settings"
-            iconName="settings"
+            path="/setting"
+            iconName="setting"
             currentPath={currentPath}
           />
         </NavigationMenuList>
@@ -198,7 +198,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
           {/* 退出登录 */}
           <Button className="bg-secondary self-center ml-2 text-secondary-foreground px-3 hover:text-secondary hover:bg-primary menuItem">
             <Icons iconName="logout" />
-            <span className="md:max-lg:hidden">{t("navbar.logout")}</span>
+            <span className="hidden lg:block">{t("navbar.logout")}</span>
           </Button>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Calendar from "@/components/calendar/calendar";
+import CourseSearch from "@/components/courseSearch/courseSearch.tsx";
 
 interface Course {
   courseCode: string;
@@ -59,11 +60,11 @@ function CourseItem({
   location: string;
 }) {
   return (
-    <Card className="w-full h-fit border-none bg-card shadow-none my-4 p-1 py-2">
+    <Card className="w-full h-fit border-none bg-card shadow-none my-3 p-1 py-1.5">
       <CardContent className="flex justify-between p-0 mx-3">
         <div className="flex-1 text-left self-center min-w-32">
-          <p className="font-bold leading-tight text-sm">{courseCode}</p>
-          <p className="leading-tight text-xs mb-1">{description}</p>
+          <p className="font-bold text-sm">{courseCode}</p>
+          <p className="leading-3 text-xs mb-1">{description}</p>
           <p className="text-xs text-gray-700">{type}</p>
         </div>
         <div className="flex-2 flex items-center ml-1">
@@ -197,11 +198,14 @@ function TodayCourses({ today_courses }: { today_courses: Course[] }) {
   // const cur_date = new Date();
 
   return (
-    <Card className="flex flex-col mb-4 w-full p-2 text-parimary-forground bg-primary text-center relative items-center pt-6">
-      <Calendar showTool={false} selectable={false} />
+    <Card className="flex lg:flex-col mb-4 w-full p-2 text-parimary-forground bg-primary text-center relative items-start pt-6">
+      <div className="w-2/5 lg:w-full flex items-start pt-1">
+        <Calendar showTool={false} selectable={false} />
+      </div>
+
       <div className="flex-1 w-full">
-        <CardContent className="px-4">
-          <CardTitle className="text-xl text-left">
+        <CardContent className="px-4 pb-0">
+          <CardTitle className="text-xl text-left mt-2">
             {t("home.today-course")}
           </CardTitle>
           <div className="w-full px-0">
@@ -211,6 +215,22 @@ function TodayCourses({ today_courses }: { today_courses: Course[] }) {
           </div>
         </CardContent>
       </div>
+    </Card>
+  );
+}
+
+function CourseSearchCard() {
+  const { t } = useTranslation();
+  return (
+    <Card className="flex flex-col mb-4 w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6">
+      <CardContent className="px-6 w-full pb-1">
+        <CardTitle className="text-xl text-left px-2.5">
+          {t("home.course")}
+        </CardTitle>
+        <div className="w-full px-0 text-left">
+          <CourseSearch compact={true} />
+        </div>
+      </CardContent>
     </Card>
   );
 }
@@ -332,15 +352,19 @@ function Home() {
       <ScrollArea className="w-full h-screen text-left px-5">
         <div className="w-full text-left flex space-x-6 my-2 px-2 py-4">
           {/* 左边 */}
-          <div className="flex flex-col mb-4 justify-start w-[65%]">
+          <div className="flex flex-col mb-4 justify-start lg:w-[65%] w-full">
             <div className="flex w-full space-x-4 relative h-80">
               <CurrWeekCard week={week} total_weeks={total_weeks} />
               <DirectoryCard />
               <AnnouncementCard announcements={announcements} />
             </div>
+            <div className="lg:hidden w-full">
+              <TodayCourses today_courses={today_course} />
+            </div>
+            <CourseSearchCard />
           </div>
           {/* 右边 */}
-          <div className="w-[35%]">
+          <div className="w-[35%] hidden lg:block">
             <TodayCourses today_courses={today_course} />
           </div>
         </div>
