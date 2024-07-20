@@ -104,14 +104,14 @@ const courseList = [
 function CourseSearch({ compact }: { compact?: boolean }) {
   const { t } = useTranslation();
   return (
-    <div className="flex w-full">
+    <div className="flex w-full overflow-hidden">
       <div className="flex-col mt-2 w-full min-w-[550px]">
         <Input
           placeholder={t("course-search-placeholder")}
           className={`w-full bg-muted border-none ${compact ? "py-2 px-3" : "py-6 px-8"}`}
         />
         <div
-          className={`w-full bg-primary rounded-lg pb-0 overflow-scroll ${compact ? "mt-0 p-0" : "mt-4 p-2"}`}
+          className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-0 p-0" : "mt-4 p-2"}`}
         >
           {courseList.map((course, index) => {
             if (compact && index >= 2) {

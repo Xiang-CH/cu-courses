@@ -222,7 +222,7 @@ function TodayCourses({ today_courses }: { today_courses: Course[] }) {
 function CourseSearchCard() {
   const { t } = useTranslation();
   return (
-    <Card className="flex flex-col mb-4 w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6">
+    <Card className="flex flex-col mb-4 w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-2">
       <CardContent className="px-6 w-full pb-1">
         <CardTitle className="text-xl text-left px-2.5">
           {t("home.course")}

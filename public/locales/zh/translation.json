@@ -34,6 +34,12 @@
     "course-search-filter-workload": "课程工作量",
     "course-search-filter-workload-select": "选组课程工作量",
     "course-search-filter-recomendation": "课程推荐度",
-    "course-search-filter-recomendation-select": "选组课程推荐度"
+    "course-search-filter-recomendation-select": "选组课程推荐度",
+
+    "profile": {
+        "my-reviews": "我的评价",
+        "course-review": "课程评价",
+        "professor-review": "教授评价"
+    }
 }
   

@@ -12,6 +12,7 @@ function MyCalendar() {
         <div className="w-1/3">
           <Calendar showTool={true} selectable={true} />
         </div>
+        <div></div>
       </div>
     </div>
   );
