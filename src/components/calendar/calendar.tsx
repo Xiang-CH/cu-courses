@@ -86,9 +86,9 @@ export default function Calendar({
 
       <div className="calendar-body">
         <div className="table-header">
-          {weekdays.map((weekday) => {
+          {weekdays.map((weekday, key) => {
             return (
-              <div className="weekday">
+              <div className="weekday" key={key}>
                 <p>{weekday}</p>
               </div>
             );

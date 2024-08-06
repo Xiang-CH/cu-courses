@@ -1,6 +1,21 @@
 {
-    "navbar-home": "Home",
-    "navbar-class-platform": "Calendar Platform",
-    "navbar-my-calendar": "My Calendar"
+
+    "navbar": {
+        "app-name": "CU Transformer",
+        "home": "Home",
+        "courses": "Courses",
+        "my-calendar": "Calendar",
+        "profile": "Profile",
+        "settings": "Settings",
+        "login-register": "Login/Register",
+        "logout": "Log Out"
+    },
+
+    "setting": {
+        "setting": "Settings",
+        "general": "General",
+        "language": "Language",
+        "current-language": "English"
+    }
 }
   

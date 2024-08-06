@@ -1,0 +1,63 @@
+{
+    "navbar": {
+        "app-name": "CU转换器",
+        "home": "主页",
+        "courses": "课程平台",
+        "my-calendar": "我的课程",
+        "profile": "个人中心",
+        "settings": "设置",
+        "login-register": "登录/注册",
+        "logout": "登出"
+    },
+    "home": {
+        "today-course": "今日课程",
+        "directory": "目录",
+        "directory-description": "校园应用",
+        "directory-app": "Apps",
+        "directory-food": "吃!",
+        "directory-bus": "校车",
+        "directory-map": "地图",
+        "announcement": "公告",
+        "announcement-description": "校园咨询",
+        "course": "课程",
+        "calendar": "日历"
+    },
+
+    "myCalendar": {
+        "today": "今日"
+    },
+
+    "courses": {
+        "search": {
+            "search": "搜索课程",
+            "placeholder": "搜索课程名称或课程代码"
+        },
+        "filter": {
+            "filter": "筛选",
+            "faculty": "学院",
+            "semester": "学期",
+            "class-time": "上课时间",
+            "class-select-weekday": "选组上课日",
+            "class-select-start-time": "选组开始时间",
+            "class-select-end-time": "选组结束时间",
+            "workload": "课程工作量",
+            "workload-select": "选择课程工作量",
+            "recomendation": "课程推荐度",
+            "recomendation-select": "选择课程推荐度"
+        }
+    },
+
+    "profile": {
+        "my-reviews": "我的评价",
+        "course-review": "课程评价",
+        "professor-review": "教授评价"
+    },
+
+    "setting": {
+        "setting": "设置",
+        "general": "通用",
+        "language": "语言",
+        "current-language": "简体中文"
+    }
+}
+  

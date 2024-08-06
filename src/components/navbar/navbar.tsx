@@ -99,6 +99,7 @@ function Icons({ iconName }: { iconName: string }) {
     ),
     logout: (
       <svg
+        className={"ml-[-3px]"}
         width={icon_size}
         height={icon_size}
         viewBox="0 0 24 24"
@@ -131,10 +132,10 @@ function MenuItem({
   currentPath: string;
 }) {
   return (
-    <NavigationMenuItem className="flex mx-1 lg:w-full justify-start content-start items-start mb-2">
+    <NavigationMenuItem className="flex lg:w-full justify-start content-start items-start mb-2 whitespace-nowrap overflow-hidden">
       <Link
         to={path}
-        className={`justify-start items-center flex h-10 px-4 font-light hover:text-secondary hover:bg-primary active:text-secondary active:bg-primary menuItem min-w-full rounded-lg ${path == currentPath ? "text-secondary bg-primary menuItemInvert" : "text-secondary-foreground bg-secondary"}`}
+        className={`justify-start items-center overflow-hidden flex h-10 px-4 font-light hover:text-secondary hover:bg-primary active:text-secondary active:bg-primary menuItem min-w-full rounded-lg ${path == currentPath ? "text-secondary bg-primary menuItemInvert" : "text-secondary-foreground bg-secondary"}`}
       >
         <Icons iconName={iconName} />
         <span className="hidden lg:block">{title}</span>
@@ -146,19 +147,19 @@ function MenuItem({
 function NavBar({ currentPath }: { currentPath: string }) {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col h-screen lg:w-48 min-w-20 w-20 bg-secondary relative justify-between px-0">
-      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start">
-        <div className="my-6 w-full bg-secondary flex flex-start lg:items-start">
-          <img
-            src={logo}
-            alt="logo"
-            className="lg:ml-6 h-11 w-11 rounded-full bg-secondary ml-[1.1em]"
-          />
-        </div>
+    <div className="flex flex-col h-screen lg:min-w-40 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center transition-[width,margin,padding,transform,min-width]">
+      <div className="my-6 w-full bg-secondary flex flex-start justify-center lg:items-start lg:justify-start">
+        <img
+          src={logo}
+          alt="logo"
+          className="lg:ml-6 h-11 w-11 rounded-full bg-secondary"
+        />
+      </div>
 
-        <div className="h-px bg-background w-full" />
+      <div className="h-px bg-background w-full" />
 
-        <NavigationMenuList className="flex flex-col my-5 mx-3 lg:max-w-full items-center">
+      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start p-0 m-0 overflow-hidden">
+        <NavigationMenuList className="flex flex-col my-5 mx-3 lg:max-w-full items-center space-x-0">
           <MenuItem
             title={t("navbar.home")}
             path="/home"
@@ -192,11 +193,11 @@ function NavBar({ currentPath }: { currentPath: string }) {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <div>
+      <div className="w-full flex flex-col items-center lg:items-start overflow-hidden">
         <div className="h-px bg-background w-full" />
-        <div className="my-4 mx-3 w-full items-start">
+        <div className="my-4 mx-3 w-fit items-start lg:ml-5">
           {/* 退出登录 */}
-          <Button className="bg-secondary self-center ml-2 text-secondary-foreground px-3 hover:text-secondary hover:bg-primary menuItem">
+          <Button className="bg-secondary self-center text-secondary-foreground px-3 hover:text-secondary hover:bg-primary menuItem">
             <Icons iconName="logout" />
             <span className="hidden lg:block">{t("navbar.logout")}</span>
           </Button>

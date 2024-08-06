@@ -1,0 +1,51 @@
+.rbc-allday-cell {
+    display: none;
+}
+
+.rbc-header{
+    padding-bottom: 0.3rem;
+    padding-top: 0.4rem;
+    border-bottom: none;
+}
+
+.rbc-header button{
+    cursor: default;
+}
+
+.rbc-day-slot .rbc-events-container{
+    margin-right: 0;
+}
+
+.rbc-event{
+    background-color: rgba(41, 204, 57, 0.1) !important;
+    border: 1px solid #29CC39 !important;
+    color: #000;
+    border-radius: 5px;
+    padding: 2px 5px;
+
+}
+
+.rbc-current-time-indicator{
+    background-color: var(--accent);
+}
+
+.rbc-time-header-gutter{
+    background: url("../../assets/clock.svg") center no-repeat;
+}
+
+.rbc-time-slot .rbc-label{
+    margin-left: 1.8rem;
+    color: #888888;
+}
+
+.custom-day-header{
+    white-space: pre-wrap;
+}
+
+.rbc-time-view{
+    border: 0px;
+}
+
+.rbc-today{
+    background-color: rgba(202, 200, 200, 0.11);
+}

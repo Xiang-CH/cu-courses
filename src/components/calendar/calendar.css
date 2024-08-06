@@ -1,5 +1,6 @@
 .calendar {
   width: 88%;
+  max-width: 25rem;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -55,7 +56,7 @@
 
 .calendar-body {
   width: 100%;
-  max-width: 21em;
+  /*max-width: 21em;*/
   flex-grow: 1;
   display: flex;
   flex-direction: column;

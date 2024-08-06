@@ -105,13 +105,13 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   const { t } = useTranslation();
   return (
     <div className="flex w-full overflow-hidden">
-      <div className="flex-col mt-2 w-full min-w-[550px]">
+      <div className="flex-col w-full min-w-[550px] px-3 pt-2">
         <Input
-          placeholder={t("course-search-placeholder")}
-          className={`w-full bg-muted border-none ${compact ? "py-2 px-3" : "py-6 px-8"}`}
+          placeholder={t("courses.search.placeholder")}
+          className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "py-6 px-6"}`}
         />
         <div
-          className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-0 p-0" : "mt-4 p-2"}`}
+          className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"}`}
         >
           {courseList.map((course, index) => {
             if (compact && index >= 2) {
@@ -120,24 +120,24 @@ function CourseSearch({ compact }: { compact?: boolean }) {
               return (
                 <>
                   <div
-                    className={`flex justify-between items-center py-1 h-full ${compact ? "pl-3" : "px-4"}`}
+                    className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
                   >
-                    <div className="flex flex-col my-1 w-full">
-                      <Label className="font-bold leading-7">
+                    <div className="flex flex-col my-1 w-full hover:cursor-pointer">
+                      <Label className="font-bold leading-7 hover:cursor-pointer">
                         {course.courseCode} - {course.title}
                       </Label>
-                      <Label className="text-sm text-muted-foreground">
+                      <Label className="text-sm text-muted-foreground hover:cursor-pointer">
                         {course.school}
                       </Label>
                     </div>
                     <div className="flex items-center justify-start w-12">
                       <CommentIcon />
-                      <Label className="text-xs ml-1">
+                      <Label className="text-xs ml-1 hover:cursor-pointer">
                         {course.commentCount}
                       </Label>
                     </div>
                   </div>
-                  {!compact && <Separator />}
+                  {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
                 </>
               );
             }
