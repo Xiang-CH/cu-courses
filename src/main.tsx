@@ -12,6 +12,7 @@ import Courses from "./pages/courses/courses.tsx";
 import MyCalendar from "./pages/myCalendar/myCalendar.tsx";
 import Profile from "./pages/profile/profile.tsx";
 import Setting from "./pages/setting/setting.tsx";
+import Apps from "./pages/home/apps.tsx";
 
 let resizeTimer: string | number | NodeJS.Timeout | undefined;
 window.addEventListener("resize", () => {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/home/apps",
+    element: <Apps />,
   },
   {
     path: "/courses",

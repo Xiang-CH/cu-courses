@@ -22,7 +22,14 @@
         "course": "课程",
         "calendar": "日历"
     },
-
+    "apps": {
+        "apps": "Apps",
+        "all": "全部",
+        "campus": "校园",
+        "study": "学习",
+        "job": "工作",
+        "open-link": "打开链接"
+    },
     "myCalendar": {
         "today": "今日"
     },
@@ -42,8 +49,8 @@
             "class-select-end-time": "选组结束时间",
             "workload": "课程工作量",
             "workload-select": "选择课程工作量",
-            "recomendation": "课程推荐度",
-            "recomendation-select": "选择课程推荐度"
+            "recommendation": "课程推荐度",
+            "recommendation-select": "选择课程推荐度"
         }
     },
 

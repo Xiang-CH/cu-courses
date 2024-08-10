@@ -22,7 +22,22 @@
     color: #000;
     border-radius: 5px;
     padding: 2px 5px;
+    display: block !important;
+    transition: all 200ms ease-in-out;
+}
 
+.rbc-event:hover{
+    background-color: rgba(41, 204, 57, 0.2) !important;
+    position: sticky;
+    width: 6rem;
+    height: fit-content !important;
+    overflow: visible ;
+    box-shadow: #a6a6a6 0px 0px 5px 0px;
+}
+
+.rbc-event-content{
+    height: fit-content !important;
+    min-height: max-content !important;
 }
 
 .rbc-current-time-indicator{
@@ -43,7 +58,7 @@
 }
 
 .rbc-time-view{
-    border: 0px;
+    border: 0;
 }
 
 .rbc-today{

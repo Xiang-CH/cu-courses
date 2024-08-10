@@ -16,6 +16,7 @@ function Setting() {
   const { t, i18n } = useTranslation();
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language).then(() => {
+      localStorage.setItem("language", language);
       console.log("切换语言", i18n.language);
     });
   };

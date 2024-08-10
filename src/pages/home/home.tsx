@@ -32,7 +32,7 @@ const icon_size = "1.5em";
 const directory_contents = [
   {
     title: "app",
-    url: "",
+    url: "home/apps",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ const directory_contents = [
   },
   {
     title: "food",
-    url: "",
+    url: "https://www.fno.cuhk.edu.hk/staff/on-campus-catering-outlets/",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@ const directory_contents = [
   },
   {
     title: "bus",
-    url: "",
+    url: "https://transport.cuhk.edu.hk/",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +92,7 @@ const directory_contents = [
   },
   {
     title: "map",
-    url: "",
+    url: "https://www.google.com/maps",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +141,7 @@ function CurrWeekCard({
 function TodayCourses({ today_courses }: { today_courses: Course[] }) {
   // const cur_date = new Date();
   return (
-    <Card className="flex lg:flex-col w-full p-2 text-parimary-forground bg-primary text-center relative items-start pt-6 pb-4 h-full">
+    <Card className="flex lg:h-full lg:flex-col w-full p-2 text-parimary-forground bg-primary text-center relative items-start pt-6 pb-4">
       <div className="w-2/5 lg:w-full flex items-start pt-1">
         <Calendar showTool={false} selectable={false} />
       </div>
@@ -179,7 +179,7 @@ function DirectoryCard() {
           {directory_contents.map((content) => {
             return (
               <a
-                className="flex-col items-center justify-center px-2 py-3 rounded-lg bg-accent min-w-12"
+                className="flex-col items-center justify-center px-2 py-3 rounded-lg bg-accent min-w-12 hover:shadow"
                 href={content.url}
               >
                 <div className="w-full flex justify-center">{content.icon}</div>
@@ -297,9 +297,9 @@ function Home() {
       <NavBar currentPath="/home" />
 
       <ScrollArea className="w-full h-screen text-left px-5 relative">
-        <div className="w-full text-left flex justify-around space-x-6 my-2 px-2 py-4 relative">
+        <div className="w-full text-left flex justify-around space-x-6 my-2 px-2 py-4 relative h-full">
           {/* 左边 */}
-          <div className="flex flex-col mb-4 lg:w-[65%] flex-grow w-full space-y-4">
+          <div className="flex flex-col lg:w-[65%] flex-grow w-full space-y-4">
             <div className="flex w-full space-x-4 relative h-fit">
               <CurrWeekCard week={week} total_weeks={total_weeks} />
               <DirectoryCard />
@@ -312,7 +312,7 @@ function Home() {
             <CalendarCoursesViewCard />
           </div>
           {/* 右边 */}
-          <div className="w-[35%] max-w-96 hidden lg:block h-full">
+          <div className="w-[35%] max-w-96 hidden lg:block relative">
             <TodayCourses today_courses={today_course} />
           </div>
         </div>

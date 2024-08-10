@@ -33,6 +33,17 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
     },
   ]);
 
+  // const [view, setView] = useState(Views.WORK_WEEK);
+
+  const hasWeekendEvents = events.some((event: CourseEvent) => {
+    const day = moment(event.start).day();
+    if (day === 0 || day === 6) {
+      // 0 = Sunday, 6 = Saturday
+      return true;
+    }
+    return false;
+  });
+
   const minTime: Date = new Date();
   minTime.setHours(8, 0, 0);
 
@@ -88,9 +99,9 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: "100%", width: "100%" }}
-        views={[Views.WEEK]}
+        views={[hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK]}
         // header={{ left: "", center: "", right: "" }}
-        defaultView={"week"}
+        defaultView={hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK}
         toolbar={!compact}
         defaultDate={moment().toDate()}
         min={minTime}
@@ -100,6 +111,10 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
         components={{
           toolbar: CustomToolbar,
           week: {
+            header: CustomDayHeader,
+            event: CustomEvent,
+          },
+          work_week: {
             header: CustomDayHeader,
             event: CustomEvent,
           },

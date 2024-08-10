@@ -153,14 +153,14 @@ function Courses() {
                   </div>
 
                   <Label className="text-md text-secondary mt-2">
-                    {t("courses.filter.recomendation")}
+                    {t("courses.filter.recommendation")}
                   </Label>
                   <div className="flex ml-2 w-96 my-2 items-center">
                     <Badge
                       variant="outline"
                       className="mr-6 my-1 py-2 px-2 rounded-sm w-fit bg-background"
                     >
-                      {t("courses.filter.recomendation-select")}
+                      {t("courses.filter.recommendation-select")}
                       <ArrowDownIcon />
                     </Badge>
                   </div>
