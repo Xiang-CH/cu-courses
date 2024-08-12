@@ -54,10 +54,61 @@
         }
     },
 
-    "profile": {
-        "my-reviews": "我的评价",
+    "courseDetail": {
+        "course-detail": "课程详情",
+        "course-level": "课程级别",
+        "course-credit": "学分",
+        "course-grading": "评分标准",
+        "course-structure": "课程组成",
+        "course-faculty": "学院",
+        "course-department": "部门",
+
+        "course-info": "选课信息",
+        "course-enroll_req": "课程添加许可",
+        "course-drop_req": "课程删除许可",
+        "course-register_req": "课程注册许可",
+
+        "course-description": "课程描述",
+
+        "course-workload": "课程工作量",
+        "course-recommendation": "课程推荐度",
+        "course-chart-total": "总计",
+
+        "course-must_reads": "必读读物",
+        "course-recommended_books": "推荐读物",
+
+        "course-classes": "课程班级",
+        "class-location": "地点",
+        "class-time": "时间",
+        "class-instructor": "讲师",
+        "class-dates": "课程日期",
+        "add-course-to-calendar": "加入排课表",
+
+
         "course-review": "课程评价",
-        "professor-review": "教授评价"
+        "add-course-review": "添加评价"
+    },
+
+    "courseReview": {
+        "course-review": "课程评价",
+        "instructor-review": "教授评价",
+        "recommend-levels": [
+            "极度不推荐",
+            "不推荐",
+            "推荐",
+            "极度推荐"
+        ],
+        "workload-levels": [
+            "非常轻",
+            "轻",
+            "适中",
+            "重",
+            "非常重"
+        ]
+    },
+
+    "profile": {
+        "my-reviews": "我的评价"
     },
 
     "setting": {

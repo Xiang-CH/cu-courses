@@ -119,7 +119,8 @@ function CourseSearch({ compact }: { compact?: boolean }) {
             } else {
               return (
                 <>
-                  <div
+                  <a
+                    href={`/courses/${course.courseCode}`}
                     className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
                   >
                     <div className="flex flex-col my-1 w-full hover:cursor-pointer">
@@ -136,7 +137,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                         {course.commentCount}
                       </Label>
                     </div>
-                  </div>
+                  </a>
                   {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
                 </>
               );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Calendar, momentLocalizer, Formats, Views } from "react-big-calendar";
 import moment from "moment";
 import CustomToolbar from "./customToolBar.tsx";
@@ -11,6 +11,7 @@ interface CourseEvent {
   start: Date;
   end: Date;
   allDay?: boolean;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 const localizer = momentLocalizer(moment);
@@ -23,6 +24,7 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
       location: "Online",
       start: new Date(2024, 7, 5, 10, 0),
       end: new Date(2024, 7, 5, 11, 0),
+      ref: useRef(null),
     },
     {
       courseCode: "History 201",
@@ -30,6 +32,7 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
       location: "MWT 101",
       start: new Date(2024, 7, 6, 12, 0),
       end: new Date(2024, 7, 6, 13, 30),
+      ref: useRef(null),
     },
   ]);
 
@@ -78,9 +81,21 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
     );
   };
 
+  const onMouseOverEvent = () => {
+    for (const event of events) {
+      if (!event.ref?.current?.parentElement?.parentElement) continue;
+      event.ref.current.parentElement.parentElement.style.minHeight =
+        event.ref.current.parentElement.parentElement.style.height;
+    }
+  };
+
   const CustomEvent = ({ event }: { event: CourseEvent }) => {
     return (
-      <div className="custom-event">
+      <div
+        className="custom-event"
+        onMouseEnter={onMouseOverEvent}
+        ref={event.ref}
+      >
         <p className="text-xs font-bold">{event.courseCode}</p>
         <p className="text-xs">{event.title}</p>
         <p className="text-xs">{event.location}</p>

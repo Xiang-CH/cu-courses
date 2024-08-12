@@ -13,15 +13,7 @@ import MyCalendar from "./pages/myCalendar/myCalendar.tsx";
 import Profile from "./pages/profile/profile.tsx";
 import Setting from "./pages/setting/setting.tsx";
 import Apps from "./pages/home/apps.tsx";
-
-let resizeTimer: string | number | NodeJS.Timeout | undefined;
-window.addEventListener("resize", () => {
-  document.body.classList.add("resize-animation-stopper");
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    document.body.classList.remove("resize-animation-stopper");
-  }, 400);
-});
+import CourseDetail from "./pages/courses/courseDetail.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/courses",
     element: <Courses />,
+  },
+  {
+    path: "/courses/:courseId",
+    element: <CourseDetail />,
   },
   {
     path: "/calendar",

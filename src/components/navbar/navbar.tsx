@@ -147,7 +147,7 @@ function MenuItem({
 function NavBar({ currentPath }: { currentPath: string }) {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col h-screen lg:min-w-40 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center transition-[width,margin,padding,transform,min-width]">
+    <div className="flex flex-col h-screen lg:min-w-44 lg:w-[18%] lg:max-w-48 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center lg:items-start transition-[width,margin,padding,transform,min-width]">
       <div className="my-6 w-full bg-secondary flex flex-start justify-center lg:items-start lg:justify-start">
         <img
           src={logo}
@@ -158,8 +158,8 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
       <div className="h-px bg-background w-full" />
 
-      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start p-0 m-0 overflow-hidden">
-        <NavigationMenuList className="flex flex-col my-5 mx-3 lg:max-w-full items-center space-x-0">
+      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start px-3 m-0 overflow-x-hidden relative">
+        <NavigationMenuList className="flex flex-col my-5 mx-0 mr-1 lg:max-w-full lg:w-full lg:ml-1">
           <MenuItem
             title={t("navbar.home")}
             path="/home"
