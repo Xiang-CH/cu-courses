@@ -45,7 +45,7 @@ function CourseItem({
   return (
     <Card className="w-full h-fit border-none bg-card shadow-none p-1 py-1.5">
       <CardContent className="flex justify-between p-0 mx-3">
-        <div className="flex-1 text-left self-center min-w-32">
+        <div className="flex-1 text-left self-center min-w-20">
           <p className="font-bold text-sm">{courseCode}</p>
           <p className="leading-3 text-xs mb-1">{description}</p>
           <p className="text-xs text-gray-700">{type}</p>

@@ -1,21 +1,126 @@
 {
+  "app-name": "CU Transformer",
+  "navbar": {
+    "home": "Home",
+    "courses": "Courses",
+    "my-calendar": "Calendar",
+    "profile": "Profile",
+    "settings": "Settings",
+    "login-register": "Login/Register",
+    "logout": "Logout"
+  },
+  "home": {
+    "today-course": "Today",
+    "directory": "Directory",
+    "directory-description": "Campus Application",
+    "directory-app": "Apps",
+    "directory-food": "Food",
+    "directory-bus": "Bus",
+    "directory-map": "Map",
+    "announcement": "Announcement",
+    "announcement-description": "Campus Information ",
+    "course": "Courses",
+    "calendar": "Calendar"
+  },
+  "apps": {
+    "apps": "Apps",
+    "all": "All",
+    "campus": "Campus",
+    "study": "Study",
+    "job": "Job",
+    "open-link": "Link"
+  },
+  "myCalendar": {
+    "today": "Today"
+  },
 
-    "navbar": {
-        "app-name": "CU Transformer",
-        "home": "Home",
-        "courses": "Courses",
-        "my-calendar": "Calendar",
-        "profile": "Profile",
-        "settings": "Settings",
-        "login-register": "Login/Register",
-        "logout": "Log Out"
+  "courses": {
+    "search": {
+      "search": "Search Courses",
+      "placeholder": "Search by course name or code"
+    },
+    "filter": {
+      "filter": "Filter",
+      "faculty": "Faculty",
+      "semester": "Semester",
+      "class-time": "Class Time",
+      "class-select-weekday": "Select Day of Week",
+      "class-select-start-time": "Select Start Day",
+      "class-select-end-time": "Select End Time",
+      "workload": "Course Workload",
+      "workload-select": "Select Course Workload",
+      "recommendation": "Course Recommendation",
+      "recommendation-select": "Select Course Recommendation"
+    }
+  },
+
+  "courseDetail": {
+    "course-detail": "Course Details",
+    "course-level": "Course level",
+    "course-credit": "Credits",
+    "course-grading": "Grading Criteria",
+    "course-structure": "Course Components",
+    "course-faculty": "Faculty",
+    "course-department": "Academic Group",
+
+    "course-info": "Enrollment Information",
+    "course-enroll_req": "Add Consent",
+    "course-drop_req": "Drop Consent",
+    "course-register_req": "Enrollment Requirement",
+
+    "course-description": "Course Description",
+
+    "course-workload": "Course Workload",
+    "course-recommendation": "Course Recommendation",
+    "course-chart-total": "Total",
+
+    "course-must_reads": "Required Readings",
+    "course-recommended_books": "Recommended Readings",
+
+    "course-classes": "Course Schedule",
+    "class-location": "Location",
+    "class-time": "Time",
+    "class-instructor": "Instructor",
+    "class-dates": "Dates",
+    "add-course-to-calendar": "Add to Calendar",
+
+    "course-review": "Course Evaluation",
+    "add-course-review": "Evaluate"
+  },
+
+  "courseReview": {
+    "course-review": "Course Evaluation",
+    "instructor-review": "Professor Evaluation",
+    "recommend-levels": [
+      "Highly Reserved",
+      "Reserved",
+      "Recommended",
+      "Highly Recommended"
+    ],
+    "workload-levels": ["Very Light", "Light", "Average", "Heavy", "Very Heavy"]
+  },
+
+  "profile": {
+    "my-reviews": "My Evaluation"
+  },
+
+  "setting": {
+    "setting": "Settings",
+    "general": "General",
+    "language": "Language",
+    "current-language": "English"
+  },
+
+  "login": {
+        "logging-in": "Logging in"
     },
 
-    "setting": {
-        "setting": "Settings",
-        "general": "General",
-        "language": "Language",
-        "current-language": "English"
+    "errors": {
+        "error": "Error",
+        "404": "Page not found",
+        "404-description": "Sorry, we could not find the page that you are looking for.",
+        "500": "Server Error",
+        "unknown": "Unknown Error",
+        "back-to-home": "Back to home"
     }
 }
-  

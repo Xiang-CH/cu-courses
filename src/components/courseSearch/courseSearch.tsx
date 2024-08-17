@@ -2,6 +2,25 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState } from "react";
+import { request } from "@/lib/api.ts";
+import { Link, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
+
+interface Course {
+  course_code: string;
+  course_title: string;
+  course_type: string;
+  course_department: string;
+  course_career: string;
+  course_unit: string;
+  course_grading_basis: string;
+  course_add_consent: string | null;
+  course_drop_consent: string | null;
+  course_requirement: string;
+  course_description: string;
+  course_comment_count?: number;
+}
 
 function CommentIcon() {
   return (
@@ -26,123 +45,194 @@ function CommentIcon() {
     </svg>
   );
 }
-const courseList = [
-  {
-    courseCode: "COMP1001",
-    title: "Introduction to Computer Science",
-    school: "Sch of Computer Science",
-    commentCount: "20",
-  },
-  {
-    courseCode: "COMP1002",
-    title: "Data Structures",
-    school: "Sch of Computer Science",
-    commentCount: "10",
-  },
-  {
-    courseCode: "COMP1003",
-    title: "Algorithm Design and Analysis",
-    school: "Sch of Computer Science",
-    commentCount: "5",
-  },
-  {
-    courseCode: "COMP1004",
-    title: "Operating Systems",
-    school: "Sch of Computer Science",
-    commentCount: "15",
-  },
-  {
-    courseCode: "COMP1005",
-    title: "Software Engineering",
-    school: "Sch of Computer Science",
-    commentCount: "25",
-  },
-  {
-    courseCode: "COMP1002",
-    title: "Data Structures",
-    school: "Sch of Computer Science",
-    commentCount: "10",
-  },
-  {
-    courseCode: "COMP1003",
-    title: "Algorithm Design and Analysis",
-    school: "Sch of Computer Science",
-    commentCount: "5",
-  },
-  {
-    courseCode: "COMP1004",
-    title: "Operating Systems",
-    school: "Sch of Computer Science",
-    commentCount: "15",
-  },
-  {
-    courseCode: "COMP1005",
-    title: "Software Engineering",
-    school: "Sch of Computer Science",
-    commentCount: "25",
-  },
-  {
-    courseCode: "COMP1003",
-    title: "Algorithm Design and Analysis",
-    school: "Sch of Computer Science",
-    commentCount: "5",
-  },
-  {
-    courseCode: "COMP1004",
-    title: "Operating Systems",
-    school: "Sch of Computer Science",
-    commentCount: "15",
-  },
-  {
-    courseCode: "COMP1005",
-    title: "Software Engineering",
-    school: "Sch of Computer Science",
-    commentCount: "25",
-  },
-];
+// const courseList = [
+//   {
+//     courseCode: "COMP1001",
+//     title: "Introduction to Computer Science",
+//     school: "Sch of Computer Science",
+//     commentCount: "20",
+//   },
+//   {
+//     courseCode: "COMP1002",
+//     title: "Data Structures",
+//     school: "Sch of Computer Science",
+//     commentCount: "10",
+//   },
+//   {
+//     courseCode: "COMP1003",
+//     title: "Algorithm Design and Analysis",
+//     school: "Sch of Computer Science",
+//     commentCount: "5",
+//   },
+//   {
+//     courseCode: "COMP1004",
+//     title: "Operating Systems",
+//     school: "Sch of Computer Science",
+//     commentCount: "15",
+//   },
+//   {
+//     courseCode: "COMP1005",
+//     title: "Software Engineering",
+//     school: "Sch of Computer Science",
+//     commentCount: "25",
+//   },
+//   {
+//     courseCode: "COMP1002",
+//     title: "Data Structures",
+//     school: "Sch of Computer Science",
+//     commentCount: "10",
+//   },
+//   {
+//     courseCode: "COMP1003",
+//     title: "Algorithm Design and Analysis",
+//     school: "Sch of Computer Science",
+//     commentCount: "5",
+//   },
+//   {
+//     courseCode: "COMP1004",
+//     title: "Operating Systems",
+//     school: "Sch of Computer Science",
+//     commentCount: "15",
+//   },
+//   {
+//     courseCode: "COMP1005",
+//     title: "Software Engineering",
+//     school: "Sch of Computer Science",
+//     commentCount: "25",
+//   },
+//   {
+//     courseCode: "COMP1003",
+//     title: "Algorithm Design and Analysis",
+//     school: "Sch of Computer Science",
+//     commentCount: "5",
+//   },
+//   {
+//     courseCode: "COMP1004",
+//     title: "Operating Systems",
+//     school: "Sch of Computer Science",
+//     commentCount: "15",
+//   },
+//   {
+//     courseCode: "COMP1005",
+//     title: "Software Engineering",
+//     school: "Sch of Computer Science",
+//     commentCount: "25",
+//   },
+// ];
 
 function CourseSearch({ compact }: { compact?: boolean }) {
   const { t } = useTranslation();
+  const [searchParam, setSearchParam] = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [page, setPage] = useState(1);
+  const [courseList, setCourseList] = useState<Course[]>([]);
+
+  useEffect(() => {
+    getCourses(page, searchParam.get("q") || "".toString()).then((res) => {
+      setCourseList(res);
+    });
+  }, []);
+
+  async function getCourses(page: number, query?: string) {
+    if (!query) {
+      const cache = sessionStorage.getItem(
+        "courseList_page_" + page.toString(),
+      );
+      if (cache) {
+        return JSON.parse(cache);
+      }
+    }
+    try {
+      const res = await request("/course/list.php", {
+        page_size: "20",
+        page: page.toString(),
+        keyword: query ? query : "",
+      });
+      if (res.code == 200) {
+        if (!query) {
+          sessionStorage.setItem(
+            "courseList_page_" + page.toString(),
+            JSON.stringify(res.course_list),
+          );
+        }
+        return res.course_list;
+      }
+      toast(t("errors.error"), {
+        description: res.msg,
+      });
+      return [];
+    } catch {
+      toast(t("errors.error"), {
+        description: t("errors.network-error"),
+      });
+      return [];
+    }
+  }
+
+  function handleSearch(event: React.FormEvent) {
+    event.preventDefault();
+    setPage(1);
+    const newParams = new URLSearchParams(searchParam);
+    newParams.set("q", inputRef.current?.value || "");
+    setSearchParam(newParams);
+    getCourses(1, inputRef.current?.value || "").then((res) => {
+      setCourseList(res);
+    });
+  }
+
   return (
     <div className="flex w-full overflow-hidden">
       <div className="flex-col w-full min-w-[550px] px-3 pt-2">
-        <Input
-          placeholder={t("courses.search.placeholder")}
-          className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "py-6 px-6"}`}
-        />
+        <form onSubmit={handleSearch}>
+          <Input
+            ref={inputRef}
+            defaultValue={searchParam.get("q") || undefined}
+            placeholder={t("courses.search.placeholder")}
+            className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "py-6 px-6"}`}
+          />
+        </form>
         <div
           className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"}`}
         >
-          {courseList.map((course, index) => {
-            if (compact && index >= 2) {
-              return;
-            } else {
-              return (
-                <>
-                  <a
-                    href={`/courses/${course.courseCode}`}
-                    className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
-                  >
-                    <div className="flex flex-col my-1 w-full hover:cursor-pointer">
-                      <Label className="font-bold leading-7 hover:cursor-pointer">
-                        {course.courseCode} - {course.title}
-                      </Label>
-                      <Label className="text-sm text-muted-foreground hover:cursor-pointer">
-                        {course.school}
-                      </Label>
-                    </div>
-                    <div className="flex items-center justify-start w-12">
-                      <CommentIcon />
-                      <Label className="text-xs ml-1 hover:cursor-pointer">
-                        {course.commentCount}
-                      </Label>
-                    </div>
-                  </a>
-                  {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
-                </>
-              );
-            }
-          })}
+          {courseList.length > 0 ? (
+            courseList.map((course, index) => {
+              if (compact && index >= 2) {
+                return;
+              } else {
+                return (
+                  <div key={course.course_code}>
+                    <Link
+                      // target="_blank"
+                      to={{
+                        pathname: `/courses/${course.course_code}`,
+                      }}
+                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
+                    >
+                      <div className="flex flex-col my-1 w-full hover:cursor-pointer">
+                        <Label className="font-bold leading-7 hover:cursor-pointer">
+                          {course.course_code} - {course.course_title}
+                        </Label>
+                        <Label className="text-sm text-muted-foreground hover:cursor-pointer">
+                          {course.course_department}
+                        </Label>
+                      </div>
+                      <div className="flex items-center justify-start w-12">
+                        <CommentIcon />
+                        <Label className="text-xs ml-1 hover:cursor-pointer">
+                          {course.course_comment_count || 0}
+                        </Label>
+                      </div>
+                    </Link>
+                    {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
+                  </div>
+                );
+              }
+            })
+          ) : (
+            <div className="flex justify-center items-center h-10 text-md text-muted-foreground">
+              {t("courses.search.no-result")}
+            </div>
+          )}
         </div>
       </div>
       {/*<div className="w-16"></div>*/}

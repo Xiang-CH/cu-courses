@@ -57,6 +57,7 @@ const semesters = ["Sem1", "Sem2", "Sem3", "Summer"];
 
 function Courses() {
   const { t } = useTranslation();
+
   return (
     <div className="flex">
       <NavBar currentPath="/courses" />
@@ -83,9 +84,10 @@ function Courses() {
                     {t("courses.filter.faculty")}
                   </Label>
                   <div className="flex flex-wrap ml-2 w-96 my-2">
-                    {faculties.map((faculty) => {
+                    {faculties.map((faculty, index) => {
                       return (
                         <Badge
+                          key={"faculty_" + index}
                           variant="outline"
                           className="mr-2 my-1 py-2 px-4 rounded-sm w-fit bg-background"
                         >
@@ -99,9 +101,10 @@ function Courses() {
                     {t("courses.filter.semester")}
                   </Label>
                   <div className="flex flex-wrap ml-2 w-80 my-2">
-                    {semesters.map((sem) => {
+                    {semesters.map((sem, index) => {
                       return (
                         <Badge
+                          key={"semester_" + index}
                           variant="outline"
                           className="mr-2 my-1 py-2 px-4 rounded-sm w-fit bg-background"
                         >

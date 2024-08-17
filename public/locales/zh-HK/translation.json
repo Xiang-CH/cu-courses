@@ -1,0 +1,121 @@
+{
+  "app-name": "CU轉換器",
+  "navbar": {
+    "home": "首頁",
+    "courses": "課程平台",
+    "my-calendar": "我的課程",
+    "profile": "個人中心",
+    "settings": "設置",
+    "login-register": "登錄/註冊",
+    "logout": "登出"
+  },
+  "home": {
+    "today-course": "今日課程",
+    "directory": "目錄",
+    "directory-description": "校園應用",
+    "directory-app": "Apps",
+    "directory-food": "食!",
+    "directory-bus": "校巴",
+    "directory-map": "地圖",
+    "announcement": "公告",
+    "announcement-description": "校園資訊",
+    "course": "課程",
+    "calendar": "日曆"
+  },
+  "apps": {
+    "apps": "Apps",
+    "all": "全部",
+    "campus": "校園",
+    "study": "學習",
+    "job": "揾工",
+    "open-link": "鏈結"
+  },
+  "myCalendar": {
+    "today": "今日"
+  },
+
+  "courses": {
+    "search": {
+      "search": "搜尋課程",
+      "placeholder": "搜尋課程名稱或課程代碼"
+    },
+    "filter": {
+      "filter": "篩選",
+      "faculty": "學院",
+      "semester": "學期",
+      "class-time": "上堂時間",
+      "class-select-weekday": "選擇日期",
+      "class-select-start-time": "選擇上堂時間",
+      "class-select-end-time": "選擇落堂時間",
+      "workload": "課程工作量",
+      "workload-select": "選擇課程工作量",
+      "recommendation": "課程推薦度",
+      "recommendation-select": "選擇課程推薦度"
+    }
+  },
+
+  "courseDetail": {
+    "course-detail": "課程詳情",
+    "course-level": "課程級別",
+    "course-credit": "學分",
+    "course-grading": "評分標準",
+    "course-structure": "課程組成",
+    "course-faculty": "學院",
+    "course-department": "部門/教學單位",
+
+    "course-info": "選課信息",
+    "course-enroll_req": "加選要求",
+    "course-drop_req": "退選要求",
+    "course-register_req": "選課要求",
+
+    "course-description": "課程簡述",
+
+    "course-workload": "課程工作量",
+    "course-recommendation": "課程推薦度",
+    "course-chart-total": "總計",
+
+    "course-must_reads": "必讀讀物",
+    "course-recommended_books": "推薦讀物",
+
+    "course-classes": "課程班級",
+    "class-location": "地點",
+    "class-time": "時間",
+    "class-instructor": "講師",
+    "class-dates": "課程日期",
+    "add-course-to-calendar": "加入排課表",
+
+    "course-review": "課程評價",
+    "add-course-review": "評價"
+  },
+
+  "courseReview": {
+    "course-review": "課程評價",
+    "instructor-review": "教授評價",
+    "recommend-levels": ["極度保留", "保留", "推薦", "極度推薦"],
+    "workload-levels": ["非常輕", "輕", "適中", "重", "非常重"]
+  },
+
+  "profile": {
+    "my-reviews": "我的評價"
+  },
+
+  "setting": {
+    "setting": "設置",
+    "general": "通用",
+    "language": "語言",
+    "current-language": "繁體中文"
+  },
+
+  "login": {
+        "logging-in": "登陸中"
+    },
+
+    "errors": {
+        "error": "錯誤",
+        "404": "未找到頁面",
+        "404-description": "抱歉，妳訪問的頁面不存在",
+        "500": "伺服器錯誤",
+        "unknown": "未知錯誤",
+        "back-to-home": "返回首頁"
+    }
+}

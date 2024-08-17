@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLoaderData } from "react-router-dom";
 import NavBar from "@/components/navbar/navbar.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
@@ -142,6 +142,8 @@ function CourseDetail() {
   const { t } = useTranslation();
   const { courseId } = useParams();
   const navigate = useNavigate();
+  // const course = useLoaderData();
+  // console.log(course);
 
   return (
     <div className="flex w-screen relative">
@@ -150,7 +152,11 @@ function CourseDetail() {
         <div className="px-8 py-4 w-full">
           {/*Header*/}
           <div className="flex my-4">
-            <Button onClick={() => navigate("/courses")}>
+            <Button
+              onClick={() => {
+                window.history.length > 1 ? navigate(-1) : navigate("/courses");
+              }}
+            >
               <ChevronLeftIcon className="w-7 h-7" />
             </Button>
             <Label className="text-3xl font-black text-secondary">
