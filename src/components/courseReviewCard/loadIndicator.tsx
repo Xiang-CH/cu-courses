@@ -12,16 +12,17 @@ function LoadIndicator({ rate, type }: { rate: number; type: "wl" | "rc" }) {
   let description;
   let color = "bg-green-500";
   if (type == "wl") {
-    if (rate < 1) color = "bg-[#FF3C3C]";
-    else if (rate < 2) color = "bg-[#FFB44F]";
-    else if (rate < 3) color = "bg-[#F9DD47]";
-    else if (rate < 4) color = "bg-[#B2F66E]";
-    description = workloadLevel[rate];
+    if (rate == 1) color = "bg-[#FF3C3C]";
+    else if (rate == 2) color = "bg-[#FFB44F]";
+    else if (rate == 3) color = "bg-[#F9DD47]";
+    else if (rate == 4) color = "bg-[#B2F66E]";
+    description = workloadLevel[rate - 1];
   } else {
-    if (rate < 1) color = "bg-[#FF3C3C]";
-    else if (rate < 2) color = "bg-[#FFB44F]";
-    else if (rate < 3) color = "bg-[#B2F66E]";
-    description = recommendLevels[rate];
+    if (rate == 1) color = "bg-[#FF3C3C]";
+    else if (rate == 2) color = "bg-[#FFB44F]";
+    else if (rate == 3) color = "bg-[#F9DD47]";
+    else if (rate == 4) color = "bg-[#B2F66E]";
+    description = recommendLevels[rate - 1];
   }
 
   return (

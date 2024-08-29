@@ -41,6 +41,20 @@
   align-items: center;
   justify-content: space-between;
   margin-right: 1em;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.leftArrow:hover {
+  cursor: pointer;
+}
+
+.rightArrow:hover {
+  cursor: pointer;
 }
 
 .leftArrow{
@@ -70,6 +84,7 @@
   align-items: start;
   justify-content: start;
   padding: 0 1px 0 1px;
+
 }
 
 .weekday {
@@ -78,6 +93,12 @@
   width: 14.24%;
   text-align: left;
   font-weight: 500;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .table-content {
@@ -106,10 +127,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .calendar-day:hover {
   background-color: rgba(0,0,0,.10);
+  cursor: pointer;
+}
+
+.no-select:hover{
+  background: var(--background);
+  cursor: default;
 }
 
 .selected:hover{
@@ -124,6 +157,15 @@
   color: #000000;
 }
 
+.today p{
+  color: var(--muted-foreground);
+
+}
+
+.today{
+  background-color: var(--muted);
+}
+
 .selected p{
   color: var(--background);
 
@@ -132,3 +174,6 @@
 .selected{
   background-color: var(--secondary);
 }
+
+
+

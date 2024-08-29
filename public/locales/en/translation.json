@@ -39,6 +39,10 @@
       "search": "Search Courses",
       "placeholder": "Search by course name or code"
     },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
     "filter": {
       "filter": "Filter",
       "faculty": "Faculty",
@@ -56,17 +60,17 @@
 
   "courseDetail": {
     "course-detail": "Course Details",
-    "course-level": "Course level",
-    "course-credit": "Credits",
-    "course-grading": "Grading Criteria",
-    "course-structure": "Course Components",
-    "course-faculty": "Faculty",
-    "course-department": "Academic Group",
+    "course_career": "Course level",
+    "course_unit": "Credits",
+    "course_grading_basis": "Grading Criteria",
+    "course_type": "Course Components",
+    "course_faculty": "Faculty",
+    "course_department": "Academic Group",
 
     "course-info": "Enrollment Information",
-    "course-enroll_req": "Add Consent",
-    "course-drop_req": "Drop Consent",
-    "course-register_req": "Enrollment Requirement",
+    "course_add_consent": "Add Consent",
+    "course_drop_consent": "Drop Consent",
+    "course_requirement": "Enrollment Requirement",
 
     "course-description": "Course Description",
 
@@ -94,14 +98,16 @@
     "recommend-levels": [
       "Highly Reserved",
       "Reserved",
+      "Average",
       "Recommended",
       "Highly Recommended"
     ],
-    "workload-levels": ["Very Light", "Light", "Average", "Heavy", "Very Heavy"]
+    "workload-levels": ["Very Heavy", "Heavy", "Average", "Light", "Very Light"]
   },
 
   "profile": {
-    "my-reviews": "My Evaluation"
+    "my-reviews": "My Evaluation",
+    "no-reviews": "No Evaluation"
   },
 
   "setting": {
@@ -112,15 +118,19 @@
   },
 
   "login": {
-        "logging-in": "Logging in"
-    },
+    "login-now": "Login Now",
+    "logging-in": "Logging in",
+    "success": "Login Successful"
+  },
 
-    "errors": {
-        "error": "Error",
-        "404": "Page not found",
-        "404-description": "Sorry, we could not find the page that you are looking for.",
-        "500": "Server Error",
-        "unknown": "Unknown Error",
-        "back-to-home": "Back to home"
-    }
+  "errors": {
+    "error": "Error",
+    "404": "Page not found",
+    "404-description": "Sorry, we could not find the page that you are looking for.",
+    "500": "Server Error",
+    "unknown": "Unknown Error",
+    "back-to-home": "Back to home",
+    "not-logged-in": "Not Logged In",
+    "not-logged-in-description": "Please log in to access this page."
+  }
 }

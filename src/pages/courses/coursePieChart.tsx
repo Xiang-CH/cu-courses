@@ -19,27 +19,36 @@ function CoursePieChart({
 
   let labels;
   const chartConfig = chat_type === "wl" ? chartConfigWL : chartConfigRC;
+  const noData = data.every((item) => item === 0);
   let configKey: string[] = [];
 
+  const chartData = [];
+  let total = 0;
   if (chat_type == "wl") {
     labels = t("courseReview.workload-levels", {
       returnObjects: true,
     }) as Array<string>;
-    configKey = ["very_light", "light", "average", "heavy", "very_heavy"];
+    configKey = [
+      "very_heavy",
+      "heavy",
+      "average",
+      "light",
+      "very_light",
+      "null",
+    ];
   } else {
     labels = t("courseReview.recommend-levels", {
       returnObjects: true,
     }) as Array<string>;
     configKey = [
-      "very_recommend",
-      "recommend",
-      "unrecommend",
       "very_unrecommend",
+      "unrecommend",
+      "average",
+      "recommend",
+      "very_recommend",
+      "null",
     ];
   }
-
-  const chartData = [];
-  let total = 0;
   for (let i = 0; i < data.length; i++) {
     chartConfig[configKey[i]].label = labels[i];
     chartData.push({
@@ -48,6 +57,14 @@ function CoursePieChart({
       fill: chartConfig[configKey[i]].color,
     });
     total += data[i];
+  }
+  if (noData) {
+    chartData.push({
+      label: "N/A",
+      count: 1,
+      fill: chartConfig.null.color,
+    });
+    total += 0;
   }
 
   return (
@@ -78,20 +95,32 @@ function CoursePieChart({
                       textAnchor="middle"
                       dominantBaseline="middle"
                     >
-                      <tspan
-                        x={viewBox.cx}
-                        y={(viewBox.cy || 0) - 7}
-                        className="fill-foreground text-lg font-bold"
-                      >
-                        {t("courseDetail.course-chart-total")}
-                      </tspan>
-                      <tspan
-                        x={viewBox.cx}
-                        y={(viewBox.cy || 0) + 18}
-                        className="fill-muted-foreground text-sm"
-                      >
-                        {total}
-                      </tspan>
+                      {noData ? (
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy || 0}
+                          className="fill-foreground text-lg font-bold"
+                        >
+                          {t("courseReview.no-data")}
+                        </tspan>
+                      ) : (
+                        <>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) - 7}
+                            className="fill-foreground text-lg font-bold"
+                          >
+                            {t("courseDetail.course-chart-total")}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 18}
+                            className="fill-muted-foreground text-sm"
+                          >
+                            {total}
+                          </tspan>
+                        </>
+                      )}
                     </text>
                   );
                 }
@@ -100,12 +129,14 @@ function CoursePieChart({
           </Pie>
         </PieChart>
       </ChartContainer>
-      <div className="flex flex-col ml-5 gap-3 h-full justify-center">
-        {chartData.map((item, index) => {
-          if (item.count === 0) return;
-          return <LoadIndicator rate={index} type={chat_type} />;
-        })}
-      </div>
+      {!noData && (
+        <div className="flex flex-col ml-5 gap-3 h-full justify-center">
+          {chartData.map((item, index) => {
+            if (item.count === 0) return;
+            return <LoadIndicator rate={index + 1} type={chat_type} />;
+          })}
+        </div>
+      )}
     </div>
   );
 }

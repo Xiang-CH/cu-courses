@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { EnterIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/logo.png";
@@ -140,7 +140,9 @@ function MenuItem({
         className={`justify-center lg:justify-start items-center overflow-hidden flex h-10 w-full px-4 font-light hover:text-secondary hover:bg-primary active:text-secondary active:bg-primary menuItem min-w-full rounded-lg ${path == currentPath ? "text-secondary bg-primary menuItemInvert" : "text-secondary-foreground bg-secondary"}`}
       >
         <Icons iconName={iconName} />
-        <div className="hidden lg:block overflow-hidden max-h-6">{title}</div>
+        <div className="hidden lg:block overflow-hidden max-h-6 mr-1.5">
+          {title}
+        </div>
       </Link>
     </NavigationMenuItem>
   );
@@ -150,6 +152,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
   const { t, i18n } = useTranslation();
   const [loggedIn] = useState(!!localStorage.getItem("token"));
   const navigate = useNavigate();
+  const location = useLocation();
 
   function logout() {
     localStorage.removeItem("token");
@@ -157,7 +160,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
   }
 
   return (
-    <div className="flex flex-col h-screen lg:min-w-44 lg:w-[18%] lg:max-w-48 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center lg:items-start transition-[width,margin,padding,transform,min-width]">
+    <div className="flex flex-col h-screen lg:min-w-44 lg:w-[18%] lg:max-w-48 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center lg:items-start transition-[width,margin,padding,transform,min-width] overflow-hidden">
       <div className="my-6 bg-secondary flex flex-start justify-center lg:items-start lg:justify-start">
         <img
           src={logo}
@@ -168,8 +171,8 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
       <div className="h-px bg-background w-full" />
 
-      <NavigationMenu className="bg-secondary flex flex-col w-full items-start h-fit justify-start px-3 m-0 overflow-x-hidden relative">
-        <NavigationMenuList className="flex flex-col my-5 mx-0 lg:max-w-full lg:w-full lg:ml-1 space-x-0">
+      <NavigationMenu className="bg-secondary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start px-3 m-0 overflow-x-hidden">
+        <NavigationMenuList className="flex flex-col my-5 mx-0 lg:min-w-full lg:w-full  space-x-0">
           <MenuItem
             title={t("navbar.home")}
             path="/home"
@@ -220,7 +223,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
           ) : (
             <Link
               className="w-full px-4"
-              to={`https://login.tripleuni.com/CUCampus?callback=${window.location.href}&language=${i18n.language}`}
+              to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
             >
               <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-primary menuItem w-full">
                 <EnterIcon className="w-4 h-4 lg:mr-3" />

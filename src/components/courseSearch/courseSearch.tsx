@@ -6,6 +6,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { request } from "@/lib/api.ts";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface Course {
   course_code: string;
@@ -19,7 +28,7 @@ interface Course {
   course_drop_consent: string | null;
   course_requirement: string;
   course_description: string;
-  course_comment_count?: number;
+  course_review_count?: number;
 }
 
 function CommentIcon() {
@@ -45,105 +54,53 @@ function CommentIcon() {
     </svg>
   );
 }
-// const courseList = [
-//   {
-//     courseCode: "COMP1001",
-//     title: "Introduction to Computer Science",
-//     school: "Sch of Computer Science",
-//     commentCount: "20",
-//   },
-//   {
-//     courseCode: "COMP1002",
-//     title: "Data Structures",
-//     school: "Sch of Computer Science",
-//     commentCount: "10",
-//   },
-//   {
-//     courseCode: "COMP1003",
-//     title: "Algorithm Design and Analysis",
-//     school: "Sch of Computer Science",
-//     commentCount: "5",
-//   },
-//   {
-//     courseCode: "COMP1004",
-//     title: "Operating Systems",
-//     school: "Sch of Computer Science",
-//     commentCount: "15",
-//   },
-//   {
-//     courseCode: "COMP1005",
-//     title: "Software Engineering",
-//     school: "Sch of Computer Science",
-//     commentCount: "25",
-//   },
-//   {
-//     courseCode: "COMP1002",
-//     title: "Data Structures",
-//     school: "Sch of Computer Science",
-//     commentCount: "10",
-//   },
-//   {
-//     courseCode: "COMP1003",
-//     title: "Algorithm Design and Analysis",
-//     school: "Sch of Computer Science",
-//     commentCount: "5",
-//   },
-//   {
-//     courseCode: "COMP1004",
-//     title: "Operating Systems",
-//     school: "Sch of Computer Science",
-//     commentCount: "15",
-//   },
-//   {
-//     courseCode: "COMP1005",
-//     title: "Software Engineering",
-//     school: "Sch of Computer Science",
-//     commentCount: "25",
-//   },
-//   {
-//     courseCode: "COMP1003",
-//     title: "Algorithm Design and Analysis",
-//     school: "Sch of Computer Science",
-//     commentCount: "5",
-//   },
-//   {
-//     courseCode: "COMP1004",
-//     title: "Operating Systems",
-//     school: "Sch of Computer Science",
-//     commentCount: "15",
-//   },
-//   {
-//     courseCode: "COMP1005",
-//     title: "Software Engineering",
-//     school: "Sch of Computer Science",
-//     commentCount: "25",
-//   },
-// ];
 
 function CourseSearch({ compact }: { compact?: boolean }) {
   const { t } = useTranslation();
   const [searchParam, setSearchParam] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState(searchParam.get("q") || "");
+  const [page, setPage] = useState(Number(searchParam.get("p")) || 1);
+  const [totalPage, setTotalPage] = useState(1);
   const [courseList, setCourseList] = useState<Course[]>([]);
 
   useEffect(() => {
-    getCourses(page, searchParam.get("q") || "".toString()).then((res) => {
+    console.log("CourseSearch useEffect", page, query);
+    getCourses(page, query || "").then((res) => {
       setCourseList(res);
+      document
+        .getElementById("topOfPage")
+        ?.scrollIntoView({ behavior: "smooth" });
     });
-  }, []);
+  }, [page, query]);
 
   async function getCourses(page: number, query?: string) {
+    if (query) {
+      const newQueryParams = new URLSearchParams(searchParam);
+      newQueryParams.set("q", query);
+      if (!compact) {
+        newQueryParams.set("p", page.toString());
+      }
+      setSearchParam(newQueryParams);
+    } else if (!compact) {
+      const newQueryParams = new URLSearchParams(searchParam);
+      newQueryParams.set("p", page.toString());
+      setSearchParam(newQueryParams);
+    }
+
     if (!query) {
       const cache = sessionStorage.getItem(
         "courseList_page_" + page.toString(),
       );
-      if (cache) {
+      const total = sessionStorage.getItem("courseList_page_total");
+      if (cache && total) {
+        setTotalPage(Number(total));
         return JSON.parse(cache);
       }
     }
     try {
       const res = await request("/course/list.php", {
+        token: localStorage.getItem("token") || "",
         page_size: "20",
         page: page.toString(),
         keyword: query ? query : "",
@@ -154,7 +111,12 @@ function CourseSearch({ compact }: { compact?: boolean }) {
             "courseList_page_" + page.toString(),
             JSON.stringify(res.course_list),
           );
+          sessionStorage.setItem(
+            "courseList_page_total",
+            res.page_count.toString(),
+          );
         }
+        setTotalPage(res.page_count);
         return res.course_list;
       }
       toast(t("errors.error"), {
@@ -172,12 +134,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   function handleSearch(event: React.FormEvent) {
     event.preventDefault();
     setPage(1);
-    const newParams = new URLSearchParams(searchParam);
-    newParams.set("q", inputRef.current?.value || "");
-    setSearchParam(newParams);
-    getCourses(1, inputRef.current?.value || "").then((res) => {
-      setCourseList(res);
-    });
+    setQuery(inputRef.current?.value || "");
   }
 
   return (
@@ -219,7 +176,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       <div className="flex items-center justify-start w-12">
                         <CommentIcon />
                         <Label className="text-xs ml-1 hover:cursor-pointer">
-                          {course.course_comment_count || 0}
+                          {course.course_review_count || 0}
                         </Label>
                       </div>
                     </Link>
@@ -234,8 +191,102 @@ function CourseSearch({ compact }: { compact?: boolean }) {
             </div>
           )}
         </div>
+
+        {!compact && (
+          <Pagination className="my-6">
+            <PaginationContent>
+              {!(page === 1) && (
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => setPage(page - 1)}
+                    to="#"
+                    label={t("courses.pagination.previous")}
+                  />
+                </PaginationItem>
+              )}
+
+              {page >= totalPage - 3 && totalPage > 5 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+
+              {page < 3
+                ? Array.from(
+                    { length: Math.min(5, totalPage) },
+                    (_, i) => i + 1,
+                  ).map((i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        onClick={() => setPage(i)}
+                        to="#"
+                        isActive={page === i}
+                      >
+                        {i}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))
+                : page < totalPage - 3
+                  ? Array.from(
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + page - 2,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))
+                  : Array.from(
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + totalPage - 4,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+
+              {page < totalPage - 3 && totalPage > 5 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+
+              {page < totalPage - 3 && totalPage > 5 && (
+                <PaginationItem>
+                  <PaginationLink
+                    onClick={() => setPage(totalPage)}
+                    to="#"
+                    isActive={page === totalPage}
+                  >
+                    {totalPage}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+
+              {!(page === totalPage) && (
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => setPage(page + 1)}
+                    to="#"
+                    label={t("courses.pagination.next")}
+                  />
+                </PaginationItem>
+              )}
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
-      {/*<div className="w-16"></div>*/}
     </div>
   );
 }

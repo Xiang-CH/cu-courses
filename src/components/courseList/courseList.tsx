@@ -1,14 +1,6 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card.tsx";
-import { useTranslation } from "react-i18next";
-
-interface Course {
-  courseCode: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  type: string;
-  location: string;
-}
+import { CalendarListApiResponse, CourseDetails } from "@/lib/types.ts";
+import { Link } from "react-router-dom";
 
 function LocationIcon() {
   return (
@@ -28,57 +20,56 @@ function LocationIcon() {
 }
 
 function CourseItem({
-  courseCode,
-  description,
-  startTime,
-  endTime,
-  type,
-  location,
+  course_detail,
+  calendar_display,
+  calendar_venue,
 }: {
-  courseCode: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  type: string;
-  location: string;
+  course_detail: CourseDetails;
+  calendar_display: string;
+  calendar_venue: string;
 }) {
   return (
-    <Card className="w-full h-fit border-none bg-card shadow-none p-1 py-1.5">
-      <CardContent className="flex justify-between p-0 mx-3">
-        <div className="flex-1 text-left self-center min-w-20">
-          <p className="font-bold text-sm">{courseCode}</p>
-          <p className="leading-3 text-xs mb-1">{description}</p>
-          <p className="text-xs text-gray-700">{type}</p>
-        </div>
-        <div className="flex-2 flex items-center ml-1">
-          <div className="text-left">
-            <p className="text-xs mb-1">
-              {startTime} - {endTime}
+    <Link to={`/courses/${course_detail.course_code}`}>
+      <Card className="w-full h-fit border-none bg-card shadow-none p-1 py-1.5 hover:shadow hover:cursor-pointer">
+        <CardContent className="flex justify-between p-0 mx-3">
+          <div className="flex-1 text-left self-center min-w-20">
+            <p className="font-bold text-sm">{course_detail.course_code}</p>
+            <p className="leading-3 text-xs mb-0.5">
+              {course_detail.course_title}
             </p>
-            <div className="flex h-full items-center w-20">
-              <LocationIcon />
-              <p className="text-xs">{location}</p>
+            <p className="text-xs text-gray-700">{course_detail.course_type}</p>
+          </div>
+          <div className="flex-2 flex items-center ml-1">
+            <div className="text-left">
+              <p className="text-xs mb-1">{calendar_display}</p>
+              <div className="flex h-full items-center w-28">
+                <LocationIcon />
+                <p className="text-xs ml-2 leading-3">{calendar_venue}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
-function CourseList({ today_courses }: { today_courses: Course[] }) {
-  const { t } = useTranslation();
+function CourseList({
+  courses,
+  label,
+}: {
+  courses: CalendarListApiResponse[];
+  label: string;
+}) {
   // const cur_date = new Date();
 
   return (
     <div className="flex-1 w-full">
       <CardContent className="px-4 pb-0 mb-2">
-        <CardTitle className="text-xl text-left mt-2 mb-2">
-          {t("home.today-course")}
-        </CardTitle>
+        <CardTitle className="text-xl text-left mt-2 mb-2">{label}</CardTitle>
         <div className="w-full px-0 flex-col flex gap-4">
-          {today_courses.map((course) => {
-            return <CourseItem {...course} />;
+          {courses.map((course, index) => {
+            return <CourseItem {...course} key={index} />;
           })}
         </div>
       </CardContent>

@@ -1,51 +1,78 @@
-import React, { useState, useRef } from "react";
-import { Calendar, momentLocalizer, Formats, Views } from "react-big-calendar";
+import {
+  Calendar,
+  momentLocalizer,
+  Formats,
+  Views,
+  ToolbarProps,
+  View,
+} from "react-big-calendar";
 import moment from "moment";
 import CustomToolbar from "./customToolBar.tsx";
 import "./rbc.css";
-
-interface CourseEvent {
-  courseCode: string;
-  title: string;
-  location: string;
-  start: Date;
-  end: Date;
-  allDay?: boolean;
-  ref?: React.RefObject<HTMLDivElement>;
-}
+import { CalendarListApiResponse } from "@/lib/types.ts";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 
 const localizer = momentLocalizer(moment);
 
-const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
-  const [events] = useState<CourseEvent[]>([
-    {
-      courseCode: "Math 101",
-      title: "Fundamental concepts of Mathematics",
-      location: "Online",
-      start: new Date(2024, 7, 5, 10, 0),
-      end: new Date(2024, 7, 5, 11, 0),
-      ref: useRef(null),
-    },
-    {
-      courseCode: "History 201",
-      title: "World War II",
-      location: "MWT 101",
-      start: new Date(2024, 7, 6, 12, 0),
-      end: new Date(2024, 7, 6, 13, 30),
-      ref: useRef(null),
-    },
-  ]);
+interface EventRefs {
+  [key: string]: HTMLDivElement | null;
+}
 
+const CalendarCoursesView = ({
+  compact = false,
+  events,
+  currentDay,
+  setCurrentDay,
+  currentYear,
+  setCurrentYear,
+  currentTerm,
+  setCurrentTerm,
+  availableYears,
+  availableTerms,
+}: {
+  compact?: boolean;
+  events: CalendarListApiResponse[];
+  currentDay?: Date;
+  setCurrentDay?: React.Dispatch<SetStateAction<Date>>;
+  currentYear?: string;
+  setCurrentYear?: React.Dispatch<SetStateAction<string>>;
+  currentTerm?: string;
+  setCurrentTerm?: React.Dispatch<SetStateAction<string>>;
+  availableYears?: string[];
+  availableTerms?: { [key: string]: string[] };
+}) => {
   // const [view, setView] = useState(Views.WORK_WEEK);
+  const eventRefs = useRef<EventRefs>({});
+  const [currentView, setCurrentView] = useState<View>(Views.WORK_WEEK);
 
-  const hasWeekendEvents = events.some((event: CourseEvent) => {
-    const day = moment(event.start).day();
-    if (day === 0 || day === 6) {
-      // 0 = Sunday, 6 = Saturday
-      return true;
+  useEffect(() => {
+    if (!events || events.length <= 0) return;
+    if (
+      events.some((event: CalendarListApiResponse) => {
+        return (
+          event.calendar_weekday === "Sa" || event.calendar_weekday === "Su"
+        );
+      })
+    ) {
+      setCurrentView(Views.WEEK);
     }
-    return false;
-  });
+  }, [events]);
+
+  const CustomToolbarWrapper: React.FC<ToolbarProps> = (props) => {
+    return (
+      <CustomToolbar
+        currentDay={currentDay}
+        setCurrentDay={setCurrentDay}
+        currentYear={currentYear}
+        setCurrentYear={setCurrentYear}
+        currentTerm={currentTerm}
+        setCurrentTerm={setCurrentTerm}
+        availableYears={availableYears}
+        availableTerms={availableTerms}
+        props={props}
+      />
+    );
+  };
 
   const minTime: Date = new Date();
   minTime.setHours(8, 0, 0);
@@ -82,23 +109,27 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
   };
 
   const onMouseOverEvent = () => {
-    for (const event of events) {
-      if (!event.ref?.current?.parentElement?.parentElement) continue;
-      event.ref.current.parentElement.parentElement.style.minHeight =
-        event.ref.current.parentElement.parentElement.style.height;
-    }
+    if (!eventRefs.current) return;
+    Object.values(eventRefs.current).forEach((el) => {
+      if (!el?.parentElement?.parentElement) return;
+      el.parentElement.parentElement.style.minHeight =
+        el.parentElement.parentElement.style.height;
+    });
   };
 
-  const CustomEvent = ({ event }: { event: CourseEvent }) => {
+  const CustomEvent = ({ event }: { event: CalendarListApiResponse }) => {
     return (
       <div
         className="custom-event"
         onMouseEnter={onMouseOverEvent}
-        ref={event.ref}
+        id={event.subclass_detail.subclass_id.toString()}
+        ref={(el) =>
+          (eventRefs.current[event.subclass_detail.subclass_id] = el)
+        }
       >
-        <p className="text-xs font-bold">{event.courseCode}</p>
-        <p className="text-xs">{event.title}</p>
-        <p className="text-xs">{event.location}</p>
+        <p className="text-xs font-bold">{event.course_detail.course_code}</p>
+        <p className="text-xs">{event.course_detail.course_title}</p>
+        <p className="text-xs">{event.calendar_venue}</p>
       </div>
     );
   };
@@ -111,12 +142,15 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
       <Calendar
         localizer={localizer}
         events={events}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor="calendar_end_time"
+        endAccessor="calendar_start_time"
         style={{ height: "100%", width: "100%" }}
-        views={[hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK]}
+        // views={[hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK]}
         // header={{ left: "", center: "", right: "" }}
-        defaultView={hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK}
+        views={[Views.WORK_WEEK, Views.WEEK]}
+        view={currentView}
+        defaultView={currentView}
+        // defaultView={hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK}
         toolbar={!compact}
         defaultDate={moment().toDate()}
         min={minTime}
@@ -124,7 +158,7 @@ const CalendarCoursesView = ({ compact = false }: { compact?: boolean }) => {
         formats={formats}
         // step={60}
         components={{
-          toolbar: CustomToolbar,
+          toolbar: CustomToolbarWrapper,
           week: {
             header: CustomDayHeader,
             event: CustomEvent,

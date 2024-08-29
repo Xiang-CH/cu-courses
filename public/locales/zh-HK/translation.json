@@ -39,6 +39,10 @@
       "search": "搜尋課程",
       "placeholder": "搜尋課程名稱或課程代碼"
     },
+    "pagination": {
+      "previous": "上一頁",
+      "next": "下一頁"
+    },
     "filter": {
       "filter": "篩選",
       "faculty": "學院",
@@ -56,17 +60,17 @@
 
   "courseDetail": {
     "course-detail": "課程詳情",
-    "course-level": "課程級別",
-    "course-credit": "學分",
-    "course-grading": "評分標準",
-    "course-structure": "課程組成",
-    "course-faculty": "學院",
-    "course-department": "部門/教學單位",
+    "course_career": "課程級別",
+    "course_unit": "學分",
+    "course_grading_basis": "評分標準",
+    "course_type": "課程組成",
+    "course_faculty": "學院",
+    "course_department": "部門/教學單位",
 
     "course-info": "選課信息",
-    "course-enroll_req": "加選要求",
-    "course-drop_req": "退選要求",
-    "course-register_req": "選課要求",
+    "course_add_consent": "加選要求",
+    "course_drop_consent": "退選要求",
+    "course_requirement": "選課要求",
 
     "course-description": "課程簡述",
 
@@ -91,12 +95,13 @@
   "courseReview": {
     "course-review": "課程評價",
     "instructor-review": "教授評價",
-    "recommend-levels": ["極度保留", "保留", "推薦", "極度推薦"],
-    "workload-levels": ["非常輕", "輕", "適中", "重", "非常重"]
+    "recommend-levels": ["極度保留", "保留", "適中","推薦", "極度推薦"],
+    "workload-levels": ["非常重", "重", "適中", "輕", "非常輕"]
   },
 
   "profile": {
-    "my-reviews": "我的評價"
+    "my-reviews": "我的評價",
+    "no-reviews": "沒有評價"
   },
 
   "setting": {
@@ -107,15 +112,19 @@
   },
 
   "login": {
-        "logging-in": "登陸中"
-    },
+    "login-now": "立即登錄",
+    "logging-in": "登陸中",
+    "success": "登錄成功"
+  },
 
-    "errors": {
-        "error": "錯誤",
-        "404": "未找到頁面",
-        "404-description": "抱歉，妳訪問的頁面不存在",
-        "500": "伺服器錯誤",
-        "unknown": "未知錯誤",
-        "back-to-home": "返回首頁"
-    }
+  "errors": {
+    "error": "錯誤",
+    "404": "未找到頁面",
+    "404-description": "抱歉，妳訪問的頁面不存在",
+    "500": "伺服器錯誤",
+    "unknown": "未知錯誤",
+    "back-to-home": "返回首頁",
+    "not-logged-in": "未登錄",
+    "not-logged-in-description": "請登錄後再進行操作"
+  }
 }

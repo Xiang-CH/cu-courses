@@ -62,7 +62,8 @@ function Courses() {
     <div className="flex">
       <NavBar currentPath="/courses" />
       <ScrollArea className="w-full h-screen text-left">
-        <div className="w-full h-full py-9 pl-10 text-left pr-20 ">
+        <div id="topOfPage"></div>
+        <div className="w-full h-full mt-9 pl-10 text-left pr-20 ">
           <div className="flex items-center mb-4">
             <Label className="text-3xl font-black text-secondary">
               {t("courses.search.search")}

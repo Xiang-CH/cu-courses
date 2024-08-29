@@ -13,19 +13,13 @@ import Calendar from "@/components/calendar/calendar";
 import CourseSearch from "@/components/courseSearch/courseSearch.tsx";
 import CourseList from "@/components/courseList/courseList.tsx";
 import CalendarCoursesView from "@/components/calendarCoursesView/calendarCoursesView.tsx";
+import { useEffect, useState } from "react";
+import { request } from "@/lib/api.ts";
+import { CalendarListApiResponse } from "@/lib/types";
 
 interface Announcement {
   title: string;
   date: string;
-}
-
-interface Course {
-  courseCode: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  type: string;
-  location: string;
 }
 
 const icon_size = "1.5em";
@@ -138,14 +132,19 @@ function CurrWeekCard({
   );
 }
 
-function TodayCourses({ today_courses }: { today_courses: Course[] }) {
+function TodayCourses({
+  today_courses,
+}: {
+  today_courses: CalendarListApiResponse[];
+}) {
   // const cur_date = new Date();
+  const { t } = useTranslation();
   return (
     <Card className="flex lg:h-full lg:flex-col w-full p-2 text-parimary-forground bg-primary text-center relative items-start pt-6 pb-4">
       <div className="w-2/5 lg:w-full flex items-start pt-1">
         <Calendar showTool={false} selectable={false} />
       </div>
-      <CourseList today_courses={today_courses} />
+      <CourseList courses={today_courses} label={t("home.today-course")} />
     </Card>
   );
 }
@@ -236,7 +235,7 @@ function CalendarCoursesViewCard() {
           {t("home.calendar")}
         </CardTitle>
         <div className="w-full px-1.5 text-left my-2">
-          <CalendarCoursesView compact />
+          <CalendarCoursesView compact events={[]} />
         </div>
       </CardContent>
     </Card>
@@ -247,40 +246,9 @@ function Home() {
   // const { t } = useTranslation();
   const week = "11";
   const total_weeks = "12";
-  const today_course = [
-    {
-      courseCode: "COMP 1234",
-      description: "Fundamental concepts of Mathematics",
-      startTime: "10:00",
-      endTime: "12:00",
-      type: "Lecture",
-      location: "Online",
-    },
-    {
-      courseCode: "COMP 7282",
-      description: "Machine Learning",
-      startTime: "10:00",
-      endTime: "12:00",
-      type: "Lecture",
-      location: "MWT 101",
-    },
-    {
-      courseCode: "COMP 7282",
-      description: "Machine Learning",
-      startTime: "10:00",
-      endTime: "12:00",
-      type: "Lecture",
-      location: "MWT 101",
-    },
-    {
-      courseCode: "COMP 7282",
-      description: "Machine Learning",
-      startTime: "10:00",
-      endTime: "12:00",
-      type: "Lecture",
-      location: "MWT 101",
-    },
-  ];
+  const [today_course, setTodayCourse] = useState<CalendarListApiResponse[]>(
+    [],
+  );
   const announcements = [
     {
       title: "申请转主修",
@@ -291,6 +259,17 @@ function Home() {
       date: "2021-11-11",
     },
   ];
+  const logged_in = !!localStorage.getItem("token");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    request("/calendar/today.php", { token: token }).then((res) => {
+      if (res.code === 200) {
+        setTodayCourse(res.calendar_list);
+      }
+    });
+  }, []);
 
   return (
     <div className="flex max-w-full w-full">
@@ -309,7 +288,7 @@ function Home() {
               <TodayCourses today_courses={today_course} />
             </div>
             <CourseSearchCard />
-            <CalendarCoursesViewCard />
+            {logged_in && <CalendarCoursesViewCard />}
           </div>
           {/* 右边 */}
           <div className="w-[35%] max-w-96 hidden lg:block relative">

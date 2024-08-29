@@ -5,6 +5,7 @@
  */
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo-dark.png";
 
 export default function Component() {
@@ -24,14 +25,14 @@ export default function Component() {
       <p className="mb-8 text-lg text-gray-500">
         {t("errors.404-description")}
       </p>
-      <a href="/" className="mb-16 inline-block text-sm">
+      <Link to="/" className="mb-16 inline-block text-sm">
         <Button
           variant="default"
           className="bg-secondary text-secondary-foreground hover:shadow-lg"
         >
           {t("errors.back-to-home")}
         </Button>
-      </a>
+      </Link>
     </div>
   );
 }

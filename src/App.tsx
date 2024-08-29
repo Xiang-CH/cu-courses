@@ -2,7 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Toaster } from "@/components/ui/sonner.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Home from "./pages/home/home.tsx";
 import Courses from "./pages/courses/courses.tsx";
@@ -36,10 +36,17 @@ const router = createBrowserRouter([
   {
     path: "/courses/:courseId",
     element: <CourseDetail />,
-    loader: async (param) => {
-      return await request("/course/detail", {
-        course_id: param.toString(),
+    loader: async ({ params }) => {
+      console.log(params);
+      if (!params.courseId) {
+        return null;
+      }
+      const res = await request("/course/detail.php", {
+        course_code: params.courseId,
+        token: localStorage.getItem("token") || "",
       });
+      console.log(res);
+      return res;
     },
   },
   {
@@ -66,12 +73,25 @@ const router = createBrowserRouter([
 
 function App() {
   const { t } = useTranslation();
+  const [isDark, setIsDark] = useState(false);
   useEffect(() => {
     document.title = t("app-name");
+    setIsDark(false);
   }, []);
 
+  // if (window.matchMedia) {
+  //   let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  //   colorSchemeQuery.addEventListener("change", (e) => {
+  //     if (e.matches) {
+  //       setIsDark(true);
+  //     } else {
+  //       setIsDark(false);
+  //     }
+  //   });
+  // }
+
   return (
-    <div className="w-screen">
+    <div className={`w-screen ${isDark && "dark"}`}>
       <RouterProvider router={router} />
       <Toaster />
     </div>
