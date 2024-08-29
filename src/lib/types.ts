@@ -17,7 +17,10 @@ interface Subclass {
   subclass_term: string;
   subclass_type: string;
   subclass_year: string;
-  subclass_instructor?: string;
+  subclass_instructor_list: {
+    instructor_name: string;
+    instructor_id: number;
+  }[];
   timeslot_list: Timeslot[];
 }
 

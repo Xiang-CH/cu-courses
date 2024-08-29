@@ -96,20 +96,21 @@ function CourseDetail() {
   }
 
   return (
-    <div className="flex w-screen relative">
+    <div className="flex-col md:flex-row flex w-screen relative">
       <NavBar currentPath="/courses" />
-      <ScrollArea className="w-full h-screen text-left gap-1">
-        <div className="px-8 py-4 w-full">
+      <ScrollArea className="w-full h-[calc(100vh-60px)] md:h-screen text-left gap-1">
+        <div className="px-2 md:px-8 md:py-4 w-full">
           {/*Header*/}
-          <div className="flex my-4">
+          <div className="flex my-4 items-start">
             <Button
+              className="py-1 px-1 h-fit md:p-1.5"
               onClick={() => {
                 window.history.length > 1 ? navigate(-1) : navigate("/courses");
               }}
             >
-              <ChevronLeftIcon className="w-7 h-7" />
+              <ChevronLeftIcon className="w-5 h-5  md:w-7 md:h-7" />
             </Button>
-            <Label className="text-3xl font-black text-secondary">
+            <Label className="text-xl md:text-3xl font-black text-secondary">
               {courseId} - {course.course_title}
             </Label>
           </div>
@@ -213,7 +214,7 @@ function CourseDetail() {
 
             {/*Classes*/}
             <Card className="pt-3 pb-0 px-4 bg-primary w-max-full">
-              <Label className="text-md font-black text-secondary">
+              <Label className="text-md  text-secondary">
                 {t("courseDetail.course-classes")}
               </Label>
               <div className="flex">
@@ -274,7 +275,16 @@ function CourseDetail() {
                               />
                               <SubclassInfoBadge
                                 title={t("courseDetail.class-instructor")}
-                                content={item.subclass_instructor || "N/A"}
+                                content={
+                                  (item.subclass_instructor_list[0] &&
+                                    item.subclass_instructor_list
+                                      .map(
+                                        (instructor) =>
+                                          instructor.instructor_name,
+                                      )
+                                      .join("/")) ||
+                                  "N/A"
+                                }
                               />
                               {item.timeslot_list.map((value, index) => {
                                 return (

@@ -66,34 +66,13 @@ const CustomToolbar = ({
   //   props.onView(view);
   // };
 
-  return (
-    <div className="flex justify-between mb-4">
-      <button
-        onClick={goToToday}
-        className="rounded-3xl shadow px-4 py-2 text-sm"
-      >
-        {t("myCalendar.today")}
-      </button>
-
-      <div className="flex items-center">
-        <button
-          className="rounded-full shadow px-4 pt-2 mr-4 pb-2.5"
-          onClick={goToBack}
-        >
-          &lt;
-        </button>
-        <Label className="font-bold text-sm">{props.label}</Label>
-        <button
-          className="rounded-full shadow px-4 py-2 ml-4 pb-2.5"
-          onClick={goToNext}
-        >
-          &gt;
-        </button>
-      </div>
-
+  const YearTermSelector = () => {
+    return (
       <Popover>
-        <PopoverTrigger className="px-3 shadow border-0 focus:ring-0 rounded-3xl text-sm flex items-center">
-          {currentYear + " | " + currentTerm}
+        <PopoverTrigger className="px-4 shadow border-0 focus:ring-0 rounded-3xl text-sm flex items-center py-1">
+          <span className="hidden md:block">
+            {currentYear + " | " + currentTerm}
+          </span>
           <span className="text-xl mb-[0.2em] ml-1">&#9662;</span>
         </PopoverTrigger>
         <PopoverContent className="mr-4">
@@ -154,7 +133,43 @@ const CustomToolbar = ({
           </div>
         </PopoverContent>
       </Popover>
-    </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="w-full bottom-0 md:relative flex justify-between md:mb-4 px-2 bg-primary h-fit z-20 py-3 md:py-0">
+        <button
+          onClick={goToToday}
+          className="rounded-3xl shadow px-4 py-2 text-sm"
+        >
+          {t("myCalendar.today")}
+        </button>
+
+        <div className="flex items-center">
+          <button
+            className="rounded-full shadow px-4 pt-2 mr-4 pb-2.5"
+            onClick={goToBack}
+          >
+            &lt;
+          </button>
+          <Label className="font-bold text-sm">{props.label}</Label>
+          {/*<div className="md:hidden">*/}
+          {/*  <YearTermSelector />*/}
+          {/*</div>*/}
+          <button
+            className="rounded-full shadow px-4 py-2 ml-4 pb-2.5"
+            onClick={goToNext}
+          >
+            &gt;
+          </button>
+        </div>
+
+        <div className="">
+          <YearTermSelector />
+        </div>
+      </div>
+    </>
   );
 };
 

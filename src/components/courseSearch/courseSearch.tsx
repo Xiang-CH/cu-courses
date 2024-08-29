@@ -68,6 +68,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
     console.log("CourseSearch useEffect", page, query);
     getCourses(page, query || "").then((res) => {
       setCourseList(res);
+      console.log(document.getElementById("topOfPage"));
       document
         .getElementById("topOfPage")
         ?.scrollIntoView({ behavior: "smooth" });
@@ -139,13 +140,13 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
   return (
     <div className="flex w-full overflow-hidden">
-      <div className="flex-col w-full min-w-[550px] px-3 pt-2">
+      <div className="flex-col w-full md:min-w-[500px] md:px-3 md:pt-2">
         <form onSubmit={handleSearch}>
           <Input
             ref={inputRef}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
-            className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "py-6 px-6"}`}
+            className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "focus-visible:ring-0 md:focus-visible:ring-2 py-2 px-5 md:py-6 md:px-6"}`}
           />
         </form>
         <div
@@ -166,10 +167,10 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
                     >
                       <div className="flex flex-col my-1 w-full hover:cursor-pointer">
-                        <Label className="font-bold leading-7 hover:cursor-pointer">
+                        <Label className="font-bold leading-7 hover:cursor-pointer text-sm md:text-md">
                           {course.course_code} - {course.course_title}
                         </Label>
-                        <Label className="text-sm text-muted-foreground hover:cursor-pointer">
+                        <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
                           {course.course_department}
                         </Label>
                       </div>

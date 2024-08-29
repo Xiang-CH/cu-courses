@@ -15,8 +15,8 @@ i18n
   // 配置参数的文档: https://www.i18next.com/overview/configuration-options
   .init({
     debug: false,
-    supportedLngs: ["en", "zh-CH", "zh-HK"],
-    fallbackLng: "zh-CH",
+    supportedLngs: ["en", "zh-CN", "zh-HK"],
+    fallbackLng: "zh-CN",
     interpolation: {
       escapeValue: false,
     },

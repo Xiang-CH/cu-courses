@@ -66,8 +66,11 @@ function CourseList({
   return (
     <div className="flex-1 w-full">
       <CardContent className="px-4 pb-0 mb-2">
-        <CardTitle className="text-xl text-left mt-2 mb-2">{label}</CardTitle>
+        <CardTitle className="text-xl text-left md:mt-2 mb-2">
+          {label}
+        </CardTitle>
         <div className="w-full px-0 flex-col flex gap-4">
+          {courses.length === 0 && <div className="text-sm">暂无课程</div>}
           {courses.map((course, index) => {
             return <CourseItem {...course} key={index} />;
           })}

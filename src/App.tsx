@@ -91,7 +91,9 @@ function App() {
   // }
 
   return (
-    <div className={`w-screen ${isDark && "dark"}`}>
+    <div
+      className={`w-screen h-screen ${isDark && "dark"} relative overflow-x-hidden`}
+    >
       <RouterProvider router={router} />
       <Toaster />
     </div>

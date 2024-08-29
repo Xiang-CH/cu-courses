@@ -10,6 +10,7 @@ import { CalendarListApiResponse } from "@/lib/types.ts";
 import moment from "moment";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 
 const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
@@ -126,36 +127,37 @@ function MyCalendar() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex-col md:flex-row flex min-w-fit w-full relative overflow-x-auto">
       <NavBar currentPath="/calendar" />
+      <ScrollArea className="h-[calc(100vh-60px)] md:h-screen w-full">
+        <div className="flex w-full h-screen md:pl-6 text-left items-center relative">
+          {!token && <NotLoggedIn />}
+          <div className="w-2/5 pt-8 self-start hidden lg:block">
+            <Calendar
+              showTool={true}
+              selectable={true}
+              currentDay={currentDay}
+              setCurrentDay={setCurrentDay}
+            />
+            <CourseList courses={todayCourses} label="课程" />
+          </div>
+          <div className="w-[4px] h-[95%] bg-secondary mx-2 hidden lg:block" />
 
-      <div className="flex w-full h-screen pl-6 text-left items-center relative">
-        {!token && <NotLoggedIn />}
-        <div className="w-2/5 pt-8 self-start hidden lg:block">
-          <Calendar
-            showTool={true}
-            selectable={true}
-            currentDay={currentDay}
-            setCurrentDay={setCurrentDay}
-          />
-          <CourseList courses={todayCourses} label="课程" />
+          <div className="w-full px-2 md:px-6 h-full pb-6 pt-1 md:pt-6 self-start">
+            <CalendarCoursesView
+              events={myCourses}
+              currentDay={currentDay}
+              setCurrentDay={setCurrentDay}
+              currentYear={currentYear}
+              setCurrentYear={setCurrentYear}
+              currentTerm={currentTerm}
+              setCurrentTerm={setCurrentTerm}
+              availableYears={availableYears}
+              availableTerms={availableTerms}
+            />
+          </div>
         </div>
-        <div className="w-[4px] h-[95%] bg-secondary mx-2 hidden lg:block" />
-
-        <div className="w-full px-6 h-full pb-6 pt-6 self-start">
-          <CalendarCoursesView
-            events={myCourses}
-            currentDay={currentDay}
-            setCurrentDay={setCurrentDay}
-            currentYear={currentYear}
-            setCurrentYear={setCurrentYear}
-            currentTerm={currentTerm}
-            setCurrentTerm={setCurrentTerm}
-            availableYears={availableYears}
-            availableTerms={availableTerms}
-          />
-        </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

@@ -59,13 +59,16 @@ function Courses() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex">
+    <div className="flex-col md:flex-row flex min-w-fit w-full relative">
       <NavBar currentPath="/courses" />
-      <ScrollArea className="w-full h-screen text-left">
-        <div id="topOfPage"></div>
-        <div className="w-full h-full mt-9 pl-10 text-left pr-20 ">
+      <ScrollArea
+        className="max-w-screen md:w-full text-left md:h-screen h-[calc(100vh-60px)]"
+        scrollHideDelay={0.1}
+      >
+        <div id="topOfPage" className="translate-y-[-40px]"></div>
+        <div className="w-full h-full mt-4 md:mt-9 pl-4 md:pl-10 text-left md:pr-20 pr-4">
           <div className="flex items-center mb-4">
-            <Label className="text-3xl font-black text-secondary">
+            <Label className="text-2xl md:text-3xl font-black text-secondary">
               {t("courses.search.search")}
             </Label>
             <Separator

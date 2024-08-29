@@ -23,23 +23,23 @@ function Profile() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex-col md:flex-row flex min-w-fit w-full relative h-screen">
       <NavBar currentPath="/profile" />
       <ScrollArea className="w-full h-screen text-left relative">
         {!token && <NotLoggedIn />}
-        <div className="flex flex-col w-full h-full py-9 px-9 text-left">
-          <Label className="text-3xl font-black text-secondary">
+        <div className="flex flex-col w-full h-full py-4 md:py-9 px-4 md:px-9 text-left">
+          <Label className="text-2xl md:text-3xl font-black text-secondary">
             {t("profile.my-reviews")}
           </Label>
-          <div className="flex flex-col w-full mt-6 gap-4">
+          <div className="flex flex-col w-full mt-2 md:mt-6 gap-4">
             {reviewList.length > 0 ? (
               reviewList.map((review, index) => {
                 return (
                   <div className="flex flex-col" key={index}>
-                    <label className="text-lg font-bold text-secondary mb-2">
+                    <label className="text-md md:text-lg font-bold text-secondary mb-2">
                       {review.course_code} - {review.course_title}
                     </label>
-                    <div className="ml-2">
+                    <div className="md:ml-2">
                       <CourseReviewCard course_data={review} />
                     </div>
                   </div>

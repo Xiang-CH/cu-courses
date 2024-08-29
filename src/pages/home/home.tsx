@@ -113,7 +113,7 @@ function CurrWeekCard({
   return (
     <>
       {/* Calendar week 卡片 */}
-      <Card className="w-full px-1 py-2 shrink text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center">
+      <Card className="w-3/5 md:w-full px-1 py-2 shrink text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center">
         <CardHeader className="mb-7">
           <CardTitle>WEEK</CardTitle>
         </CardHeader>
@@ -140,8 +140,8 @@ function TodayCourses({
   // const cur_date = new Date();
   const { t } = useTranslation();
   return (
-    <Card className="flex lg:h-full lg:flex-col w-full p-2 text-parimary-forground bg-primary text-center relative items-start pt-6 pb-4">
-      <div className="w-2/5 lg:w-full flex items-start pt-1">
+    <Card className="flex lg:h-full flex-col md:flex-row lg:flex-col w-full md:p-2 text-parimary-forground bg-primary text-center relative items-start pb-2 pt-3 md:pt-6 md:pb-4">
+      <div className="hidden w-2/5 lg:w-full md:flex items-start md:pt-1">
         <Calendar showTool={false} selectable={false} />
       </div>
       <CourseList courses={today_courses} label={t("home.today-course")} />
@@ -152,7 +152,7 @@ function TodayCourses({
 function CourseSearchCard() {
   const { t } = useTranslation();
   return (
-    <Card className="flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3">
+    <Card className="hidden md:flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3">
       <CardContent className="px-4 w-full pb-1">
         <CardTitle className="text-xl text-left px-2">
           {t("home.course")}
@@ -201,8 +201,8 @@ function AnnouncementCard({
 }) {
   const { t } = useTranslation();
   return (
-    <Card className="w-full py-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
-      <CardHeader className="px-1">
+    <Card className="w-full md:py-1 text-parimary-forground bg-primary md:text-center relative flex-col content-start h-full">
+      <CardHeader className="px-5 flex py-3 md:py-6">
         <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
         <CardDescription>{t("home.announcement-description")}</CardDescription>
       </CardHeader>
@@ -229,7 +229,7 @@ function AnnouncementCard({
 function CalendarCoursesViewCard() {
   const { t } = useTranslation();
   return (
-    <Card className="flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-2">
+    <Card className="hidden md:flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-2">
       <CardContent className="px-6 w-full pb-1">
         <CardTitle className="text-xl text-left px-2">
           {t("home.calendar")}
@@ -272,23 +272,28 @@ function Home() {
   }, []);
 
   return (
-    <div className="flex max-w-full w-full">
+    <div className="flex-col md:flex-row flex min-w-fit w-full relative h-screen">
       <NavBar currentPath="/home" />
 
-      <ScrollArea className="w-full h-screen text-left px-5 relative">
+      <ScrollArea className="w-full h-full text-left px-5 relative">
         <div className="w-full text-left flex justify-around space-x-6 my-2 px-2 py-4 relative h-full">
           {/* 左边 */}
           <div className="flex flex-col lg:w-[65%] flex-grow w-full space-y-4">
             <div className="flex w-full space-x-4 relative h-fit">
               <CurrWeekCard week={week} total_weeks={total_weeks} />
               <DirectoryCard />
-              <AnnouncementCard announcements={announcements} />
+              <div className="hidden md:block w-full h-full">
+                <AnnouncementCard announcements={announcements} />
+              </div>
             </div>
             <div className="lg:hidden w-full">
               <TodayCourses today_courses={today_course} />
             </div>
             <CourseSearchCard />
             {logged_in && <CalendarCoursesViewCard />}
+            <div className="md:hidden w-full">
+              <AnnouncementCard announcements={announcements} />
+            </div>
           </div>
           {/* 右边 */}
           <div className="w-[35%] max-w-96 hidden lg:block relative">
