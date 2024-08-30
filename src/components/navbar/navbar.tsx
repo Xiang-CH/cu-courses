@@ -12,7 +12,6 @@ import logo from "@/assets/logo.png";
 import logoDark from "@/assets/logo-dark.png";
 import "./navbar.css";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator.tsx";
 
 function Icons({ iconName }: { iconName: string }) {
   const icon_size = "1.1em";
@@ -175,7 +174,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
   return (
     <>
       {/* top */}
-      <div className="fixed top-0 w-screen h-14 shadow flex items-center md:hidden z-20 bg-primary justify-between">
+      <div className="sticky top-0 w-screen h-14 shadow flex items-center md:hidden z-30 bg-primary justify-between">
         <HamburgerMenuIcon
           onClick={() => setShowMenu(!showMenu)}
           width="1.3rem"
@@ -187,8 +186,9 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
       {/* top-menu */}
       <div
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-40 bg-primary ${showMenu ? "left-0" : "left-[-170px]"
-          }`}
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-40 bg-primary ${
+          showMenu ? "left-0" : "left-[-170px]"
+        }`}
       >
         <img
           src={logoDark}
@@ -244,8 +244,9 @@ function NavBar({ currentPath }: { currentPath: string }) {
       {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-30 bg-muted opacity-80 ${showMenu ? "" : "hidden"
-          }`}
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-30 bg-muted opacity-80 ${
+          showMenu ? "" : "hidden"
+        }`}
       ></div>
 
       {/* default */}
@@ -263,7 +264,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
         </div>
 
         <NavigationMenu className="bg-secondary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start px-3 m-0 overflow-x-hidden">
-          <NavigationMenuList className="flex flex-col my-5 mx-0 lg:min-w-full lg:w-full  space-x-0">
+          <NavigationMenuList className="flex flex-col my-1 mx-0 lg:min-w-full lg:w-full  space-x-0">
             <MenuItem
               title={t("navbar.home")}
               path="/home"

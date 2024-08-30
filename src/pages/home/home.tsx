@@ -16,6 +16,7 @@ import CalendarCoursesView from "@/components/calendarCoursesView/calendarCourse
 import { useEffect, useState } from "react";
 import { request } from "@/lib/api.ts";
 import { CalendarListApiResponse } from "@/lib/types";
+import { Link } from "react-router-dom";
 
 interface Announcement {
   title: string;
@@ -26,7 +27,7 @@ const icon_size = "1.5em";
 const directory_contents = [
   {
     title: "app",
-    url: "home/apps",
+    url: "/home/apps",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +112,7 @@ function CurrWeekCard({
   total_weeks: string;
 }) {
   return (
-    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center" >
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center">
       <CardHeader className="mb-7">
         <CardTitle>WEEK</CardTitle>
       </CardHeader>
@@ -148,7 +149,10 @@ function TodayCourses({
 function CourseSearchCard() {
   const { t } = useTranslation();
   return (
-    <Card className="flex-col overflow-y-auto w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-2 md:pt-4 pb-3" id="CourseSearchCard">
+    <Card
+      className="flex-col overflow-y-auto w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-2 md:pt-4 pb-3"
+      id="CourseSearchCard"
+    >
       <CardContent className="px-1 md:px-2 w-full pb-1">
         <CardTitle className="text-xl text-left px-4 pt-2">
           {t("home.course")}
@@ -173,14 +177,16 @@ function DirectoryCard() {
         <div className="grid grid-cols-2 gap-2 md:gap-4 w-full">
           {directory_contents.map((content) => {
             return (
-              <div
-                className="flex-col items-center justify-center px-2 py-4 rounded-lg bg-muted min-w-12 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
-              >
-                <div className="w-full flex justify-center">{content.icon}</div>
-                <p className="text-secondary text-sm">
-                  {t("home.directory-" + content.title)}
-                </p>
-              </div>
+              <Link to={content.url}>
+                <div className="flex-col items-center justify-center px-2 py-4 rounded-lg bg-muted min-w-12 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out">
+                  <div className="w-full flex justify-center">
+                    {content.icon}
+                  </div>
+                  <p className="text-secondary text-sm">
+                    {t("home.directory-" + content.title)}
+                  </p>
+                </div>
+              </Link>
             );
           })}
         </div>
@@ -274,14 +280,10 @@ function Home() {
     <div className="flex-col md:flex-row flex min-w-fit w-full relative h-screen">
       <NavBar currentPath="/home" />
 
-      <div className="w-full h-full text-left px-2 md:px-5 relative">
-
-        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 py-4 relative">
-
-
+      <div className="w-full h-[calc(100vh-3.5em)] md:h-full text-left px-2 md:px-5 relative">
+        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 md:py-4 relative">
           {/* 左边 */}
-          <div className="pt-10 md:pt-0 flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
-
+          <div className="flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
             <div className="hidden md:flex w-full space-x-4 relative h-72">
               <CurrWeekCard week={week} total_weeks={total_weeks} />
               <DirectoryCard />
@@ -296,20 +298,15 @@ function Home() {
             {!logged_in && <CourseSearchCard />}
 
             {logged_in && <CalendarCoursesViewCard />}
-
           </div>
-
 
           {/* 右边 */}
           <div className="w-[35%] max-w-96 hidden lg:block relative">
             <TodayCourses today_courses={today_course} />
           </div>
-
-
         </div>
       </div>
-
-    </div >
+    </div>
   );
 }
 

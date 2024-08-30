@@ -45,7 +45,7 @@ function AppCard({ app }: { app: App }) {
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="flex w-full p-4 items-center justify-between pb-6 pt-5">
+      <div className="flex w-full p-4 items-center justify-between pb-5 pt-4">
         <a href={app.url} target="_blank" rel="noreferrer">
           <div className="flex items-center w-full transition-all">
             <img
@@ -64,9 +64,9 @@ function AppCard({ app }: { app: App }) {
           </div>
         </a>
         <a href={app.url} target="_blank" rel="noreferrer">
-          <Button className="ml-4 bg-accent hover:shadow">
-            <Link2Icon className="w-5 h-5 mr-3" />
-            <span>{t("apps.open-link")}</span>
+          <Button className="md:ml-4 bg-accent hover:shadow">
+            <Link2Icon className="w-3 h-3 md:w-5 md:h-5 md:mr-3" />
+            <span className="hidden md:block">{t("apps.open-link")}</span>
           </Button>
         </a>
       </div>
@@ -80,19 +80,19 @@ function Apps() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex max-w-full w-full">
+    <div className="flex-col md:flex-row flex max-w-full w-full">
       <NavBar currentPath="/home" />
-      <div className="w-full h-screen p-4 text-left flex flex-col">
-        <div className="flex my-4">
+      <div className="w-full h-[100vh-3.5em] md:h-screen md:p-4 text-left flex flex-col">
+        <div className="flex my-2 md:my-4">
           <Button onClick={() => navigate("/home")}>
-            <ChevronLeftIcon className="w-7 h-7" />
+            <ChevronLeftIcon className="w-5 h-5 md:w-7 md:h-7 mb-1.5 md:mb-0" />
           </Button>
-          <Label className="text-3xl font-black text-secondary">
+          <Label className="text-2xl md:text-3xl font-black text-secondary">
             {t("apps.apps")}
           </Label>
         </div>
 
-        <div className="mx-10 mt-3">
+        <div className="mx-1.5 md:mx-10 mt-1 md:mt-3">
           <Tabs defaultValue="all" className="w-full self-center">
             <TabsList className="w-full">
               <TabsTrigger value="all" className="min-w-30 w-1/4">

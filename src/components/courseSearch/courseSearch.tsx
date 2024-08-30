@@ -74,10 +74,12 @@ function CourseSearch({ compact }: { compact?: boolean }) {
         .getElementById("topOfPage")
         ?.scrollIntoView({ behavior: "smooth" });
 
-      if (compact) {
-        const card_height = document.getElementById("CourseSearchCard").offsetHeight;
-        if (window.innerWidth < 648) setCompactLimit(Math.floor((card_height - 100) / 72))
-        else setCompactLimit(Math.floor((card_height - 150) / 50))
+      const card_height =
+        document.getElementById("CourseSearchCard")?.offsetHeight;
+      if (compact && card_height) {
+        if (window.innerWidth < 648)
+          setCompactLimit(Math.floor((card_height - 100) / 72));
+        else setCompactLimit(Math.floor((card_height - 150) / 50));
       }
     });
   }, [page, query]);
@@ -146,14 +148,14 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   }
 
   return (
-    <div className="flex w-full overflow-hidden">
-      <div className="flex-col w-full mx-3">
+    <div className="flex w-full">
+      <div className="flex-col w-full md:mx-3">
         <form onSubmit={handleSearch}>
           <Input
             ref={inputRef}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
-            className={`w-full my-2 bg-muted border-none transition duration-200 ease-in-out ${compact ? "py-2 px-3" : "py-2 px-5 md:py-6 md:px-6"}`}
+            className={`w-[96%] mx-[2%] my-1 bg-muted border-none transition duration-200 ease-in-out ${compact ? "py-2 px-3" : "py-2 px-5 md:py-6 md:px-6"}`}
           />
         </form>
         <div
@@ -171,17 +173,23 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       to={{
                         pathname: `/courses/${course.course_code}`,
                       }}
-                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "pl-3" : "px-4"}`}
+                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "pl-3" : "md:px-4"}`}
                     >
-                      <div className="flex flex-col my-1 w-full hover:cursor-pointer">
-                        <Label className="font-bold leading-7 hover:cursor-pointer text-sm md:text-md">
+                      <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
+                        <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
                           {course.course_code} - {course.course_title}
+                        </Label>
+                        <Label className="md:hidden font-bold hover:cursor-pointer text-[0.85em] md:text-md">
+                          {course.course_code}
+                        </Label>
+                        <Label className="md:hidden font-bold hover:cursor-pointer text-xs md:text-md">
+                          {course.course_title}
                         </Label>
                         <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
                           {course.course_department}
                         </Label>
                       </div>
-                      <div className="flex items-center justify-start w-12">
+                      <div className="flex items-center justify-start w-fit mr-2">
                         <CommentIcon />
                         <Label className="text-xs ml-1 hover:cursor-pointer">
                           {course.course_review_count || 0}
@@ -201,7 +209,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
         </div>
 
         {!compact && (
-          <Pagination className="my-6">
+          <Pagination className="hidden md:block my-6">
             <PaginationContent>
               {!(page === 1) && (
                 <PaginationItem>
@@ -221,23 +229,8 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
               {page < 3
                 ? Array.from(
-                  { length: Math.min(5, totalPage) },
-                  (_, i) => i + 1,
-                ).map((i) => (
-                  <PaginationItem key={i}>
-                    <PaginationLink
-                      onClick={() => setPage(i)}
-                      to="#"
-                      isActive={page === i}
-                    >
-                      {i}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))
-                : page < totalPage - 3
-                  ? Array.from(
                     { length: Math.min(5, totalPage) },
-                    (_, i) => i + page - 2,
+                    (_, i) => i + 1,
                   ).map((i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
@@ -249,20 +242,35 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       </PaginationLink>
                     </PaginationItem>
                   ))
+                : page < totalPage - 3
+                  ? Array.from(
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + page - 2,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))
                   : Array.from(
-                    { length: Math.min(5, totalPage) },
-                    (_, i) => i + totalPage - 4,
-                  ).map((i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        onClick={() => setPage(i)}
-                        to="#"
-                        isActive={page === i}
-                      >
-                        {i}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + totalPage - 4,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
 
               {page < totalPage - 3 && totalPage > 5 && (
                 <PaginationItem>
