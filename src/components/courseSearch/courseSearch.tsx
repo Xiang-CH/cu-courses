@@ -63,6 +63,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   const [page, setPage] = useState(Number(searchParam.get("p")) || 1);
   const [totalPage, setTotalPage] = useState(1);
   const [courseList, setCourseList] = useState<Course[]>([]);
+  const [compactLimit, setCompactLimit] = useState(20);
 
   useEffect(() => {
     console.log("CourseSearch useEffect", page, query);
@@ -72,6 +73,12 @@ function CourseSearch({ compact }: { compact?: boolean }) {
       document
         .getElementById("topOfPage")
         ?.scrollIntoView({ behavior: "smooth" });
+
+      if (compact) {
+        const card_height = document.getElementById("CourseSearchCard").offsetHeight;
+        if (window.innerWidth < 648) setCompactLimit(Math.floor((card_height - 100) / 72))
+        else setCompactLimit(Math.floor((card_height - 150) / 50))
+      }
     });
   }, [page, query]);
 
@@ -140,13 +147,13 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
   return (
     <div className="flex w-full overflow-hidden">
-      <div className="flex-col w-full md:min-w-[500px] md:px-3 md:pt-2">
+      <div className="flex-col w-full mx-3">
         <form onSubmit={handleSearch}>
           <Input
             ref={inputRef}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
-            className={`w-full bg-muted border-none ${compact ? "py-2 px-3 focus:ring-0" : "focus-visible:ring-0 md:focus-visible:ring-2 py-2 px-5 md:py-6 md:px-6"}`}
+            className={`w-full my-2 bg-muted border-none transition duration-200 ease-in-out ${compact ? "py-2 px-3" : "py-2 px-5 md:py-6 md:px-6"}`}
           />
         </form>
         <div
@@ -154,7 +161,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
         >
           {courseList.length > 0 ? (
             courseList.map((course, index) => {
-              if (compact && index >= 2) {
+              if (compact && index >= compactLimit) {
                 return;
               } else {
                 return (
@@ -164,7 +171,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       to={{
                         pathname: `/courses/${course.course_code}`,
                       }}
-                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer rounded-sm ${compact ? "pl-3" : "px-4"}`}
+                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "pl-3" : "px-4"}`}
                     >
                       <div className="flex flex-col my-1 w-full hover:cursor-pointer">
                         <Label className="font-bold leading-7 hover:cursor-pointer text-sm md:text-md">
@@ -214,8 +221,23 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
               {page < 3
                 ? Array.from(
+                  { length: Math.min(5, totalPage) },
+                  (_, i) => i + 1,
+                ).map((i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      onClick={() => setPage(i)}
+                      to="#"
+                      isActive={page === i}
+                    >
+                      {i}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))
+                : page < totalPage - 3
+                  ? Array.from(
                     { length: Math.min(5, totalPage) },
-                    (_, i) => i + 1,
+                    (_, i) => i + page - 2,
                   ).map((i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
@@ -227,35 +249,20 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       </PaginationLink>
                     </PaginationItem>
                   ))
-                : page < totalPage - 3
-                  ? Array.from(
-                      { length: Math.min(5, totalPage) },
-                      (_, i) => i + page - 2,
-                    ).map((i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          onClick={() => setPage(i)}
-                          to="#"
-                          isActive={page === i}
-                        >
-                          {i}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))
                   : Array.from(
-                      { length: Math.min(5, totalPage) },
-                      (_, i) => i + totalPage - 4,
-                    ).map((i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          onClick={() => setPage(i)}
-                          to="#"
-                          isActive={page === i}
-                        >
-                          {i}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
+                    { length: Math.min(5, totalPage) },
+                    (_, i) => i + totalPage - 4,
+                  ).map((i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        onClick={() => setPage(i)}
+                        to="#"
+                        isActive={page === i}
+                      >
+                        {i}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
 
               {page < totalPage - 3 && totalPage > 5 && (
                 <PaginationItem>

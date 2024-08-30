@@ -25,6 +25,8 @@
     --accent: #F9DD47;
     --accent-foreground: #222D43;
 
+    --text-grey: #bbbbbb;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
@@ -54,6 +56,8 @@
 
     --muted: #F5F7FA;
     --muted-foreground: 215.4 16.3% 46.9%;
+
+    --text-grey: #bbbbbb;
 
     --accent: #F9DD47;
     --accent-foreground: #222D43;

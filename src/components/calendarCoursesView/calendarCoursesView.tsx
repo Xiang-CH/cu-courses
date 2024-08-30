@@ -75,10 +75,12 @@ const CalendarCoursesView = ({
   };
 
   const minTime: Date = new Date();
-  minTime.setHours(8, 0, 0);
+  if (compact) minTime.setHours(9, 0, 0);
+  else minTime.setHours(8, 0, 0);
 
   const maxTime: Date = new Date();
-  maxTime.setHours(20, 0, 0);
+  if (compact) maxTime.setHours(17, 0, 0);
+  else maxTime.setHours(20, 0, 0);
 
   const formats: Formats = {
     timeGutterFormat: "HH",

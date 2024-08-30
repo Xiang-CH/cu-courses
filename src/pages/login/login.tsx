@@ -37,8 +37,10 @@ function Login() {
         localStorage.setItem("token", res.token);
         toast(t("login.success"));
         const redirect = searchParams.get("callback");
-        if (redirect) navigate(redirect);
-        navigate("/");
+        setTimeout(() => {
+          if (redirect) navigate(redirect);
+          navigate("/");
+        }, 1000);
       } else {
         console.log("Token获取失败", res.msg);
         toast(t("errors.error"), {

@@ -141,7 +141,8 @@ function MyCalendar() {
             />
             <CourseList courses={todayCourses} label="课程" />
           </div>
-          <div className="w-[4px] h-[95%] bg-secondary mx-2 hidden lg:block" />
+
+          <div className="w-[3px] h-[95%] bg-muted mx-2 hidden lg:block" />
 
           <div className="w-full px-2 md:px-6 h-full pb-6 pt-1 md:pt-6 self-start">
             <CalendarCoursesView

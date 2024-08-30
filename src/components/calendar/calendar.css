@@ -109,7 +109,6 @@
   flex-wrap: wrap;
   justify-content: start;
   box-sizing: border-box;
-  border: 1px solid #D5D4DF;
 }
 
 .week {
@@ -121,9 +120,9 @@
 .calendar-day {
   width: 14.5%;
   aspect-ratio: 1/1;
-  /*height: 3.4rem;*/
+  border-radius: 1rem;
   position: relative;
-  border: 1px solid #D5D4DF;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,10 +132,12 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
+
+  transition: background-color 0.2s ease-in-out;
 }
 
 .calendar-day:hover {
-  background-color: rgba(0,0,0,.10);
+  background-color: var(--card);
   cursor: pointer;
 }
 
@@ -145,34 +146,17 @@
   cursor: default;
 }
 
-.selected:hover{
-  background-color: var(--secondary);
+.not-current p {
+  color: var(--text-grey);
 }
 
-.calendar-day p {
-  color: #a6a6a6;
-}
-
-.current p {
-  color: #000000;
-}
-
-.today p{
-  color: var(--muted-foreground);
-
-}
 
 .today{
   background-color: var(--muted);
 }
 
-.selected p{
-  color: var(--background);
-
-}
-
 .selected{
-  background-color: var(--secondary);
+  background-color: var(--accent) !important;
 }
 
 

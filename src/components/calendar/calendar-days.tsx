@@ -55,7 +55,7 @@ function CalendarDays({
                   key={index}
                   className={
                     "calendar-day" +
-                    (day.currentMonth ? " current" : "") +
+                    (day.currentMonth ? "" : " not-current") +
                     (day.date.toDateString() === new Date().toDateString()
                       ? " today"
                       : "") +

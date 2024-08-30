@@ -8,8 +8,8 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Calendar from "@/components/calendar/calendar";
+// import { Calendar } from "@/components/ui/calendar"
 import CourseSearch from "@/components/courseSearch/courseSearch.tsx";
 import CourseList from "@/components/courseList/courseList.tsx";
 import CalendarCoursesView from "@/components/calendarCoursesView/calendarCoursesView.tsx";
@@ -111,24 +111,20 @@ function CurrWeekCard({
   total_weeks: string;
 }) {
   return (
-    <>
-      {/* Calendar week 卡片 */}
-      <Card className="w-3/5 md:w-full px-1 py-2 shrink text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center">
-        <CardHeader className="mb-7">
-          <CardTitle>WEEK</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="font-bold text-xl">{week}</p>
-          {/* <p className="mt-5 font-light">of {total_weeks}</p> */}
-        </CardContent>
-        <CardFooter className="mt-7">
-          <p className="font-light text-center w-full">of {total_weeks}</p>
-        </CardFooter>
-        <div className="flex justify-around w-full absolute bottom-6 left-0 px-6 h-fit">
-          <p> . . . </p>
-        </div>
-      </Card>
-    </>
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center" >
+      <CardHeader className="mb-7">
+        <CardTitle>WEEK</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="font-bold text-xl">{week}</p>
+      </CardContent>
+      <CardFooter className="mt-7">
+        <p className="font-light text-center w-full">of {total_weeks}</p>
+      </CardFooter>
+      <div className="flex justify-around w-full absolute bottom-6 left-0 px-6 h-fit">
+        <p> . . . </p>
+      </div>
+    </Card>
   );
 }
 
@@ -152,9 +148,9 @@ function TodayCourses({
 function CourseSearchCard() {
   const { t } = useTranslation();
   return (
-    <Card className="hidden md:flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3">
-      <CardContent className="px-4 w-full pb-1">
-        <CardTitle className="text-xl text-left px-2">
+    <Card className="flex-col overflow-y-auto w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-2 md:pt-4 pb-3" id="CourseSearchCard">
+      <CardContent className="px-1 md:px-2 w-full pb-1">
+        <CardTitle className="text-xl text-left px-4 pt-2">
           {t("home.course")}
         </CardTitle>
         <div className="w-full px-0 text-left">
@@ -168,24 +164,23 @@ function CourseSearchCard() {
 function DirectoryCard() {
   const { t } = useTranslation();
   return (
-    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start ml-0">
       <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.directory")}</CardTitle>
         <CardDescription>{t("home.directory-description")}</CardDescription>
       </CardHeader>
-      <CardContent className="flex justify-center px-4">
-        <div className="grid grid-cols-2 gap-4 w-full">
+      <CardContent className="flex justify-center px-2 md:px-4">
+        <div className="grid grid-cols-2 gap-2 md:gap-4 w-full">
           {directory_contents.map((content) => {
             return (
-              <a
-                className="flex-col items-center justify-center px-2 py-3 rounded-lg bg-accent min-w-12 hover:shadow"
-                href={content.url}
+              <div
+                className="flex-col items-center justify-center px-2 py-4 rounded-lg bg-muted min-w-12 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
               >
                 <div className="w-full flex justify-center">{content.icon}</div>
                 <p className="text-secondary text-sm">
                   {t("home.directory-" + content.title)}
                 </p>
-              </a>
+              </div>
             );
           })}
         </div>
@@ -201,15 +196,15 @@ function AnnouncementCard({
 }) {
   const { t } = useTranslation();
   return (
-    <Card className="w-full md:py-1 text-parimary-forground bg-primary md:text-center relative flex-col content-start h-full">
-      <CardHeader className="px-5 flex py-3 md:py-6">
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
+      <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
         <CardDescription>{t("home.announcement-description")}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col justify-center space-y-1.5 text-left px-4">
+      <CardContent className="flex flex-col justify-center space-y-2.5 text-left px-2 md:px-4">
         {announcements.map((announcement) => {
           return (
-            <Card className="w-full h-fit border-none bg-card shadow-none p-1">
+            <Card className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out">
               <CardContent className="flex flex-col justify-between p-0 mx-2">
                 <p className="text-sm font-bold leading-tight">
                   {announcement.title}
@@ -229,8 +224,8 @@ function AnnouncementCard({
 function CalendarCoursesViewCard() {
   const { t } = useTranslation();
   return (
-    <Card className="hidden md:flex flex-col w-full p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-2">
-      <CardContent className="px-6 w-full pb-1">
+    <Card className="flex-col overflow-y-auto w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3">
+      <CardContent className="px-2 md:px-4 w-full pb-1">
         <CardTitle className="text-xl text-left px-2">
           {t("home.calendar")}
         </CardTitle>
@@ -258,6 +253,10 @@ function Home() {
       title: "申请转主修",
       date: "2021-11-11",
     },
+    {
+      title: "申请转主修",
+      date: "2021-11-11",
+    },
   ];
   const logged_in = !!localStorage.getItem("token");
 
@@ -275,33 +274,42 @@ function Home() {
     <div className="flex-col md:flex-row flex min-w-fit w-full relative h-screen">
       <NavBar currentPath="/home" />
 
-      <ScrollArea className="w-full h-full text-left px-5 relative">
-        <div className="w-full text-left flex justify-around space-x-6 my-2 px-2 py-4 relative h-full">
+      <div className="w-full h-full text-left px-2 md:px-5 relative">
+
+        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 py-4 relative">
+
+
           {/* 左边 */}
-          <div className="flex flex-col lg:w-[65%] flex-grow w-full space-y-4">
-            <div className="flex w-full space-x-4 relative h-fit">
+          <div className="pt-10 md:pt-0 flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
+
+            <div className="hidden md:flex w-full space-x-4 relative h-72">
               <CurrWeekCard week={week} total_weeks={total_weeks} />
               <DirectoryCard />
-              <div className="hidden md:block w-full h-full">
-                <AnnouncementCard announcements={announcements} />
-              </div>
-            </div>
-            <div className="lg:hidden w-full">
-              <TodayCourses today_courses={today_course} />
-            </div>
-            <CourseSearchCard />
-            {logged_in && <CalendarCoursesViewCard />}
-            <div className="md:hidden w-full">
               <AnnouncementCard announcements={announcements} />
             </div>
+
+            <div className="flex md:hidden w-full space-x-4 relative h-72">
+              <DirectoryCard />
+              <AnnouncementCard announcements={announcements} />
+            </div>
+
+            {!logged_in && <CourseSearchCard />}
+
+            {logged_in && <CalendarCoursesViewCard />}
+
           </div>
+
+
           {/* 右边 */}
           <div className="w-[35%] max-w-96 hidden lg:block relative">
             <TodayCourses today_courses={today_course} />
           </div>
+
+
         </div>
-      </ScrollArea>
-    </div>
+      </div>
+
+    </div >
   );
 }
 

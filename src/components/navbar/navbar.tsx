@@ -174,6 +174,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
   return (
     <>
+      {/* top */}
       <div className="fixed top-0 w-screen h-14 shadow flex items-center md:hidden z-20 bg-primary justify-between">
         <HamburgerMenuIcon
           onClick={() => setShowMenu(!showMenu)}
@@ -183,20 +184,18 @@ function NavBar({ currentPath }: { currentPath: string }) {
         />
         <img src={logoDark} alt="logo" className="h-8 w-8 rounded-full mx-4" />
       </div>
-      <div className="h-14 md:hidden"></div>
 
+      {/* top-menu */}
       <div
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-40 bg-primary ${
-          showMenu ? "left-0" : "left-[-170px]"
-        }`}
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-40 bg-primary ${showMenu ? "left-0" : "left-[-170px]"
+          }`}
       >
         <img
           src={logoDark}
           alt="logo"
           className="mx-5 mt-4 h-10 w-10 rounded-full"
         />
-        <Separator className="bg-secondary my-4" />
-        <NavigationMenu className="bg-primary flex flex-col w-full min-w-full items-start h-fit justify-start px-3 mt-0">
+        <NavigationMenu className="bg-primary flex flex-col w-full min-w-full items-start h-fit justify-start px-3 mt-8">
           <NavigationMenuList className="flex flex-col my-0 mx-0 min-w-full w-full space-x-0">
             <MenuItem
               title={t("navbar.home")}
@@ -242,13 +241,14 @@ function NavBar({ currentPath }: { currentPath: string }) {
         </NavigationMenu>
       </div>
 
+      {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-30 bg-muted opacity-80 ${
-          showMenu ? "" : "hidden"
-        }`}
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-30 bg-muted opacity-80 ${showMenu ? "" : "hidden"
+          }`}
       ></div>
 
+      {/* default */}
       <div
         className={
           "hidden md:flex flex-col h-screen lg:min-w-44 lg:w-[18%] lg:max-w-48 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center lg:items-start transition-[width,margin,padding,transform,min-width] overflow-hidden"
@@ -261,8 +261,6 @@ function NavBar({ currentPath }: { currentPath: string }) {
             className="lg:ml-6 h-11 w-11 rounded-full bg-secondary"
           />
         </div>
-
-        <div className="h-px bg-background w-full" />
 
         <NavigationMenu className="bg-secondary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start px-3 m-0 overflow-x-hidden">
           <NavigationMenuList className="flex flex-col my-5 mx-0 lg:min-w-full lg:w-full  space-x-0">
@@ -300,7 +298,6 @@ function NavBar({ currentPath }: { currentPath: string }) {
         </NavigationMenu>
 
         <div className="w-full flex flex-col items-center lg:items-start overflow-hidden">
-          <div className="h-px bg-background w-full" />
           <div
             className={`my-4 w-full flex ${loggedIn ? "justify-start" : "justify-center"}`}
           >
