@@ -14,12 +14,20 @@ function Profile() {
   const [reviewList, setReviewList] = useState<Review[]>([]);
 
   useEffect(() => {
-    request("/review/my.php", { token: token || "" }).then((res) => {
-      if (res.code == 200) {
-        console.log(res.review_list);
-        setReviewList(res.review_list);
-      }
-    });
+    if (sessionStorage.getItem("my_reviews")) {
+      const review_list = JSON.parse(
+        sessionStorage.getItem("my_reviews") || "[]",
+      );
+      setReviewList(review_list);
+    } else {
+      request("/review/my.php", { token: token || "" }).then((res) => {
+        if (res.code == 200) {
+          console.log(res.review_list);
+          sessionStorage.setItem("my_reviews", JSON.stringify(res.review_list));
+          setReviewList(res.review_list);
+        }
+      });
+    }
   }, []);
 
   return (

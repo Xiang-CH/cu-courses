@@ -186,7 +186,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
       {/* top-menu */}
       <div
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-40 bg-primary ${
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-[100] bg-primary ${
           showMenu ? "left-0" : "left-[-170px]"
         }`}
       >
@@ -244,7 +244,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
       {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-30 bg-muted opacity-80 ${
+        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
           showMenu ? "" : "hidden"
         }`}
       ></div>

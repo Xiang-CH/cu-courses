@@ -1,6 +1,7 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card.tsx";
 import { CalendarListApiResponse, CourseDetails } from "@/lib/types.ts";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function LocationIcon() {
   return (
@@ -62,6 +63,7 @@ function CourseList({
   label: string;
 }) {
   // const cur_date = new Date();
+  const { t } = useTranslation();
 
   return (
     <div className="flex-1 w-full">
@@ -70,7 +72,9 @@ function CourseList({
           {label}
         </CardTitle>
         <div className="w-full px-0 flex-col flex gap-4">
-          {courses.length === 0 && <div className="text-sm">暂无课程</div>}
+          {courses.length === 0 && (
+            <div className="mx-4 text-sm">{t("courses.no-course")}</div>
+          )}
           {courses.map((course, index) => {
             return <CourseItem {...course} key={index} />;
           })}

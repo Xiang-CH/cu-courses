@@ -3,6 +3,9 @@ import tailwindcss_animate from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 module.exports = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",

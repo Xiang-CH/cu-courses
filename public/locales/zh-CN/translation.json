@@ -38,6 +38,7 @@
   },
 
   "courses": {
+    "no-course": "暂无课程",
     "search": {
       "search": "搜索课程",
       "placeholder": "搜索课程名称或课程代码",
@@ -92,12 +93,15 @@
     "class-instructor": "讲师",
     "class-dates": "课程日期",
 
+    "class-available": "可添加",
     "add-class-to-calendar": "加入排课表",
+    "enrolled-class": "已添加",
     "remove-class-from-calendar": "移除排课表",
-    "class-clashed": "添加冲突课程",
+    "class-clashed": "课程冲突",
+    "add-clashed-class": "添加冲突课程",
 
     "add-class-success": "成功添加/移除课程",
-    "add-class-fail": "添加课程失败",
+    "add-class-fail": "添加/移除课程失败",
 
     "class-year": "学年",
     "grade": "成绩",
@@ -125,7 +129,7 @@
     "course-review": "课程评价",
     "instructor-review": "教授评价",
     "recommend-levels": ["极度保留", "保留", "适中", "推荐", "极度推荐"],
-    "workload-levels": ["非常重", "重", "适中", "轻", "非常轻"],
+    "workload-levels": ["非常重", "较重", "适中", "较轻", "非常轻"],
     "no-data": "暂无"
   },
 

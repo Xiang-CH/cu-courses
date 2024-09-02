@@ -20,7 +20,7 @@ function CoursePieChart({
   let labels;
   const chartConfig = chat_type === "wl" ? chartConfigWL : chartConfigRC;
   const noData = data.every((item) => item === 0);
-  let configKey: string[] = [];
+  let configKey: string[];
 
   const chartData = [];
   let total = 0;
@@ -68,10 +68,10 @@ function CoursePieChart({
   }
 
   return (
-    <div className="flex">
+    <div className="flex md:w-fit w-full items-center justify-between md:justify-center px-4 max-w-[26em]">
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px] h-[190px] py-0"
+        className="mx-0 aspect-square max-h-[250px] h-[190px] py-0"
       >
         <PieChart>
           <ChartTooltip
@@ -130,7 +130,7 @@ function CoursePieChart({
         </PieChart>
       </ChartContainer>
       {!noData && (
-        <div className="flex flex-col ml-5 gap-3 h-full justify-center">
+        <div className="flex flex-col gap-3 ml-1.5 mr-4 md:mr-0 h-full justify-center">
           {chartData.map((item, index) => {
             if (item.count === 0) return;
             return <LoadIndicator rate={index + 1} type={chat_type} />;

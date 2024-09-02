@@ -35,6 +35,7 @@
   },
 
   "courses": {
+    "no-course": "暫無課程",
     "search": {
       "search": "搜尋課程",
       "placeholder": "搜尋課程名稱或課程代碼"
@@ -83,20 +84,49 @@
 
     "course-classes": "課程班級",
     "class-location": "地點",
+    "class-term": "學期",
     "class-time": "時間",
     "class-instructor": "講師",
     "class-dates": "課程日期",
-    "add-course-to-calendar": "加入排課表",
+
+    "class-available": "可添加",
+    "add-class-to-calendar": "加入排課表",
+    "enrolled-class": "已添加",
+    "remove-class-from-calendar": "移除排課表",
+    "class-clashed": "課程衝突",
+    "add-clashed-class": "添加衝突課程",
+
+    "add-class-success": "添加/移除課程成功",
+    "add-class-fail": "添加/移除課程失敗",
+
+    "class-year": "學年",
+    "grade": "成績",
+    "select-grade": "選擇成績",
+    "select-year": "選擇學年",
+    "select-term": "選擇學期",
+    "select-instructor": "選擇教授",
+    "instructor-review": "教授評價",
+    "enter-instructor-review": "輸入你對教授的評價",
+    "enter-course-review": "輸入你對課程的評價",
+    "submit-review": "提交評價",
 
     "course-review": "課程評價",
-    "add-course-review": "評價"
+    "add-course-review": "評價",
+    "course-review-card-title": "課程評價",
+
+    "warning": "請填寫必填項目",
+    "submit-review-success": "評價成功",
+    "submit-review-fail": "評價失敗",
+    "login-to-review": "請登錄後評價",
+    "login-to-add-calendar": "請登錄後添加課程"
+
   },
 
   "courseReview": {
     "course-review": "課程評價",
     "instructor-review": "教授評價",
     "recommend-levels": ["極度保留", "保留", "適中","推薦", "極度推薦"],
-    "workload-levels": ["非常重", "重", "適中", "輕", "非常輕"]
+    "workload-levels": ["非常重", "較重", "適中", "較輕", "非常輕"]
   },
 
   "profile": {

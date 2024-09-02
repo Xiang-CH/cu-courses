@@ -1,0 +1,11 @@
+.addClassButton .onHover {
+    display: none;
+}
+
+.addClassButton:hover .noHover {
+    display: none;
+}
+
+.addClassButton:hover .onHover {
+    display: inline;
+}

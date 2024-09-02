@@ -83,7 +83,23 @@ interface CalendarListApiResponse {
   subclass_detail: Subclass;
 }
 
+interface App {
+  no?: number;
+  name?: string;
+  name_en: string;
+  "name_zh-CN": string;
+  "name_zh-HK": string;
+  description?: string;
+  description_en: string;
+  "description_zh-CN": string;
+  "description_zh-HK": string;
+  icon?: string;
+  url: string;
+  category?: "campus" | "study" | "job";
+}
+
 export type {
+  App,
   Review,
   CourseDetails,
   CourseDetailApiResponse,

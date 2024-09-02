@@ -149,17 +149,17 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
   return (
     <div className="flex w-full">
-      <div className="flex-col w-full md:mx-3">
+      <div className="flex-col w-full md:mx-3 relative">
         <form onSubmit={handleSearch}>
           <Input
             ref={inputRef}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
-            className={`w-[96%] mx-[2%] my-1 bg-muted border-none transition duration-200 ease-in-out ${compact ? "py-2 px-3" : "py-2 px-5 md:py-6 md:px-6"}`}
+            className={`bg-muted border-none transition duration-200 ease-in-out ${compact ? "w-[98%] mx-[1%] py-3" : "w-[96%] mx-[2%] py-2.5 md:py-5 md:px-6"}`}
           />
         </form>
         <div
-          className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"}`}
+          className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"} min-h-[80%]`}
         >
           {courseList.length > 0 ? (
             courseList.map((course, index) => {
@@ -173,7 +173,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       to={{
                         pathname: `/courses/${course.course_code}`,
                       }}
-                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "pl-3" : "md:px-4"}`}
+                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
                     >
                       <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
                         <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
@@ -189,7 +189,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                           {course.course_department}
                         </Label>
                       </div>
-                      <div className="flex items-center justify-start w-fit mr-2">
+                      <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
                         <CommentIcon />
                         <Label className="text-xs ml-1 hover:cursor-pointer">
                           {course.course_review_count || 0}
@@ -209,7 +209,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
         </div>
 
         {!compact && (
-          <Pagination className="hidden md:block my-6">
+          <Pagination className="hidden md:block my-6 ml-6">
             <PaginationContent>
               {!(page === 1) && (
                 <PaginationItem>

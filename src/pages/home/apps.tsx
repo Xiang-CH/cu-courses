@@ -7,39 +7,8 @@ import { Link2Icon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-interface App {
-  name: string;
-  description: string;
-  icon?: string;
-  url: string;
-  category?: "campus" | "study" | "job";
-}
-
-const apps: App[] = [
-  {
-    name: "CUHK CUSIS",
-    description:
-      "The Chinese University of Hong Kong Student Information System",
-    icon: "https://sts.cuhk.edu.hk/adfs/portal/images/cuhkitsc_logo.jpg",
-    url: "https://cusis.cuhk.edu.hk/",
-    category: "campus",
-  },
-  {
-    name: "CUHK Library",
-    description: "The Chinese University of Hong Kong Library",
-    icon: "https://www.lib.cuhk.edu.hk/wp-content/themes/twentytwenty/assets/images/cu_logo_desktop_2.png",
-    url: "https://www.lib.cuhk.edu.hk/",
-    category: "study",
-  },
-  {
-    name: "CUHK Job Board",
-    description: "The Chinese University of Hong Kong Job Board",
-    icon: "https://www.career.cuhk.edu.hk/wp-content/uploads/2020/07/cropped-LOGO-1-32x32.png",
-    url: "https://www.career.cuhk.edu.hk/",
-    category: "job",
-  },
-];
+import { App } from "@/lib/types";
+import getAppList from "@/pages/home/appList.ts";
 
 function AppCard({ app }: { app: App }) {
   const { t } = useTranslation();
@@ -51,9 +20,9 @@ function AppCard({ app }: { app: App }) {
             <img
               src={app.icon}
               alt={app.name}
-              className="h-16 bg-center w-0 mx-0 lg:mx-4 lg:w-72 transition-all"
+              className="hidden md:block h-16 bg-center w-0 mx-0 lg:mx-4 lg:w-72 transition-all aspect-[6/1] min-w-[300px]"
             />
-            <div className="flex flex-col items-start justify-center">
+            <div className="flex flex-col items-start justify-center mx-1">
               <span className="text-lg font-bold text-secondary">
                 {app.name}
               </span>
@@ -64,9 +33,9 @@ function AppCard({ app }: { app: App }) {
           </div>
         </a>
         <a href={app.url} target="_blank" rel="noreferrer">
-          <Button className="md:ml-4 bg-accent hover:shadow">
-            <Link2Icon className="w-3 h-3 md:w-5 md:h-5 md:mr-3" />
-            <span className="hidden md:block">{t("apps.open-link")}</span>
+          <Button className="md:ml-2 bg-accent hover:shadow">
+            <Link2Icon className="w-3 h-3 lg:w-5 lg:h-5 lg:mr-3" />
+            <span className="hidden lg:block">{t("apps.open-link")}</span>
           </Button>
         </a>
       </div>
@@ -76,8 +45,9 @@ function AppCard({ app }: { app: App }) {
 }
 
 function Apps() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const apps: App[] = getAppList(i18n.language);
 
   return (
     <div className="flex-col md:flex-row flex max-w-full w-full">
@@ -109,7 +79,7 @@ function Apps() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all">
-              <ScrollArea className="w-full h-full">
+              <ScrollArea className="w-full h-[80vh]">
                 <div className="flex flex-col">
                   {apps.map((app) => (
                     <AppCard app={app} />
@@ -118,7 +88,7 @@ function Apps() {
               </ScrollArea>
             </TabsContent>
             <TabsContent value="campus">
-              <ScrollArea className="w-full h-full">
+              <ScrollArea className="w-full h-[80vh]">
                 <div className="flex flex-col">
                   {apps
                     .filter((app) => app.category === "campus")
@@ -129,7 +99,7 @@ function Apps() {
               </ScrollArea>
             </TabsContent>
             <TabsContent value="study">
-              <ScrollArea className="w-full h-full">
+              <ScrollArea className="w-full h-[80vh]">
                 <div className="flex flex-col">
                   {apps
                     .filter((app) => app.category === "study")
@@ -140,7 +110,7 @@ function Apps() {
               </ScrollArea>
             </TabsContent>
             <TabsContent value="job">
-              <ScrollArea className="w-full h-full">
+              <ScrollArea className="w-full h-[80vh]">
                 <div className="flex flex-wrap">
                   {apps
                     .filter((app) => app.category === "job")

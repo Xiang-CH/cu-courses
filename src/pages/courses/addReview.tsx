@@ -87,7 +87,8 @@ function AddReview({ courseId }: { courseId: string }) {
     }).then((res) => {
       if (res.code === 200) {
         toast.success(t("courseDetail.submit-review-success"));
-        navigate(-1);
+        sessionStorage.removeItem("my_reviews");
+        navigate(0);
       } else {
         toast.error(t("courseDetail.submit-review-fail") + ": " + res.msg);
       }

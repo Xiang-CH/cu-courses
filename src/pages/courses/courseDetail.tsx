@@ -16,6 +16,8 @@ import AddReview from "@/pages/courses/addReview.tsx";
 import { toast } from "sonner";
 import { request } from "@/lib/api.ts";
 
+import "./courseDetail.css";
+
 function SubclassInfoBadge({
   title,
   content,
@@ -84,6 +86,7 @@ function CourseDetail() {
           if (res.code == 200) {
             newCourse.subclass_list = res.course_detail.subclass_list;
             sessionStorage.removeItem("calendar_events");
+            sessionStorage.removeItem("today_courses");
             setCourse(newCourse);
           } else {
             toast.error(t("courseDetail.add-class-fail") + ": " + res.msg);
@@ -98,7 +101,10 @@ function CourseDetail() {
   return (
     <div className="flex-col md:flex-row flex w-screen relative">
       <NavBar currentPath="/courses" />
-      <ScrollArea className="w-full h-[calc(100vh-60px)] md:h-screen text-left gap-1">
+      <ScrollArea
+        className="w-full h-[calc(100vh-60px)] md:h-screen text-left gap-1"
+        scrollHideDelay={100}
+      >
         <div className="px-2 md:px-8 md:py-4 w-full">
           {/*Header*/}
           <div className="flex my-4 items-start">
@@ -121,7 +127,7 @@ function CourseDetail() {
             <div className="flex gap-3 h-fit lg:flex-row flex-col">
               {/*Left Side*/}
               <Card className="w-full lg:w-1/3 flex lg:flex-col py-3 px-4 bg-primary h-min-full gap-2 lg:gap-0">
-                <div className="w-1/3 lg:w-full">
+                <div className="w-1/2 md:w-1/3 lg:w-full">
                   <Label className="text-md">
                     {t("courseDetail.course-detail")}
                   </Label>
@@ -137,7 +143,7 @@ function CourseDetail() {
                 </div>
                 <Separator className="mt-1 mb-2 bg-muted hidden lg:block"></Separator>
 
-                <div className="w-1/3 lg:w-full">
+                <div className="w-1/2 md:w-1/3 lg:w-full">
                   <Label className="text-md">
                     {t("courseDetail.course-info")}
                   </Label>
@@ -152,7 +158,18 @@ function CourseDetail() {
                   </div>
                 </div>
                 <Separator className="mt-1 mb-2 bg-muted hidden lg:block"></Separator>
-                <div className="w-1/3 lg:w-full">
+                <div className="hidden md:block w-1/3 lg:w-full">
+                  <Label className="text-md">
+                    {t("courseDetail.course-description")}
+                  </Label>
+                  <div className="text-xs py-1">
+                    {course.course_description}
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="md:hidden py-3 px-4 bg-primary h-min-full">
+                <div className="md:block w-full">
                   <Label className="text-md">
                     {t("courseDetail.course-description")}
                   </Label>
@@ -165,9 +182,9 @@ function CourseDetail() {
               {/*Right Side*/}
               <div className="flex flex-col w-full lg:w-2/3 gap-3 h-min-full">
                 {/*Course Chart*/}
-                <Card className="w-full flex py-3 px-4 bg-primary h-fit justify-between">
-                  <div className="flex flex-col items-center w-1/2">
-                    <Label className="text-md">
+                <Card className="flex-col md:flex-row w-full flex py-3 px-4 bg-primary h-fit justify-between">
+                  <div className="flex flex-col items-center w-full md:w-1/2">
+                    <Label className="text-md self-start">
                       {t("courseDetail.course-workload")}
                     </Label>
                     <CoursePieChart
@@ -175,7 +192,7 @@ function CourseDetail() {
                       chat_type="wl"
                     />
                   </div>
-                  <div className="flex flex-col items-center w-1/2">
+                  <div className="hidden md:flex flex-col items-center w-1/2">
                     <Label className="text-md">
                       {t("courseDetail.course-recommendation")}
                     </Label>
@@ -185,8 +202,20 @@ function CourseDetail() {
                     />
                   </div>
                 </Card>
+                {/*Course split to 2 card on small screen*/}
+                <Card className="md:hidden md:flex-row w-full flex py-3 px-4 bg-primary h-fit justify-between">
+                  <div className="flex flex-col items-center w-full">
+                    <Label className="text-md self-start">
+                      {t("courseDetail.course-recommendation")}
+                    </Label>
+                    <CoursePieChart
+                      data={course.course_recommend_level_list}
+                      chat_type="rc"
+                    />
+                  </div>
+                </Card>
                 {/*Course Readings*/}
-                <Card className="w-full flex py-3 px-4 bg-primary justify-between h-full gap-2 overflow-hidden">
+                <Card className="hidden md:flex w-full py-3 px-4 bg-primary justify-between h-full gap-2 overflow-hidden">
                   <div className="flex flex-col items-center h-full w-1/2">
                     <Label className="text-md mb-2">
                       {t("courseDetail.course-must_reads")}
@@ -236,9 +265,12 @@ function CourseDetail() {
                                 <Button
                                   onClick={addClassToCalendar}
                                   id={item.subclass_id.toString()}
-                                  className="bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow"
+                                  className="bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
                                 >
-                                  <span>
+                                  <span className="noHover">
+                                    {t("courseDetail.class-available")}
+                                  </span>
+                                  <span className="onHover">
                                     {t("courseDetail.add-class-to-calendar")}
                                   </span>
                                 </Button>
@@ -248,9 +280,12 @@ function CourseDetail() {
                                 <Button
                                   onClick={addClassToCalendar}
                                   id={item.subclass_id.toString()}
-                                  className="bg-gray-300 py-1 px-2 h-fit text-xs font-normal hover:shadow"
+                                  className="bg-gray-300 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
                                 >
-                                  <span>
+                                  <span className="noHover">
+                                    {t("courseDetail.enrolled-class")}
+                                  </span>
+                                  <span className="onHover">
                                     {t(
                                       "courseDetail.remove-class-from-calendar",
                                     )}
@@ -262,9 +297,14 @@ function CourseDetail() {
                                 <Button
                                   onClick={addClassToCalendar}
                                   id={item.subclass_id.toString()}
-                                  className="bg-red-500 py-1 px-2 h-fit text-xs font-normal hover:shadow"
+                                  className="bg-red-400 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
                                 >
-                                  <span>{t("courseDetail.class-clashed")}</span>
+                                  <span className="noHover">
+                                    {t("courseDetail.class-clashed")}
+                                  </span>
+                                  <span className="onHover">
+                                    {t("courseDetail.add-clashed-class")}
+                                  </span>
                                 </Button>
                               )}
                             </div>

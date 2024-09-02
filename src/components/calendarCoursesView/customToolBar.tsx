@@ -73,7 +73,7 @@ const CustomToolbar = ({
           <span className="hidden md:block">
             {currentYear + " | " + currentTerm}
           </span>
-          <span className="text-xl mb-[0.2em] ml-1">&#9662;</span>
+          <span className="text-xl mb-[0.2em] md:ml-1">&#9662;</span>
         </PopoverTrigger>
         <PopoverContent className="mr-4">
           <div className="flex flex-col">

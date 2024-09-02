@@ -114,7 +114,7 @@ function CurrWeekCard({
   return (
     <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start items-center justify-around justify-items-center">
       <CardHeader className="mb-7">
-        <CardTitle>WEEK</CardTitle>
+        <CardTitle>Week</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="font-bold text-xl">{week}</p>
@@ -154,10 +154,10 @@ function CourseSearchCard() {
       id="CourseSearchCard"
     >
       <CardContent className="px-1 md:px-2 w-full pb-1">
-        <CardTitle className="text-xl text-left px-4 pt-2">
+        <CardTitle className="text-xl text-left px-4 pt-2 mb-1">
           {t("home.course")}
         </CardTitle>
-        <div className="w-full px-0 text-left">
+        <div className="w-full px-1 text-left">
           <CourseSearch compact={true} />
         </div>
       </CardContent>
@@ -177,7 +177,10 @@ function DirectoryCard() {
         <div className="grid grid-cols-2 gap-2 md:gap-4 w-full">
           {directory_contents.map((content) => {
             return (
-              <Link to={content.url}>
+              <Link
+                to={content.url}
+                target={content.url.startsWith("http") ? "_blank" : ""}
+              >
                 <div className="flex-col items-center justify-center px-2 py-4 rounded-lg bg-muted min-w-12 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out">
                   <div className="w-full flex justify-center">
                     {content.icon}
@@ -269,11 +272,19 @@ function Home() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    request("/calendar/today.php", { token: token }).then((res) => {
-      if (res.code === 200) {
-        setTodayCourse(res.calendar_list);
-      }
-    });
+    if (sessionStorage.getItem("today_courses")) {
+      setTodayCourse(JSON.parse(sessionStorage.getItem("today_courses")!));
+    } else {
+      request("/calendar/today.php", { token: token }).then((res) => {
+        if (res.code === 200) {
+          sessionStorage.setItem(
+            "today_courses",
+            JSON.stringify(res.calendar_list),
+          );
+          setTodayCourse(res.calendar_list);
+        }
+      });
+    }
   }, []);
 
   return (
@@ -281,7 +292,7 @@ function Home() {
       <NavBar currentPath="/home" />
 
       <div className="w-full h-[calc(100vh-3.5em)] md:h-full text-left px-2 md:px-5 relative">
-        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 md:py-4 relative">
+        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 pb-4 md:py-4 relative">
           {/* 左边 */}
           <div className="flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
             <div className="hidden md:flex w-full space-x-4 relative h-72">

@@ -15,7 +15,7 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
   return (
     <Card className="w-full h-fit border-none bg-card shadow-none p-1 py-2.5 relative">
       <CardContent className="flex justify-between p-0 mx-3">
-        <div className="flex flex-col w-3/4">
+        <div className="flex flex-col w-3/4 pb-3 md:pb-0">
           <CardTitle className="text-sm text-secondary">
             {course_data.review_term}, Professor {course_data.review_instructor}
           </CardTitle>
@@ -33,12 +33,13 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
           </CardDescription>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col absolute right-4 bottom-3 p-0 m-0">
+      <CardFooter className="flex-row flex md:flex-col absolute right-4 bottom-3 p-0 m-0">
         <LoadIndicator rate={course_data.review_workload_level} type="wl" />
+        <div className="md:hidden w-3" />
         <LoadIndicator rate={course_data.review_recommend_level} type="rc" />
-        <CardDescription className="text-xs text-muted-foreground ml-3">
+        <div className="text-xs text-muted-foreground ml-3 block min-w-fit">
           {moment.unix(course_data.review_create_time).format("DD-MM-YYYY")}
-        </CardDescription>
+        </div>
       </CardFooter>
     </Card>
   );

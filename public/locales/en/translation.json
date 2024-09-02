@@ -35,6 +35,7 @@
   },
 
   "courses": {
+    "no-course": "No Courses",
     "search": {
       "search": "Search Courses",
       "placeholder": "Search by course name or code"
@@ -83,13 +84,41 @@
 
     "course-classes": "Course Schedule",
     "class-location": "Location",
+    "class-term": "Term",
     "class-time": "Time",
     "class-instructor": "Instructor",
     "class-dates": "Dates",
-    "add-course-to-calendar": "Add to Calendar",
 
-    "course-review": "Course Evaluation",
-    "add-course-review": "Evaluate"
+    "class-available": "Available",
+    "add-class-to-calendar": "Add Class",
+    "enrolled-class": "Enrolled",
+    "remove-class-from-calendar": "Remove Class",
+    "class-clashed": "Clashed",
+    "add-clashed-class": "Add Clashed",
+
+    "add-class-success": "Successfully added or removed class",
+    "add-class-fail": "Failed to add or remove class",
+
+    "class-year": "Year",
+    "grade": "Grade",
+    "select-grade": "Select Grade",
+    "select-year": "Select Year",
+    "select-term": "Select Term",
+    "select-instructor": "Select Instructor",
+    "instructor-review": "Instructor Review",
+    "enter-instructor-review": "Enter your review for the instructor",
+    "enter-course-review": "Enter your review for the course",
+    "submit-review": "Submit Review",
+
+    "course-review": "Course Review",
+    "add-course-review": "Review",
+    "course-review-card-title": "Course Review",
+
+    "warning": "Please fill in the required fields",
+    "submit-review-success": "Successfully submitted review",
+    "submit-review-fail": "Failed to submit review",
+    "login-to-review": "Please login to review",
+    "login-to-add-calendar": "Please login to add class to calendar"
   },
 
   "courseReview": {
