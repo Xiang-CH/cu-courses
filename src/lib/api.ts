@@ -36,7 +36,7 @@ async function request(location: string, params: params) {
 async function getCalendar(calendar_year: string, calendar_term: string) {
   try {
     const res = await request("/calendar/get.php", {
-      token: localStorage.get("token") || "",
+      token: localStorage.getItem("token") || "",
       calendar_year: calendar_year,
       calendar_term: calendar_term,
     });
@@ -58,7 +58,7 @@ async function getCalendar(calendar_year: string, calendar_term: string) {
 async function getAvailable(): Promise<AvailableCalendar> {
   try {
     const res = await request("/calendar/available.php", {
-      token: localStorage.get("token") || "",
+      token: localStorage.getItem("token") || "",
     });
     if (res.code == 200) {
       return res.calendar_available;
@@ -67,7 +67,8 @@ async function getAvailable(): Promise<AvailableCalendar> {
       description: res.msg,
     });
     return {};
-  } catch {
+  } catch (error) {
+    console.log(error);
     toast(i18n.t("errors.error"), {
       description: i18n.t("errors.network-error"),
     });
