@@ -16,6 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 function getClosestYear(availableYears: string[]): string {
+  if (availableYears.length === 0) return "";
   const currentYear = new Date().getFullYear();
   const closestYear = availableYears
     .map((year) => parseInt(year.split("-")[0], 10)) // Extract the starting year
@@ -66,6 +67,7 @@ function MyCalendar() {
       // fetch my courses
       getAvailable().then((calendar_available: AvailableCalendar) => {
         setAvailability(calendar_available);
+        if (!calendar_available) return;
 
         const availableYearsTemp: string[] = [];
         Object.keys(calendar_available).forEach((key) => {
@@ -89,7 +91,14 @@ function MyCalendar() {
   }, []);
 
   useEffect(() => {
-    if (!availability || !currentYear || !currentTerm) return;
+    if (
+      !availability ||
+      !currentYear ||
+      !currentTerm ||
+      !myCourses ||
+      !currentDay
+    )
+      return;
     const day = weekday[currentDay.getDay()];
     const today_course = myCourses.filter(
       (course: CalendarListApiResponse) => course.calendar_weekday == day,
