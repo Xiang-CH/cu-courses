@@ -30,8 +30,8 @@ function getClosestYear(availableYears: string[]): string {
 }
 
 function getCurrentTerm(terms: TermInfo): string {
+  if (terms === undefined) return "";
   const currentDate = new Date();
-
   for (const term of Object.keys(terms)) {
     const termStartDate = new Date(terms[term].start_date);
     const termEndDate = new Date(terms[term].end_date);
@@ -67,12 +67,12 @@ function MyCalendar() {
       // fetch my courses
       getAvailable().then((calendar_available: AvailableCalendar) => {
         setAvailability(calendar_available);
-        if (!calendar_available) return;
 
         const availableYearsTemp: string[] = [];
         Object.keys(calendar_available).forEach((key) => {
           availableYearsTemp.push(key);
         });
+        if (availableYearsTemp.length === 0) return;
         const currentYear = getClosestYear(availableYearsTemp);
         setCurrentYear(currentYear);
         const currentTerm = getCurrentTerm(calendar_available[currentYear]);
