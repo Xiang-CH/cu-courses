@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AvailableCalendar } from "@/lib/types.ts";
 
 const CustomToolbar = ({
   currentDay,
@@ -23,8 +24,7 @@ const CustomToolbar = ({
   setCurrentYear,
   currentTerm,
   setCurrentTerm,
-  availableYears,
-  availableTerms,
+  availability,
 }: {
   currentDay?: Date;
   setCurrentDay?: React.Dispatch<SetStateAction<Date>>;
@@ -33,8 +33,7 @@ const CustomToolbar = ({
   setCurrentYear?: React.Dispatch<SetStateAction<string>>;
   currentTerm?: string;
   setCurrentTerm?: React.Dispatch<SetStateAction<string>>;
-  availableYears?: string[];
-  availableTerms?: { [key: string]: string[] };
+  availability?: AvailableCalendar;
 }) => {
   const { t } = useTranslation();
 
@@ -85,12 +84,12 @@ const CustomToolbar = ({
                 <SelectValue placeholder={t("myCalendar.select-year")} />
               </SelectTrigger>
               <SelectContent className="hover:bg-muted">
-                {availableYears &&
-                  availableYears.length > 0 &&
-                  availableYears.map((year, index) => {
+                {availability &&
+                  Object.keys(availability).length > 0 &&
+                  Object.keys(availability).map((year) => {
                     return (
                       <SelectItem
-                        key={"year_" + index}
+                        key={"year_" + year}
                         value={year}
                         onSelect={() => {
                           if (setCurrentYear) setCurrentYear(year);
@@ -107,14 +106,14 @@ const CustomToolbar = ({
               {t("myCalendar.term")}
             </Label>
             <div className="flex flex-wrap mx-1 w-80 my-2">
-              {availableTerms &&
+              {availability &&
                 currentYear &&
-                availableTerms[currentYear] &&
-                availableTerms[currentYear].length > 0 &&
-                availableTerms[currentYear].map((term, index) => {
+                availability[currentYear] &&
+                Object.keys(availability[currentYear]).length > 0 &&
+                Object.keys(availability[currentYear]).map((term) => {
                   return (
                     <button
-                      key={"term_" + index}
+                      key={"term_" + term}
                       onClick={() => {
                         if (setCurrentTerm) setCurrentTerm(term);
                       }}

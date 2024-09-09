@@ -1,4 +1,3 @@
-import NavBar from "@/components/navbar/navbar";
 import { useTranslation } from "react-i18next";
 import {
   Card,
@@ -15,13 +14,10 @@ import CourseList from "@/components/courseList/courseList.tsx";
 import CalendarCoursesView from "@/components/calendarCoursesView/calendarCoursesView.tsx";
 import { useEffect, useState } from "react";
 import { request } from "@/lib/api.ts";
-import { CalendarListApiResponse } from "@/lib/types";
+import { CalendarListApiResponse, Announcement } from "@/lib/types";
 import { Link } from "react-router-dom";
-
-interface Announcement {
-  title: string;
-  date: string;
-}
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import moment from "moment";
 
 const icon_size = "1.5em";
 const directory_contents = [
@@ -137,11 +133,20 @@ function TodayCourses({
   // const cur_date = new Date();
   const { t } = useTranslation();
   return (
-    <Card className="flex lg:h-full flex-col md:flex-row lg:flex-col w-full md:p-2 text-parimary-forground bg-primary text-center relative items-start pb-2 pt-3 md:pt-6 md:pb-4">
-      <div className="hidden w-2/5 lg:w-full md:flex items-start md:pt-1">
-        <Calendar showTool={false} selectable={false} />
-      </div>
-      <CourseList courses={today_courses} label={t("home.today-course")} />
+    <Card className="flex lg:h-full flex-col md:flex-row lg:flex-col w-full md:p-2 text-parimary-forground bg-primary text-center relative items-start pb-2 pt-3 md:pt-6 md:pb-4 overflow-y-auto flex-grow">
+      <ScrollArea className="max-h-full h-full w-full">
+        <CardContent className="p-0">
+          <div className="hidden w-2/5 lg:w-full md:flex items-start md:pt-1">
+            <Calendar showTool={false} selectable={false} />
+          </div>
+          <div className="h-full flex-grow max-h-full">
+            <CourseList
+              courses={today_courses}
+              label={t("home.today-course")}
+            />
+          </div>
+        </CardContent>
+      </ScrollArea>
     </Card>
   );
 }
@@ -178,6 +183,7 @@ function DirectoryCard() {
           {directory_contents.map((content) => {
             return (
               <Link
+                key={content.url}
                 to={content.url}
                 target={content.url.startsWith("http") ? "_blank" : ""}
               >
@@ -204,27 +210,37 @@ function AnnouncementCard({
   announcements: Announcement[];
 }) {
   const { t } = useTranslation();
+
   return (
     <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
       <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
         <CardDescription>{t("home.announcement-description")}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col justify-center space-y-2.5 text-left px-2 md:px-4">
-        {announcements.map((announcement) => {
-          return (
-            <Card className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out">
-              <CardContent className="flex flex-col justify-between p-0 mx-2">
-                <p className="text-sm font-bold leading-tight">
-                  {announcement.title}
-                </p>
-                <p className="text-xs font-light leading-tight">
-                  {announcement.date}
-                </p>
-              </CardContent>
-            </Card>
-          );
-        })}
+      <CardContent className="text-left w-full relative px-0">
+        <ScrollArea className="h-44 px-2 md:px-4" scrollHideDelay={10}>
+          <div className="w-full h-fit flex flex-col justify-center space-y-2.5">
+            {announcements.map((announcement, index) => {
+              return (
+                <Card
+                  key={index}
+                  className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
+                >
+                  <CardContent className="flex flex-col justify-between p-0 mx-2">
+                    <p className="text-sm font-bold leading-tight">
+                      {announcement.announcement_title}
+                    </p>
+                    <p className="text-xs font-light leading-tight">
+                      {moment
+                        .unix(announcement.announcement_create_time)
+                        .format("yyyy-MM-DD")}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );
@@ -233,15 +249,18 @@ function AnnouncementCard({
 function CalendarCoursesViewCard() {
   const { t } = useTranslation();
   return (
-    <Card className="flex-col overflow-y-auto w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3">
-      <CardContent className="px-2 md:px-4 w-full pb-1">
-        <CardTitle className="text-xl text-left px-2">
-          {t("home.calendar")}
-        </CardTitle>
-        <div className="w-full px-1.5 text-left my-2">
-          <CalendarCoursesView compact events={[]} />
-        </div>
-      </CardContent>
+    <Card className="flex-col overflow-y-hidden w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3 min-h-40">
+      <ScrollArea className="max-h-full h-full">
+        <CardContent className="px-2 md:px-4 w-full pb-1">
+          <CardTitle className="text-xl text-left px-2">
+            {t("home.calendar")}
+          </CardTitle>
+
+          <div className="w-full px-1.5 text-left my-2">
+            <CalendarCoursesView compact events={[]} />
+          </div>
+        </CardContent>
+      </ScrollArea>
     </Card>
   );
 }
@@ -253,69 +272,47 @@ function Home() {
   const [today_course, setTodayCourse] = useState<CalendarListApiResponse[]>(
     [],
   );
-  const announcements = [
-    {
-      title: "申请转主修",
-      date: "2021-11-11",
-    },
-    {
-      title: "申请转主修",
-      date: "2021-11-11",
-    },
-    {
-      title: "申请转主修",
-      date: "2021-11-11",
-    },
-  ];
-  const logged_in = !!localStorage.getItem("token");
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const token = localStorage.getItem("token") || "";
+  const logged_in = !!token;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) return;
-    if (sessionStorage.getItem("today_courses")) {
-      setTodayCourse(JSON.parse(sessionStorage.getItem("today_courses")!));
-    } else {
-      request("/calendar/today.php", { token: token }).then((res) => {
-        if (res.code === 200) {
-          sessionStorage.setItem(
-            "today_courses",
-            JSON.stringify(res.calendar_list),
-          );
-          setTodayCourse(res.calendar_list);
-        }
-      });
-    }
+    request("/calendar/today.php", { token: token }).then((res) => {
+      if (res.code === 200) {
+        setTodayCourse(res.calendar_list);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    request("/info/announcement.php", { token: token }).then((res) => {
+      if (res.code === 200) {
+        setAnnouncements(res.announcement_list);
+      }
+    });
   }, []);
 
   return (
-    <div className="flex-col md:flex-row flex min-w-fit w-full relative h-screen">
-      <NavBar currentPath="/home" />
-
-      <div className="w-full h-[calc(100vh-3.5em)] md:h-full text-left px-2 md:px-5 relative">
-        <div className="w-full h-full text-left flex justify-around space-x-6 px-2 pb-4 md:py-4 relative">
-          {/* 左边 */}
-          <div className="flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
-            <div className="hidden md:flex w-full space-x-4 relative h-72">
-              <CurrWeekCard week={week} total_weeks={total_weeks} />
-              <DirectoryCard />
-              <AnnouncementCard announcements={announcements} />
-            </div>
-
-            <div className="flex md:hidden w-full space-x-4 relative h-72">
-              <DirectoryCard />
-              <AnnouncementCard announcements={announcements} />
-            </div>
-
-            {!logged_in && <CourseSearchCard />}
-
-            {logged_in && <CalendarCoursesViewCard />}
-          </div>
-
-          {/* 右边 */}
-          <div className="w-[35%] max-w-96 hidden lg:block relative">
-            <TodayCourses today_courses={today_course} />
-          </div>
+    <div className="w-full h-full text-left flex justify-around space-x-6 px-2 md:px-6 pb-4 md:py-4 relative overflow-y-hidden max-w-[1300px]">
+      {/* 左边 */}
+      <div className="flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
+        <div className="hidden md:flex w-full space-x-4 relative h-72">
+          <CurrWeekCard week={week} total_weeks={total_weeks} />
+          <DirectoryCard />
+          <AnnouncementCard announcements={announcements} />
         </div>
+
+        <div className="flex md:hidden w-full space-x-4 relative h-72">
+          <DirectoryCard />
+          <AnnouncementCard announcements={announcements} />
+        </div>
+        {logged_in ? <CalendarCoursesViewCard /> : <CourseSearchCard />}
+      </div>
+
+      {/* 右边 */}
+      <div className="lg:flex lg:flex-col w-[35%] max-w-96 hidden relative">
+        <TodayCourses today_courses={today_course} />
       </div>
     </div>
   );

@@ -46,9 +46,9 @@ function CalendarDays({
 
   return (
     <div className="table-content">
-      {currentDays.map((week) => {
+      {currentDays.map((week, index) => {
         return (
-          <div className="week">
+          <div className="week" key={index}>
             {week.map((day, index) => {
               return (
                 <div

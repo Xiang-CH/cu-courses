@@ -17,7 +17,7 @@
 }
 
 .rbc-event{
-    background-color: rgba(41, 204, 57, 0.1) !important;
+    background-color: rgba(176, 234, 181, 0.7) !important;
     border: 1px solid #29CC39 !important;
     color: #000;
     border-radius: 5px;
@@ -27,12 +27,14 @@
 }
 
 .rbc-event:hover{
-    background-color: rgba(41, 204, 57, 0.2) !important;
-    position: sticky;
-    width: 6rem;
+    background-color: rgb(185, 232, 191) !important;
+    position: absolute;
+    /*width: 6rem;*/
+    width: 100% !important;
     overflow: visible ;
     height: fit-content !important;
     box-shadow: #a6a6a6 0px 0px 5px 0px;
+    z-index: 1000;
 }
 
 .expanded-event:hover{

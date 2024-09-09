@@ -1,6 +1,6 @@
 .calendar {
-  width: 88%;
-  max-width: 25rem;
+  width: 90%;
+  /*max-width: 25rem;*/
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   margin-top:0.1em;
 }
 
@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 1em;
+  margin-right: 0.5em;
 
   user-select: none;
   -moz-user-select: none;

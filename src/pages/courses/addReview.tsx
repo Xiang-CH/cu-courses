@@ -25,18 +25,20 @@ import LoadIndicator from "@/components/courseReviewCard/loadIndicator.tsx";
 import { toast } from "sonner";
 import { request } from "@/lib/api.ts";
 import { useNavigate } from "react-router-dom";
+import { useAliveController } from "react-activation";
 
 function AddReview({ courseId }: { courseId: string }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const aliveController = useAliveController();
   const years = [];
+
   for (let year = moment().year(); year >= moment().year() - 10; year--) {
     years.push(year);
   }
   const terms = ["Term 1", "Term 2", "Term 3", "Term 4", "Summer Session"];
   const grade = [
     "N/A",
-    "A+",
     "A",
     "A-",
     "B+",
@@ -87,8 +89,10 @@ function AddReview({ courseId }: { courseId: string }) {
     }).then((res) => {
       if (res.code === 200) {
         toast.success(t("courseDetail.submit-review-success"));
-        sessionStorage.removeItem("my_reviews");
-        navigate(0);
+        aliveController.refresh(new RegExp("^/profile")).finally(() => {
+          navigate(0);
+          console.log("Profile page refreshed");
+        });
       } else {
         toast.error(t("courseDetail.submit-review-fail") + ": " + res.msg);
       }

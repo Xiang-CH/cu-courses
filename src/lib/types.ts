@@ -81,25 +81,54 @@ interface CalendarListApiResponse {
   calendar_year: string;
   course_detail: CourseDetails;
   subclass_detail: Subclass;
+  calendar_date_list: string[];
+}
+
+interface CalendarEvent {
+  course_code: string;
+  course_title: string;
+  calendar_venue: string;
+  subclass_id: number;
+  calendar_start_date_time: Date;
+  calendar_end_date_time: Date;
+  date: string;
 }
 
 interface App {
-  no?: number;
-  name?: string;
-  name_en: string;
-  "name_zh-CN": string;
-  "name_zh-HK": string;
-  description?: string;
-  description_en: string;
-  "description_zh-CN": string;
-  "description_zh-HK": string;
-  icon?: string;
-  url: string;
-  category?: "campus" | "study" | "job";
+  app_name_en: string;
+  app_name_zh_cn: string;
+  app_name_zh_hk: string;
+  app_description_en: string;
+  app_description_zh_cn: string;
+  app_description_zh_hk: string;
+  app_logo?: string;
+  app_link: string;
+  app_category?: "campus" | "study" | "job";
+}
+
+interface Announcement {
+  announcement_title: string;
+  article_id: string;
+  announcement_create_time: number;
+}
+
+interface AvailableCalendar {
+  [key: string]: TermInfo;
+}
+
+interface TermInfo {
+  [key: string]: {
+    start_date: string;
+    end_date: string;
+  };
 }
 
 export type {
   App,
+  Announcement,
+  AvailableCalendar,
+  CalendarEvent,
+  TermInfo,
   Review,
   CourseDetails,
   CourseDetailApiResponse,

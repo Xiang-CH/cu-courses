@@ -6,3 +6,11 @@
 .menuItemInvert > div:nth-child(1) {
     filter: invert(100%);
 }
+
+.menuLogout > div:nth-child(1) {
+    filter: invert(100%);
+}
+
+.menuLogout:hover > div:nth-child(1) {
+    filter: invert(0);
+}

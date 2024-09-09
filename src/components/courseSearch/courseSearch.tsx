@@ -111,20 +111,20 @@ function CourseSearch({ compact }: { compact?: boolean }) {
     try {
       const res = await request("/course/list.php", {
         token: localStorage.getItem("token") || "",
-        page_size: "20",
+        page_size: "30",
         page: page.toString(),
         keyword: query ? query : "",
       });
       if (res.code == 200) {
         if (!query) {
-          sessionStorage.setItem(
-            "courseList_page_" + page.toString(),
-            JSON.stringify(res.course_list),
-          );
-          sessionStorage.setItem(
-            "courseList_page_total",
-            res.page_count.toString(),
-          );
+          // sessionStorage.setItem(
+          //   "courseList_page_" + page.toString(),
+          //   JSON.stringify(res.course_list),
+          // );
+          // sessionStorage.setItem(
+          //   "courseList_page_total",
+          //   res.page_count.toString(),
+          // );
         }
         setTotalPage(res.page_count);
         return res.course_list;
@@ -208,7 +208,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
           )}
         </div>
 
-        {!compact && (
+        {!compact && courseList.length > 0 && (
           <Pagination className="hidden md:block my-6 ml-6">
             <PaginationContent>
               {!(page === 1) && (

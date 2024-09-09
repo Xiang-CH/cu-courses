@@ -1,80 +1,22 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Toaster } from "@/components/ui/sonner.tsx";
 import { useEffect, useState } from "react";
-
-import Home from "./pages/home/home.tsx";
-import Courses from "./pages/courses/courses.tsx";
-import MyCalendar from "./pages/myCalendar/myCalendar.tsx";
-import Profile from "./pages/profile/profile.tsx";
-import Setting from "./pages/setting/setting.tsx";
-import Apps from "./pages/home/apps.tsx";
-import CourseDetail from "./pages/courses/courseDetail.tsx";
-import Login from "./pages/login/login.tsx";
-import PageNotFound from "./pages/errors/404.tsx";
-
-import { request } from "./lib/api.ts";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/home/apps",
-    element: <Apps />,
-  },
-  {
-    path: "/courses",
-    element: <Courses />,
-  },
-  {
-    path: "/courses/:courseId",
-    element: <CourseDetail />,
-    loader: async ({ params }) => {
-      console.log(params);
-      if (!params.courseId) {
-        return null;
-      }
-      const res = await request("/course/detail.php", {
-        course_code: params.courseId,
-        token: localStorage.getItem("token") || "",
-      });
-      console.log(res);
-      return res;
-    },
-  },
-  {
-    path: "/calendar",
-    element: <MyCalendar />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
-  {
-    path: "/setting",
-    element: <Setting />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "*",
-    element: <PageNotFound />,
-  },
-]);
+import NavBar from "@/components/navbar/navbar.tsx";
+import KeepAlive from "react-activation";
 
 function App() {
   const { t } = useTranslation();
+  const location = useLocation();
   const [isDark, setIsDark] = useState(false);
+  const isInFrame = window.location !== window.parent.location;
   useEffect(() => {
+    console.log(
+      "isInFrame",
+      isInFrame,
+      window.location,
+      window.parent.location,
+    );
     document.title = t("app-name");
     setIsDark(false);
   }, []);
@@ -90,12 +32,25 @@ function App() {
   //   });
   // }
 
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
   return (
     <div
-      className={`w-screen h-screen ${isDark && "dark"} relative overflow-x-hidden`}
+      className={`w-screen h-screen flex-col md:${isInFrame ? "" : "flex-row"} flex min-w-fit relative ${isDark ? "dark" : ""} xl:justify-center`}
     >
-      <RouterProvider router={router} />
-      <Toaster />
+      <NavBar />
+      <KeepAlive
+        id={location.pathname + location.search}
+        name={location.pathname}
+      >
+        <div
+          className={`h-[calc(100dvh-3.5em)] md:${isInFrame ? "" : "h-screen"} relative flex`}
+        >
+          <Outlet />
+        </div>
+      </KeepAlive>
     </div>
   );
 }

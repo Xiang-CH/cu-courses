@@ -1,3 +1,7 @@
+import { toast } from "sonner";
+import { AvailableCalendar } from "@/lib/types.ts";
+import i18n from "@/i18n";
+
 interface params {
   [key: string]: string;
 }
@@ -29,4 +33,46 @@ async function request(location: string, params: params) {
   }
 }
 
-export { request };
+async function getCalendar(calendar_year: string, calendar_term: string) {
+  try {
+    const res = await request("/calendar/get.php", {
+      token: localStorage.get("token") || "",
+      calendar_year: calendar_year,
+      calendar_term: calendar_term,
+    });
+    if (res.code == 200) {
+      return res.calendar_list;
+    }
+    toast(i18n.t("errors.error"), {
+      description: res.msg,
+    });
+    return [];
+  } catch {
+    toast(i18n.t("errors.error"), {
+      description: i18n.t("errors.network-error"),
+    });
+    return [];
+  }
+}
+
+async function getAvailable(): Promise<AvailableCalendar> {
+  try {
+    const res = await request("/calendar/available.php", {
+      token: localStorage.get("token") || "",
+    });
+    if (res.code == 200) {
+      return res.calendar_available;
+    }
+    toast(i18n.t("errors.error"), {
+      description: res.msg,
+    });
+    return {};
+  } catch {
+    toast(i18n.t("errors.error"), {
+      description: i18n.t("errors.network-error"),
+    });
+    return {};
+  }
+}
+
+export { request, getCalendar, getAvailable };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,12 +8,18 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { EnterIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
-import logo from "@/assets/logo.png";
 import logoDark from "@/assets/logo-dark.png";
 import "./navbar.css";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 
-function Icons({ iconName }: { iconName: string }) {
+function Icons({
+  iconName,
+  forceShow = false,
+}: {
+  iconName: string;
+  forceShow?: boolean;
+}) {
   const icon_size = "1.1em";
   const icons: { [key: string]: JSX.Element } = {
     home: (
@@ -121,7 +127,11 @@ function Icons({ iconName }: { iconName: string }) {
       </svg>
     ),
   };
-  return <div className="lg:mr-4 ml-0 w-fit">{icons[iconName]}</div>;
+  return (
+    <div className={`lg:${forceShow ? "mr-0" : "mr-4"} ml-0 w-fit`}>
+      {icons[iconName]}
+    </div>
+  );
 }
 
 function MenuItem({
@@ -140,17 +150,19 @@ function MenuItem({
   setShowMenu?: any;
 }) {
   return (
-    <NavigationMenuItem className="flex w-full justify-center items-center mb-2">
+    <NavigationMenuItem
+      className={`lg:self-start flex w-[92%] justify-center items-center mb-2 lg:${forceShow ? "pr-0" : "pr-3"}`}
+    >
       <Link
         onClick={() => {
           if (forceShow) setShowMenu(false);
         }}
         to={path}
-        className={`${forceShow ? "justify-start" : "justify-center"} lg:justify-start items-center overflow-hidden flex h-10 w-full px-4 font-light hover:text-secondary ${forceShow ? "hover:bg-muted" : "hover:bg-primary"} active:text-secondary active:bg-primary menuItem min-w-full rounded-lg ${path == currentPath ? (forceShow ? "text-secondary-foreground bg-secondary" : "text-secondary bg-primary menuItemInvert") : forceShow ? "text-secondary bg-primary menuItemInvert" : "text-secondary-foreground bg-secondary"}`}
+        className={`${forceShow ? "justify-start" : "justify-center lg:justify-start"} items-center overflow-hidden flex h-10 w-full px-4 font-light rounded-lg ${currentPath.startsWith(path) ? "text-secondary-foreground bg-secondary hover:bg-secondary" : "text-secondary bg-primary menuItemInvert hover:bg-muted"}`}
       >
-        <Icons iconName={iconName} />
+        <Icons iconName={iconName} forceShow={forceShow} />
         <div
-          className={`${forceShow ? "block ml-2 mr-5" : "hidden"} lg:block overflow-hidden max-h-6 mr-1.5`}
+          className={`${forceShow ? "block ml-2" : "hidden"} lg:block ml-2 overflow-hidden max-h-6 font-[500] whitespace-nowrap`}
         >
           {title}
         </div>
@@ -159,12 +171,18 @@ function MenuItem({
   );
 }
 
-function NavBar({ currentPath }: { currentPath: string }) {
+function NavBar() {
   const { t, i18n } = useTranslation();
   const [loggedIn] = useState(!!localStorage.getItem("token"));
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [currentPath, setCurrentPath] = useState(location.pathname);
+  const isInFrame = window.location !== window.parent.location;
+
+  useEffect(() => {
+    setCurrentPath(location.pathname);
+  }, [location]);
 
   function logout() {
     localStorage.removeItem("token");
@@ -174,7 +192,9 @@ function NavBar({ currentPath }: { currentPath: string }) {
   return (
     <>
       {/* top */}
-      <div className="sticky top-0 w-screen h-14 shadow flex items-center md:hidden z-30 bg-primary justify-between">
+      <div
+        className={`sticky top-0 w-screen h-14 shadow flex items-center md:${isInFrame ? "flex" : "hidden"} z-30 bg-primary justify-between`}
+      >
         <HamburgerMenuIcon
           onClick={() => setShowMenu(!showMenu)}
           width="1.3rem"
@@ -186,7 +206,7 @@ function NavBar({ currentPath }: { currentPath: string }) {
 
       {/* top-menu */}
       <div
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-[170px] transition-all shadow z-[100] bg-primary ${
+        className={`md:${isInFrame ? "flex" : "hidden"} h-screen flex flex-col absolute top-0 w-[170px] shadow z-[100] bg-primary transition-[left] ${
           showMenu ? "left-0" : "left-[-170px]"
         }`}
       >
@@ -196,134 +216,141 @@ function NavBar({ currentPath }: { currentPath: string }) {
           className="mx-5 mt-4 h-10 w-10 rounded-full"
         />
         <NavigationMenu className="bg-primary flex flex-col w-full min-w-full items-start h-fit justify-start px-3 mt-8">
-          <NavigationMenuList className="flex flex-col my-0 mx-0 min-w-full w-full space-x-0">
-            <MenuItem
-              title={t("navbar.home")}
-              path="/home"
-              iconName="home"
-              currentPath={currentPath}
-              forceShow={true}
-              setShowMenu={setShowMenu}
-            />
-            <MenuItem
-              title={t("navbar.courses")}
-              path="/courses"
-              iconName="course"
-              currentPath={currentPath}
-              forceShow={true}
-              setShowMenu={setShowMenu}
-            />
-            <MenuItem
-              title={t("navbar.my-calendar")}
-              path="/calendar"
-              iconName="myCalendar"
-              currentPath={currentPath}
-              forceShow={true}
-              setShowMenu={setShowMenu}
-            />
-            <MenuItem
-              title={t("navbar.profile")}
-              path="/profile"
-              iconName="profile"
-              currentPath={currentPath}
-              forceShow={true}
-              setShowMenu={setShowMenu}
-            />
-            <MenuItem
-              title={t("navbar.settings")}
-              path="/setting"
-              iconName="setting"
-              currentPath={currentPath}
-              forceShow={true}
-              setShowMenu={setShowMenu}
-            />
-          </NavigationMenuList>
+          <ScrollArea className="w-full">
+            <NavigationMenuList className="flex flex-col my-0 mx-0 min-w-full w-full space-x-0 items-start">
+              <MenuItem
+                title={t("navbar.home")}
+                path="/home"
+                iconName="home"
+                currentPath={currentPath}
+                forceShow={true}
+                setShowMenu={setShowMenu}
+              />
+              <MenuItem
+                title={t("navbar.courses")}
+                path="/courses"
+                iconName="course"
+                currentPath={currentPath}
+                forceShow={true}
+                setShowMenu={setShowMenu}
+              />
+              <MenuItem
+                title={t("navbar.my-calendar")}
+                path="/calendar"
+                iconName="myCalendar"
+                currentPath={currentPath}
+                forceShow={true}
+                setShowMenu={setShowMenu}
+              />
+              <MenuItem
+                title={t("navbar.profile")}
+                path="/profile"
+                iconName="profile"
+                currentPath={currentPath}
+                forceShow={true}
+                setShowMenu={setShowMenu}
+              />
+              <MenuItem
+                title={t("navbar.settings")}
+                path="/setting"
+                iconName="setting"
+                currentPath={currentPath}
+                forceShow={true}
+                setShowMenu={setShowMenu}
+              />
+            </NavigationMenuList>
+          </ScrollArea>
         </NavigationMenu>
       </div>
 
       {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:hidden h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
+        className={`md:${isInFrame ? "" : "hidden"} h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
           showMenu ? "" : "hidden"
         }`}
       ></div>
 
       {/* default */}
       <div
-        className={
-          "hidden md:flex flex-col h-screen lg:min-w-44 lg:w-[18%] lg:max-w-48 min-w-20 w-20 bg-secondary relative justify-between px-0 items-center lg:items-start transition-[width,margin,padding,transform,min-width] overflow-hidden"
-        }
+        className={`hidden md:${isInFrame ? "hidden" : "flex"} justify-end lg:max-w-48 lg:min-w-44 min-w-20 w-20 max-w-20 bg-primary relative px-0 transition-[width,margin,padding,transform,min-width] overflow-hidden border-r-[1px] flex-grow`}
       >
-        <div className="my-6 bg-secondary flex flex-start justify-center lg:items-start lg:justify-start">
-          <img
-            src={logo}
-            alt="logo"
-            className="lg:ml-6 h-11 w-11 rounded-full bg-secondary"
-          />
-        </div>
+        <div
+          className={`w-full flex-col flex justify-between h-screen items-center lg:items-start`}
+        >
+          <div className="my-6 bg-primary flex flex-start justify-center lg:items-start lg:justify-start">
+            <img
+              src={logoDark}
+              alt="logo"
+              className="lg:ml-6 h-11 w-11 rounded-full bg-primary"
+            />
+          </div>
+          <NavigationMenu className="bg-primary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start m-0 overflow-x-hidden">
+            <ScrollArea className="w-full self-start h-fit px-3">
+              <NavigationMenuList className="flex flex-col my-2 mx-0 lg:min-w-full lg:w-full  space-x-0">
+                <MenuItem
+                  title={t("navbar.home")}
+                  path="/home"
+                  iconName="home"
+                  currentPath={currentPath}
+                />
+                <MenuItem
+                  title={t("navbar.courses")}
+                  path="/courses"
+                  iconName="course"
+                  currentPath={currentPath}
+                />
+                <MenuItem
+                  title={t("navbar.my-calendar")}
+                  path="/calendar"
+                  iconName="myCalendar"
+                  currentPath={currentPath}
+                />
+                <MenuItem
+                  title={t("navbar.profile")}
+                  path="/profile"
+                  iconName="profile"
+                  currentPath={currentPath}
+                />
+                <MenuItem
+                  title={t("navbar.settings")}
+                  path="/setting"
+                  iconName="setting"
+                  currentPath={currentPath}
+                />
+              </NavigationMenuList>
+            </ScrollArea>
+          </NavigationMenu>
 
-        <NavigationMenu className="bg-secondary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start px-3 m-0 overflow-x-hidden">
-          <NavigationMenuList className="flex flex-col my-1 mx-0 lg:min-w-full lg:w-full  space-x-0">
-            <MenuItem
-              title={t("navbar.home")}
-              path="/home"
-              iconName="home"
-              currentPath={currentPath}
-            />
-            <MenuItem
-              title={t("navbar.courses")}
-              path="/courses"
-              iconName="course"
-              currentPath={currentPath}
-            />
-            <MenuItem
-              title={t("navbar.my-calendar")}
-              path="/calendar"
-              iconName="myCalendar"
-              currentPath={currentPath}
-            />
-            <MenuItem
-              title={t("navbar.profile")}
-              path="/profile"
-              iconName="profile"
-              currentPath={currentPath}
-            />
-            <MenuItem
-              title={t("navbar.settings")}
-              path="/setting"
-              iconName="setting"
-              currentPath={currentPath}
-            />
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        <div className="w-full flex flex-col items-center lg:items-start overflow-hidden">
-          <div
-            className={`my-4 w-full flex ${loggedIn ? "justify-start" : "justify-center"}`}
-          >
-            {/* 退出登录 */}
-            {loggedIn ? (
-              <Button
-                onClick={logout}
-                className="bg-secondary self-center text-secondary-foreground px-3 hover:text-secondary hover:bg-primary menuItem mx-5"
-              >
-                <Icons iconName="logout" />
-                <span className="hidden lg:block">{t("navbar.logout")}</span>
-              </Button>
-            ) : (
-              <Link
-                className="w-full px-4"
-                to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
-              >
-                <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-primary menuItem w-full">
-                  <EnterIcon className="w-4 h-4 lg:mr-3" />
-                  <span className="hidden lg:block">
-                    {t("navbar.login-register")}
+          <div className="w-full flex flex-col items-center lg:items-start overflow-hidden self-end">
+            <div
+              className={`my-4 w-full flex ${loggedIn ? "justify-start" : "justify-center"}`}
+            >
+              {/* 退出登录 */}
+              {loggedIn ? (
+                <Button
+                  onClick={logout}
+                  className="bg-primary self-center text-secondary px-3 hover:bg-secondary menuLogout mx-5 hover:text-secondary-foreground"
+                >
+                  <Icons iconName="logout" />
+                  <span className="hidden lg:block ml-2">
+                    {t("navbar.logout")}
                   </span>
                 </Button>
-              </Link>
-            )}
+              ) : (
+                <Link
+                  className="w-full px-4"
+                  to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
+                >
+                  <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-muted menuItem w-full">
+                    <EnterIcon className="w-4 h-4 lg:mr-3" />
+                    <span className="hidden lg:block">
+                      {t("navbar.login-register")}
+                    </span>
+                  </Button>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

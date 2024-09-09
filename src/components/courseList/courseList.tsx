@@ -66,14 +66,15 @@ function CourseList({
   const { t } = useTranslation();
 
   return (
-    <div className="flex-1 w-full">
-      <CardContent className="px-4 pb-0 mb-2">
+    <div className="flex w-full h-full relative">
+      <CardContent className="px-4 pb-0 mb-2 overflow-x-visible">
         <CardTitle className="text-xl text-left md:mt-2 mb-2">
           {label}
         </CardTitle>
+
         <div className="w-full px-0 flex-col flex gap-4">
           {courses.length === 0 && (
-            <div className="mx-4 text-sm">{t("courses.no-course")}</div>
+            <div className="mx-1 text-sm">{t("courses.no-course")}</div>
           )}
           {courses.map((course, index) => {
             return <CourseItem {...course} key={index} />;
