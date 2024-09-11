@@ -133,4 +133,5 @@ export type {
   CourseDetails,
   CourseDetailApiResponse,
   CalendarListApiResponse,
+  Subclass
 };
