@@ -67,10 +67,10 @@ function Courses() {
           </Label>
           <Separator
             orientation="vertical"
-            className="h-6 mx-5 bg-secondary w-[2px]"
+            className="h-6 mx-5 mr-3 bg-secondary w-[2px]"
           />
           <Popover>
-            <PopoverTrigger className="flex">
+            <PopoverTrigger className="flex hover:bg-muted p-2 rounded-lg transition duration-200 ease-in-out">
               <Label className="text-secondary mr-2">
                 {t("courses.filter.filter")}
               </Label>

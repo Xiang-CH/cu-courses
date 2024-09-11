@@ -22,7 +22,7 @@ function AppCard({ app, lang }: { app: App; lang: "en" | "zh_cn" | "zh_hk" }) {
             <img
               src={app.app_logo || apps_fill_logo}
               alt={app.app_name_en}
-              className="hidden md:block h-16 bg-center mx-2 lg:mx-4 transition-all max-w-[200px] lg:max-w-[300px]"
+              className="hidden md:block bg-center mx-2 lg:mx-4 transition-all h-[50px] lg:h-[66px] max-w-[300px] lg:max-w-[400px]"
               style={{ objectFit: "cover" }}
             />
             <div className="flex flex-col items-start justify-center mx-1">

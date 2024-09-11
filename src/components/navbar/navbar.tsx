@@ -158,7 +158,7 @@ function MenuItem({
           if (forceShow) setShowMenu(false);
         }}
         to={path}
-        className={`${forceShow ? "justify-start" : "justify-center lg:justify-start"} items-center overflow-hidden flex h-10 w-full px-4 font-light rounded-lg ${currentPath.startsWith(path) ? "text-secondary-foreground bg-secondary hover:bg-secondary" : "text-secondary bg-primary menuItemInvert hover:bg-muted"}`}
+        className={`${forceShow ? "justify-start" : "justify-center lg:justify-start"} items-center overflow-hidden flex h-10 w-full px-4 font-light rounded-lg transition duration-200 ease-in-out ${currentPath.startsWith(path) ? "text-secondary-foreground bg-secondary hover:bg-secondary" : "text-secondary bg-primary menuItemInvert hover:bg-muted"}`}
       >
         <Icons iconName={iconName} forceShow={forceShow} />
         <div
@@ -201,20 +201,23 @@ function NavBar() {
           height="1.3rem"
           className="mx-4 hover:cursor-pointer"
         />
-        <img src={logoDark} alt="logo" className="h-8 w-8 rounded-full mx-4" />
+        <Link to='/home'>
+          <img src={logoDark} alt="logo" className="h-8 w-8 rounded-full mx-4" />
+        </Link>
       </div>
 
       {/* top-menu */}
       <div
-        className={`md:${isInFrame ? "flex" : "hidden"} h-screen flex flex-col absolute top-0 w-[170px] shadow z-[100] bg-primary transition-[left] ${
-          showMenu ? "left-0" : "left-[-170px]"
-        }`}
+        className={`md:${isInFrame ? "flex" : "hidden"} h-screen flex flex-col absolute top-0 w-[170px] shadow z-[100] bg-primary transition-[left] ${showMenu ? "left-0" : "left-[-170px]"
+          }`}
       >
-        <img
-          src={logoDark}
-          alt="logo"
-          className="mx-5 mt-4 h-10 w-10 rounded-full"
-        />
+        <Link to='/home'>
+          <img
+            src={logoDark}
+            alt="logo"
+            className="mx-5 mt-4 h-10 w-10 rounded-full"
+          />
+        </Link>
         <NavigationMenu className="bg-primary flex flex-col w-full min-w-full items-start h-fit justify-start px-3 mt-8">
           <ScrollArea className="w-full">
             <NavigationMenuList className="flex flex-col my-0 mx-0 min-w-full w-full space-x-0 items-start">
@@ -266,9 +269,8 @@ function NavBar() {
       {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:${isInFrame ? "" : "hidden"} h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
-          showMenu ? "" : "hidden"
-        }`}
+        className={`md:${isInFrame ? "" : "hidden"} h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${showMenu ? "" : "hidden"
+          }`}
       ></div>
 
       {/* default */}
@@ -279,11 +281,13 @@ function NavBar() {
           className={`w-full flex-col flex justify-between h-screen items-center lg:items-start`}
         >
           <div className="my-6 bg-primary flex flex-start justify-center lg:items-start lg:justify-start">
-            <img
-              src={logoDark}
-              alt="logo"
-              className="lg:ml-6 h-11 w-11 rounded-full bg-primary"
-            />
+            <Link to='/home'>
+              <img
+                src={logoDark}
+                alt="logo"
+                className="lg:ml-6 h-11 w-11 rounded-full bg-primary"
+              />
+            </Link>
           </div>
           <NavigationMenu className="bg-primary flex flex-col w-full min-w-full lg:items-start items-center h-fit lg:ml-1 justify-start m-0 overflow-x-hidden">
             <ScrollArea className="w-full self-start h-fit px-3">
@@ -330,7 +334,7 @@ function NavBar() {
               {loggedIn ? (
                 <Button
                   onClick={logout}
-                  className="bg-primary self-center text-secondary px-3 hover:bg-secondary menuLogout mx-5 hover:text-secondary-foreground"
+                  className="bg-primary self-center text-secondary px-3 hover:bg-secondary menuLogout mx-5 hover:text-secondary-foreground transition duration-200 ease-in-out"
                 >
                   <Icons iconName="logout" />
                   <span className="hidden lg:block ml-2">
@@ -342,7 +346,7 @@ function NavBar() {
                   className="w-full px-4"
                   to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
                 >
-                  <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-muted menuItem w-full">
+                  <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-muted menuItem w-full transition duration-200 ease-in-out">
                     <EnterIcon className="w-4 h-4 lg:mr-3" />
                     <span className="hidden lg:block">
                       {t("navbar.login-register")}

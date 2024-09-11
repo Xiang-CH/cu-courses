@@ -7,7 +7,7 @@ interface params {
 }
 
 async function request(location: string, params: params) {
-  const baseUrl = "https://api.cucourses.uuunnniii.com/v1";
+  const baseUrl = "https://eo.api.cucampus.uuunnniii.com/v1";
   const url = `${baseUrl}${location}`;
 
   const myHeaders = new Headers();

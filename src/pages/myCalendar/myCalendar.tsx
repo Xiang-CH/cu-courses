@@ -153,7 +153,7 @@ function MyCalendar() {
     <div className="w-full h-full relative">
       <div className="flex h-full w-full lg:pl-3 text-left items-center relative">
         {!token && <NotLoggedIn />}
-        <ScrollArea className="hidden lg:block h-full w-1/4">
+        <ScrollArea className="hidden lg:block h-full w-1/4 min-w-[320px]">
           <div className="w-full pt-6 self-start max-h-screen">
             <Calendar
               showTool={true}
@@ -167,7 +167,7 @@ function MyCalendar() {
 
         <div className="w-[3px] h-[95%] bg-muted mx-2 hidden lg:block" />
 
-        <div className="w-full flex-1 px-2 md:px-6 h-full pb-6 pt-1 md:pt-6 self-start">
+        <div className="w-full flex-1 lg:px-2 md:px-6 h-full pb-6 pt-1 md:pt-6 self-start">
           <CalendarCoursesView
             events={myCourses}
             currentDay={currentDay}

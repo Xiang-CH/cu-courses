@@ -139,7 +139,7 @@ function TodayCourses({
           <div className="hidden w-2/5 lg:w-full md:flex items-start md:pt-1">
             <Calendar showTool={false} selectable={false} />
           </div>
-          <div className="h-full flex-grow max-h-full">
+          <div className="h-full flex-grow max-h-full w-full">
             <CourseList
               courses={today_courses}
               label={t("home.today-course")}
@@ -227,7 +227,7 @@ function AnnouncementCard({
                   className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
                 >
                   <CardContent className="flex flex-col justify-between p-0 mx-2">
-                    <p className="text-sm font-bold leading-tight">
+                    <p className="text-sm font-bold leading-tight truncate">
                       {announcement.announcement_title}
                     </p>
                     <p className="text-xs font-light leading-tight">

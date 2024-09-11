@@ -79,7 +79,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
       if (compact && card_height) {
         if (window.innerWidth < 648)
           setCompactLimit(Math.floor((card_height - 100) / 72));
-        else setCompactLimit(Math.floor((card_height - 150) / 50));
+        else setCompactLimit(Math.floor((card_height - 200) / 50));
       }
     });
   }, [page, query]);
