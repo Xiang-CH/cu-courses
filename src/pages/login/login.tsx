@@ -25,34 +25,71 @@ function Login() {
 
   useEffect(() => {
     const code = searchParams.get("code");
-    if (!code) {
+    const triple_uni_token = searchParams.get("token");
+    if (!code && !triple_uni_token) {
       navigate("/");
       return;
     }
-    request("/user/login/sso.php", {
-      code: code,
-    }).then((res) => {
-      console.log(res);
-      if (res.code == 200) {
-        localStorage.setItem("token", res.token);
-        toast(t("login.success"));
-        const redirect = searchParams.get("callback");
-        setTimeout(() => {
-          if (redirect) navigate(redirect);
-          navigate("/");
-        }, 1000);
-      } else {
-        console.log("Token获取失败", res.msg);
-        toast(t("errors.error"), {
-          description: t("errors.login-failed"),
-        });
-        setTimeout(() => {
+
+    if (code) {
+      request("/user/login/sso.php", {
+        code: code,
+      }).then((res) => {
+        console.log(res);
+        if (res.code == 200) {
+          localStorage.setItem("token", res.token);
+          toast(t("login.success"));
           const redirect = searchParams.get("callback");
-          if (redirect) navigate(redirect);
-          navigate("/");
-        }, 2000);
-      }
-    });
+          setTimeout(() => {
+            if (redirect) navigate(redirect);
+            navigate("/");
+          }, 1000);
+        } else {
+          console.log("Token获取失败", res.msg);
+          toast(t("errors.error"), {
+            description: t("errors.login-failed"),
+          });
+          setTimeout(() => {
+            const redirect = searchParams.get("callback");
+            if (redirect) navigate(redirect);
+            navigate("/");
+          }, 2000);
+        }
+      });
+    }
+
+    else if (triple_uni_token) {
+      request("/user/login/tripleuni.php", {
+        token: triple_uni_token,
+      }).then((res) => {
+        console.log(res);
+        if (res.code == 200) {
+          localStorage.setItem("token", res.token);
+          toast(t("login.success"));
+          const redirect = searchParams.get("callback");
+          setTimeout(() => {
+            if (redirect) navigate(redirect);
+            navigate("/");
+          }, 1000);
+        } else {
+          console.log("Token获取失败", res.msg);
+          toast(t("errors.error"), {
+            description: t("errors.login-failed"),
+          });
+          setTimeout(() => {
+            const redirect = searchParams.get("callback");
+            if (redirect) navigate(redirect);
+            navigate("/");
+          }, 2000);
+        }
+      });
+    }
+
+    else {
+      navigate("/");
+      return;
+    }
+
   }, []);
 
   return (
