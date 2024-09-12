@@ -42,6 +42,7 @@
     "react-i18next": "^14.1.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.23.1",
+    "react-spinners": "^0.14.1",
     "recharts": "^2.12.7",
     "sass": "^1.77.8",
     "sonner": "^1.5.0",

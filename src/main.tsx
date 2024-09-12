@@ -53,12 +53,10 @@ const router = createBrowserRouter([
           if (!params.courseId) {
             return null;
           }
-          const res = await request("/course/detail.php", {
+          return await request("/course/detail.php", {
             course_code: params.courseId,
             token: localStorage.getItem("token") || "",
           });
-          console.log(res);
-          return res;
         },
       },
       {

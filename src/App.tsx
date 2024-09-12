@@ -1,13 +1,16 @@
 import "./App.css";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+
+import DotLoader from "react-spinners/BounceLoader";
 import NavBar from "@/components/navbar/navbar.tsx";
 import KeepAlive from "react-activation";
 
 function App() {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigation = useNavigation();
   const [isDark, setIsDark] = useState(false);
   const isInFrame = window.location !== window.parent.location;
   useEffect(() => {
@@ -38,7 +41,7 @@ function App() {
 
   return (
     <div
-      className={`w-screen h-screen flex-col md:${isInFrame ? "" : "flex-row"} flex min-w-fit relative ${isDark ? "dark" : ""} xl:justify-center`}
+      className={`w-screen h-[100svh] flex-col md:${isInFrame ? "" : "flex-row"} flex min-w-fit relative ${isDark ? "dark" : ""} xl:justify-center`}
     >
       <NavBar />
       <KeepAlive
@@ -46,8 +49,14 @@ function App() {
         name={location.pathname}
       >
         <div
-          className={`h-[calc(100dvh-3.5em)] md:${isInFrame ? "" : "h-screen"} relative flex`}
+          className={`h-[calc(100svh-3.5em)] md:${isInFrame ? "" : "h-screen"} relative flex`}
         >
+          {navigation.state == "loading" && (
+            <div className="w-full h-full absolute flex justify-center items-center z-40">
+              <div className="w-full h-full bg-muted opacity-60 absolute"></div>
+              <DotLoader color="var(--secondary)" />
+            </div>
+          )}
           <Outlet />
         </div>
       </KeepAlive>

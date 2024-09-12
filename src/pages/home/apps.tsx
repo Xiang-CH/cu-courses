@@ -10,19 +10,24 @@ import { App } from "@/lib/types";
 import { request } from "@/lib/api.ts";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import apps_fill_logo from "@/assets/apps_fill_logo.png";
+import apps_fill_logo from "@/assets/apps_fill_logo.jpg";
 
 function AppCard({ app, lang }: { app: App; lang: "en" | "zh_cn" | "zh_hk" }) {
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="flex w-full p-4 items-center justify-between pb-5 pt-4 pl-1 pr-4">
-        <a href={app.app_link} target="_blank" rel="noreferrer">
+      <div className="flex w-full p-4 items-center justify-between pb-5 pt-4 pl-1 pr-4 relative">
+        <a
+          href={app.app_link}
+          target="_blank"
+          rel="noreferrer"
+          className="w-[90%]"
+        >
           <div className="flex items-center w-full transition-all">
             <img
               src={app.app_logo || apps_fill_logo}
               alt={app.app_name_en}
-              className="hidden md:block bg-center mx-2 lg:mx-4 transition-all h-[50px] lg:h-[66px] max-w-[300px] lg:max-w-[400px]"
+              className="hidden md:block bg-center mx-2 lg:mx-4 transition-all w-[40%] max-w-[200px] lg:max-w-[300px]"
               style={{ objectFit: "cover" }}
             />
             <div className="flex flex-col items-start justify-center mx-1">
@@ -82,7 +87,7 @@ function Apps() {
         </Label>
       </div>
 
-      <div className="mx-1.5 md:mx-10 mt-1 md:mt-3">
+      <div className="mx-1.5 lg:mx-10 mt-1 md:mt-3">
         <Tabs defaultValue="all" className="w-full self-center">
           <TabsList className="w-full">
             <TabsTrigger value="all" className="min-w-30 w-1/4">

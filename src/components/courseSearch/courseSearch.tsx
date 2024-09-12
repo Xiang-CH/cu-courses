@@ -15,6 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { GridLoader } from "react-spinners";
 
 interface Course {
   course_code: string;
@@ -60,15 +61,16 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   const [searchParam, setSearchParam] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState(searchParam.get("q") || "");
-  const [page, setPage] = useState(Number(searchParam.get("p")) || 1);
+  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [courseList, setCourseList] = useState<Course[]>([]);
   const [compactLimit, setCompactLimit] = useState(20);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("CourseSearch useEffect", page, query);
     getCourses(page, query || "").then((res) => {
       setCourseList(res);
+      setLoading(false);
       console.log(document.getElementById("topOfPage"));
       document
         .getElementById("topOfPage")
@@ -88,57 +90,24 @@ function CourseSearch({ compact }: { compact?: boolean }) {
     if (query) {
       const newQueryParams = new URLSearchParams(searchParam);
       newQueryParams.set("q", query);
-      if (!compact) {
-        newQueryParams.set("p", page.toString());
-      }
-      setSearchParam(newQueryParams);
-    } else if (!compact) {
-      const newQueryParams = new URLSearchParams(searchParam);
-      newQueryParams.set("p", page.toString());
       setSearchParam(newQueryParams);
     }
 
-    if (!query) {
-      const cache = sessionStorage.getItem(
-        "courseList_page_" + page.toString(),
-      );
-      const total = sessionStorage.getItem("courseList_page_total");
-      if (cache && total) {
-        setTotalPage(Number(total));
-        return JSON.parse(cache);
-      }
+    const res = await request("/course/list.php", {
+      token: localStorage.getItem("token") || "",
+      page_size: "30",
+      page: page.toString(),
+      keyword: query ? query : "",
+    });
+    if (res.code == 200) {
+      setTotalPage(res.page_count);
+      return res.course_list;
     }
-    try {
-      const res = await request("/course/list.php", {
-        token: localStorage.getItem("token") || "",
-        page_size: "30",
-        page: page.toString(),
-        keyword: query ? query : "",
-      });
-      if (res.code == 200) {
-        if (!query) {
-          // sessionStorage.setItem(
-          //   "courseList_page_" + page.toString(),
-          //   JSON.stringify(res.course_list),
-          // );
-          // sessionStorage.setItem(
-          //   "courseList_page_total",
-          //   res.page_count.toString(),
-          // );
-        }
-        setTotalPage(res.page_count);
-        return res.course_list;
-      }
-      toast(t("errors.error"), {
-        description: res.msg,
-      });
-      return [];
-    } catch {
-      toast(t("errors.error"), {
-        description: t("errors.network-error"),
-      });
-      return [];
-    }
+    toast(t("errors.error"), {
+      icon: "error",
+      description: res.msg,
+    });
+    return [];
   }
 
   function handleSearch(event: React.FormEvent) {
@@ -148,7 +117,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   }
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full relative">
       <div className="flex-col w-full md:mx-3 relative">
         <form onSubmit={handleSearch}>
           <Input
@@ -161,51 +130,58 @@ function CourseSearch({ compact }: { compact?: boolean }) {
         <div
           className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"} min-h-[80%]`}
         >
-          {courseList.length > 0 ? (
-            courseList.map((course, index) => {
-              if (compact && index >= compactLimit) {
-                return;
-              } else {
-                return (
-                  <div key={course.course_code}>
-                    <Link
-                      // target="_blank"
-                      to={{
-                        pathname: `/courses/${course.course_code}`,
-                      }}
-                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
-                    >
-                      <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
-                        <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
-                          {course.course_code} - {course.course_title}
-                        </Label>
-                        <Label className="md:hidden font-bold hover:cursor-pointer text-[0.85em] md:text-md">
-                          {course.course_code}
-                        </Label>
-                        <Label className="md:hidden font-bold hover:cursor-pointer text-xs md:text-md">
-                          {course.course_title}
-                        </Label>
-                        <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
-                          {course.course_department}
-                        </Label>
-                      </div>
-                      <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
-                        <CommentIcon />
-                        <Label className="text-xs ml-1 hover:cursor-pointer">
-                          {course.course_review_count || 0}
-                        </Label>
-                      </div>
-                    </Link>
-                    {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
-                  </div>
-                );
-              }
-            })
-          ) : (
-            <div className="flex justify-center items-center h-10 text-md text-muted-foreground">
-              {t("courses.search.no-result")}
+          {loading && (
+            <div
+              className={`w-full h-full ${compact ? "min-h-[35svh]" : "min-h-[60svh]"} flex justify-center items-center`}
+            >
+              <GridLoader color="var(--secondary)" />
             </div>
           )}
+          {courseList.length > 0
+            ? courseList.map((course, index) => {
+                if (compact && index >= compactLimit) {
+                  return;
+                } else {
+                  return (
+                    <div key={course.course_code}>
+                      <Link
+                        // target="_blank"
+                        to={{
+                          pathname: `/courses/${course.course_code}`,
+                        }}
+                        className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
+                      >
+                        <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
+                          <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
+                            {course.course_code} - {course.course_title}
+                          </Label>
+                          <Label className="md:hidden font-bold hover:cursor-pointer text-[0.85em] md:text-md">
+                            {course.course_code}
+                          </Label>
+                          <Label className="md:hidden font-bold hover:cursor-pointer text-xs md:text-md">
+                            {course.course_title}
+                          </Label>
+                          <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
+                            {course.course_department}
+                          </Label>
+                        </div>
+                        <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
+                          <CommentIcon />
+                          <Label className="text-xs ml-1 hover:cursor-pointer">
+                            {course.course_review_count || 0}
+                          </Label>
+                        </div>
+                      </Link>
+                      {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
+                    </div>
+                  );
+                }
+              })
+            : !loading && (
+                <div className="flex justify-center items-center h-10 text-md text-muted-foreground">
+                  {t("courses.search.no-result")}
+                </div>
+              )}
         </div>
 
         {!compact && courseList.length > 0 && (

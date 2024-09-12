@@ -383,9 +383,12 @@ function CourseDetail() {
             </div>
             <div className="flex flex-col gap-4 mt-3">
               {course.review_list &&
-                course.review_list.map((review) => {
+                course.review_list.map((review, index) => {
                   return (
-                    <CourseReviewCard course_data={review}></CourseReviewCard>
+                    <CourseReviewCard
+                      course_data={review}
+                      key={index}
+                    ></CourseReviewCard>
                   );
                 })}
             </div>
