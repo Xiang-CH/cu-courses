@@ -68,6 +68,8 @@
     "course_faculty": "Faculty",
     "course_department": "Academic Group",
 
+    "course-no-data": "N/A",
+
     "course-info": "Enrollment Information",
     "course_add_consent": "Add Consent",
     "course_drop_consent": "Drop Consent",
@@ -131,7 +133,8 @@
       "Recommended",
       "Highly Recommended"
     ],
-    "workload-levels": ["Very Heavy", "Heavy", "Average", "Light", "Very Light"]
+    "workload-levels": ["Very Heavy", "Heavy", "Average", "Light", "Very Light"],
+    "no-data": "No Data"
   },
 
   "profile": {
@@ -161,5 +164,9 @@
     "back-to-home": "Back to home",
     "not-logged-in": "Not Logged In",
     "not-logged-in-description": "Please log in to access this page."
+  },
+
+  "calendar": {
+    "course-list": "Courses"
   }
 }

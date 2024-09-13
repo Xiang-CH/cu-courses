@@ -84,6 +84,7 @@ function CoursePieChart({
             nameKey="label"
             innerRadius={45}
             strokeWidth={5}
+            animationDuration={500}
           >
             <PieLabel
               content={({ viewBox }) => {

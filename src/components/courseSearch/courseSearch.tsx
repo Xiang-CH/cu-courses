@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "@/lib/api.ts";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
   Pagination,
@@ -30,6 +30,16 @@ interface Course {
   course_requirement: string;
   course_description: string;
   course_review_count?: number;
+  course_title_translation: {
+    zh_CN: string;
+    zh_HK: string;
+    en: string;
+  };
+  course_description_translation: {
+    zh_CN: string;
+    zh_HK: string;
+    en: string;
+  };
 }
 
 function CommentIcon() {
@@ -57,7 +67,7 @@ function CommentIcon() {
 }
 
 function CourseSearch({ compact }: { compact?: boolean }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchParam, setSearchParam] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState(searchParam.get("q") || "");
@@ -66,6 +76,13 @@ function CourseSearch({ compact }: { compact?: boolean }) {
   const [courseList, setCourseList] = useState<Course[]>([]);
   const [compactLimit, setCompactLimit] = useState(20);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  const lang = i18n.language.replace("-", "_") as
+    | "en"
+    | "zh_CN"
+    | "zh_HK";
 
   useEffect(() => {
     getCourses(page, query || "").then((res) => {
@@ -112,6 +129,10 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
   function handleSearch(event: React.FormEvent) {
     event.preventDefault();
+    if (compact) {
+      navigate("/courses?q=" + inputRef.current?.value);
+      return;
+    }
     setPage(1);
     setQuery(inputRef.current?.value || "");
   }
@@ -145,8 +166,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                   return (
                     <div key={course.course_code}>
                       <Link
-                        // target="_blank"
-                        to={{
+                          to={{
                           pathname: `/courses/${course.course_code}`,
                         }}
                         className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
@@ -162,7 +182,9 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                             {course.course_title}
                           </Label>
                           <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
-                            {course.course_department}
+                            {lang !== 'en' && course.course_title_translation[lang] ? (
+                            course.course_title_translation[lang]
+                          ) : course.course_department}
                           </Label>
                         </div>
                         <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
@@ -205,8 +227,23 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
               {page < 3
                 ? Array.from(
+                  { length: Math.min(5, totalPage) },
+                  (_, i) => i + 1,
+                ).map((i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      onClick={() => setPage(i)}
+                      to="#"
+                      isActive={page === i}
+                    >
+                      {i}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))
+                : page < totalPage - 3
+                  ? Array.from(
                     { length: Math.min(5, totalPage) },
-                    (_, i) => i + 1,
+                    (_, i) => i + page - 2,
                   ).map((i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
@@ -218,35 +255,20 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       </PaginationLink>
                     </PaginationItem>
                   ))
-                : page < totalPage - 3
-                  ? Array.from(
-                      { length: Math.min(5, totalPage) },
-                      (_, i) => i + page - 2,
-                    ).map((i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          onClick={() => setPage(i)}
-                          to="#"
-                          isActive={page === i}
-                        >
-                          {i}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))
                   : Array.from(
-                      { length: Math.min(5, totalPage) },
-                      (_, i) => i + totalPage - 4,
-                    ).map((i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          onClick={() => setPage(i)}
-                          to="#"
-                          isActive={page === i}
-                        >
-                          {i}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
+                    { length: Math.min(5, totalPage) },
+                    (_, i) => i + totalPage - 4,
+                  ).map((i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        onClick={() => setPage(i)}
+                        to="#"
+                        isActive={page === i}
+                      >
+                        {i}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
 
               {page < totalPage - 3 && totalPage > 5 && (
                 <PaginationItem>

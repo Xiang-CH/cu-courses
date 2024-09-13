@@ -70,7 +70,9 @@
     "course_grading_basis": "评分标准",
     "course_type": "课程组成",
     "course_faculty": "学院",
-    "course_department": "部门/教学单位",
+    "course_department": "部门",
+
+    "course-no-data": "无",
 
     "course-info": "选课信息",
     "course_add_consent": "课程添加要求",
@@ -161,5 +163,9 @@
       "back-to-home": "返回主页",
       "not-logged-in": "未登陆",
       "not-logged-in-description": "请登陆后访问当前页面"
+  },
+
+  "calendar": {
+    "course-list": "课程"
   }
 }

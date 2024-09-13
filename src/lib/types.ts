@@ -61,8 +61,16 @@ interface CourseDetails {
   course_recommend_level_list: (1 | 2 | 3 | 4 | 5)[];
   subclass_list: Subclass[];
   review_list: Review[];
-  must_reads?: string;
-  recommended_books?: string;
+  course_title_translation: {
+    zh_CN: string;
+    zh_HK: string;
+    en: string;
+  };
+  course_description_translation: {
+    zh_CN: string;
+    zh_HK: string;
+    en: string;
+  };
 }
 
 interface CourseDetailApiResponse {

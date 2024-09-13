@@ -19,30 +19,19 @@ import { useAliveController } from "react-activation";
 import "./courseDetail.css";
 const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-function SubclassInfoBadge({
-  title,
-  content,
-}: {
-  title: string;
-  content: string;
-}) {
-  return (
-    <Card className="flex px-2 py-1 shadow-none w-full">
-      <Label className="text-xs flex items-start">
-        {title}: {content}
-      </Label>
-    </Card>
-  );
-}
-
 function CourseDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { courseId } = useParams();
   const navigate = useNavigate();
   const courseData = useLoaderData() as CourseDetailApiResponse;
   const [course, setCourse] = useState<CourseDetails>(courseData.course_detail);
   const token = localStorage.getItem("token");
   const aliveController = useAliveController();
+
+  const lang = i18n.language.replace("-", "_") as
+    | "en"
+    | "zh_CN"
+    | "zh_HK";
 
   const courseInfoKeys = [
     "course_add_consent",
@@ -130,8 +119,14 @@ function CourseDetail() {
           >
             <ChevronLeftIcon className="w-5 h-5  md:w-7 md:h-7" />
           </Button>
-          <Label className="text-xl md:text-3xl font-black text-secondary">
+          <Label className="text-2xl md:text-3xl font-black text-secondary">
             {courseId} - {course.course_title}
+            {lang !== 'en' && course.course_title_translation[lang] ? (
+              <span className="text-xl md:text-2xl text-muted-foreground">
+                <br />
+                {course.course_title_translation[lang]}
+              </span>
+            ) : null}
           </Label>
         </div>
 
@@ -141,15 +136,15 @@ function CourseDetail() {
           <div className="flex gap-3 h-fit lg:flex-row flex-col">
             {/*Left Side*/}
             <Card className="w-full lg:w-1/3 flex lg:flex-col py-3 px-4 bg-primary h-min-full gap-2 lg:gap-0">
-              <div className="w-1/2 md:w-1/3 lg:w-full">
-                <Label className="text-md">
+              <div className="w-1/2 md:w-1/2 lg:w-full">
+                <Label className="text-lg">
                   {t("courseDetail.course-detail")}
                 </Label>
                 <div className="py-1">
                   {courseDetailKeys.map((key: string) => {
                     return (
-                      <div className="text-xs mb-0.5" key={key}>
-                        {t(`courseDetail.${key}`)}: {course[key] || "N/A"}
+                      <div className="text-sm mb-0.5" key={key}>
+                        {t(`courseDetail.${key}`)}: {course[key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -158,34 +153,34 @@ function CourseDetail() {
               <Separator className="mt-1 mb-2 bg-muted hidden lg:block"></Separator>
 
               <div className="w-1/2 md:w-1/3 lg:w-full">
-                <Label className="text-md">
+                <Label className="text-lg">
                   {t("courseDetail.course-info")}
                 </Label>
                 <div className="py-1">
                   {courseInfoKeys.map((key) => {
                     return (
-                      <div className="text-xs mb-0.5" key={key}>
-                        {t(`courseDetail.${key}`)}: {course[key] || "N/A"}
+                      <div className="text-sm mb-0.5" key={key}>
+                        {t(`courseDetail.${key}`)}: {course[key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
                 </div>
               </div>
               <Separator className="mt-1 mb-2 bg-muted hidden lg:block"></Separator>
-              <div className="hidden md:block w-1/3 lg:w-full">
-                <Label className="text-md">
+              <div className="hidden lg:block w-1/3 lg:w-full">
+                <Label className="text-lg">
                   {t("courseDetail.course-description")}
                 </Label>
-                <div className="text-xs py-1">{course.course_description}</div>
+                <div className="text-sm py-1">{course.course_description_translation[lang]}</div>
               </div>
             </Card>
 
-            <Card className="md:hidden py-3 px-4 bg-primary h-min-full">
+            <Card className="lg:hidden py-3 px-4 bg-primary h-min-full">
               <div className="md:block w-full">
-                <Label className="text-md">
+                <Label className="text-lg">
                   {t("courseDetail.course-description")}
                 </Label>
-                <div className="text-xs py-1">{course.course_description}</div>
+                <div className="text-sm py-1">{course.course_description_translation[lang]}</div>
               </div>
             </Card>
 
@@ -194,7 +189,7 @@ function CourseDetail() {
               {/*Course Chart*/}
               <Card className="flex-col md:flex-row w-full flex py-3 px-4 bg-primary h-fit justify-between">
                 <div className="flex flex-col items-center w-full md:w-1/2">
-                  <Label className="text-md self-start">
+                  <Label className="text-lg self-start">
                     {t("courseDetail.course-workload")}
                   </Label>
                   <CoursePieChart
@@ -203,7 +198,7 @@ function CourseDetail() {
                   />
                 </div>
                 <div className="hidden md:flex flex-col items-center w-1/2">
-                  <Label className="text-md">
+                  <Label className="text-lg  self-start">
                     {t("courseDetail.course-recommendation")}
                   </Label>
                   <CoursePieChart
@@ -215,7 +210,7 @@ function CourseDetail() {
               {/*Course split to 2 card on small screen*/}
               <Card className="md:hidden md:flex-row w-full flex py-3 px-4 bg-primary h-fit justify-between">
                 <div className="flex flex-col items-center w-full">
-                  <Label className="text-md self-start">
+                  <Label className="text-lg self-start">
                     {t("courseDetail.course-recommendation")}
                   </Label>
                   <CoursePieChart
@@ -225,7 +220,7 @@ function CourseDetail() {
                 </div>
               </Card>
               {/*Course Readings*/}
-              <Card className="hidden md:flex w-full py-3 px-4 bg-primary justify-between h-full gap-2 overflow-hidden">
+              {/* <Card className="hidden md:flex w-full py-3 px-4 bg-primary justify-between h-full gap-2 overflow-hidden">
                 <div className="flex flex-col items-center h-full w-1/2">
                   <Label className="text-md mb-2">
                     {t("courseDetail.course-must_reads")}
@@ -245,44 +240,45 @@ function CourseDetail() {
                     </div>
                   </Card>
                 </div>
-              </Card>
+              </Card> */}
             </div>
           </div>
 
           {/*Classes*/}
           <Card className="pt-3 pb-0 px-4 bg-primary w-max-full">
-            <Label className="text-md  text-secondary">
+            <Label className="text-lg  text-secondary">
               {t("courseDetail.course-classes")}
             </Label>
             <div className="flex">
               <ScrollArea className="my-2 w-1 flex-1 overflow-x-auto pb-3">
-                <div className="flex gap-5">
+                <div className="flex gap-2.5 lg:gap-5">
                   {course.subclass_list &&
                     course.subclass_list.map((item) => {
                       return (
                         <Card
                           key={item.subclass_id}
-                          className="border-2 w-60 bg-primary border-secondary py-2 px-3 min-h-full"
+                          className="border-none bg-muted shadow-none w-40 lg:w-60 pt-1.5 lg:pt-3 pb-2 lg:pb-4 px-2 lg:px-3 min-h-full"
                         >
                           <div className="flex justify-between items-center mb-2">
-                            <Label className="text-sm font-bold">
-                              {`${item.subclass_section}-${item.subclass_type}(${item.subclass_number})`}
+                            <Label>
+                              <span className="text-base lg:text-lg font-bold">{`${item.subclass_section}-${item.subclass_type}`}<br /></span>
+                              <span className="text-xs lg:text-sm leading-3">{item.subclass_term}</span>
                             </Label>
                             {item.subclass_enrollment_status ===
                               "available" && (
-                              <Button
-                                onClick={addClassToCalendar}
-                                id={item.subclass_id.toString()}
-                                className="bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
-                              >
-                                <span className="noHover">
-                                  {t("courseDetail.class-available")}
-                                </span>
-                                <span className="onHover">
-                                  {t("courseDetail.add-class-to-calendar")}
-                                </span>
-                              </Button>
-                            )}
+                                <Button
+                                  onClick={addClassToCalendar}
+                                  id={item.subclass_id.toString()}
+                                  className="bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                                >
+                                  <span className="noHover">
+                                    {t("courseDetail.class-available")}
+                                  </span>
+                                  <span className="onHover">
+                                    {t("courseDetail.add-class-to-calendar")}
+                                  </span>
+                                </Button>
+                              )}
                             {item.subclass_enrollment_status === "enrolled" && (
                               <Button
                                 onClick={addClassToCalendar}
@@ -312,43 +308,30 @@ function CourseDetail() {
                               </Button>
                             )}
                           </div>
-                          <div className="flex flex-col gap-1.5">
-                            <SubclassInfoBadge
-                              title={t("courseDetail.class-term")}
-                              content={item.subclass_term}
-                            />
-                            <SubclassInfoBadge
-                              title={t("courseDetail.class-instructor")}
-                              content={
+                          <div className="flex flex-col lg:gap-1.5 mt-2 lg:mt-4">
+                            <div className="text-xs lg:text-sm">
+                              <span className="font-bold">{t("courseDetail.class-instructor")}:</span><br />
+                              {
                                 (item.subclass_instructor_list[0] &&
                                   item.subclass_instructor_list
                                     .map(
                                       (instructor) =>
                                         instructor.instructor_name,
                                     )
-                                    .join("/")) ||
+                                    .join(", ")) ||
                                 "N/A"
-                              }
-                            />
-                            {item.timeslot_list.map((value, index) => {
-                              return (
-                                <div key={index}>
-                                  <div className="text-muted-foreground text-xs">
-                                    {value.timeslot_weekday}
-                                  </div>
-                                  <div className="flex flex-col gap-1.5">
-                                    <SubclassInfoBadge
-                                      title={t("courseDetail.class-location")}
-                                      content={value.timeslot_venue}
-                                    />
-                                    <SubclassInfoBadge
-                                      title={t("courseDetail.class-time")}
-                                      content={value.timeslot_display}
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            })}
+                              }<br /><br />
+                              <span className="font-bold">{t("courseDetail.class-time")}:</span><br />
+                              {item.timeslot_list.map((value, index) => {
+                                return (
+                                  <>
+                                    {value.timeslot_weekday} - {value.timeslot_display}<br />
+                                    {value.timeslot_venue}<br />
+                                    {index !== item.timeslot_list.length - 1 && <br />}
+                                  </>
+                                );
+                              })}
+                            </div>
                           </div>
                         </Card>
                       );
@@ -360,10 +343,10 @@ function CourseDetail() {
           </Card>
 
           {/*Comments*/}
-          <Card className="py-3 px-4 bg-primary">
+          <Card className="py-3 px-4 bg-primary w-max-full">
             <div className="flex justify-between items-center">
               <div className="mx-1">
-                <Label className="text-md">
+                <Label className="text-lg">
                   {t("courseDetail.course-review")}
                 </Label>
               </div>

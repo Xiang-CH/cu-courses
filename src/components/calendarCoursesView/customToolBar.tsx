@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AvailableCalendar } from "@/lib/types.ts";
+import { Button } from "../ui/button";
 
 const CustomToolbar = ({
   currentDay,
@@ -68,11 +69,15 @@ const CustomToolbar = ({
   const YearTermSelector = () => {
     return (
       <Popover>
-        <PopoverTrigger className="px-4 shadow border-0 focus:ring-0 rounded-3xl text-sm flex items-center py-1">
-          <span className="hidden md:block">
-            {currentYear + " | " + currentTerm}
-          </span>
-          <span className="text-xl mb-[0.2em] md:ml-1">&#9662;</span>
+        <PopoverTrigger>
+        <Button
+            variant="outline"
+            className="hover:bg-muted"
+          >
+            <span className="hidden md:block">{currentYear + " | " + currentTerm}</span>
+            <span className="text-xl mb-[0.2em] md:ml-1">&#9662;</span>
+          </Button>
+          
         </PopoverTrigger>
         <PopoverContent className="mr-4">
           <div className="flex flex-col">
@@ -138,30 +143,28 @@ const CustomToolbar = ({
   return (
     <>
       <div className="w-full bottom-0 md:relative flex justify-between md:mb-4 px-2 bg-primary h-fit z-20 py-3 md:py-0">
-        <button
+        <Button
           onClick={goToToday}
-          className="rounded-3xl shadow px-4 py-2 text-sm"
+          variant="outline"
+          className="hover:bg-muted"
         >
           {t("myCalendar.today")}
-        </button>
+        </Button>
 
         <div className="flex items-center">
-          <button
-            className="rounded-full shadow px-4 pt-2 mr-4 pb-2.5"
+          <Button
             onClick={goToBack}
+            className="hover:bg-muted text-lg"
           >
             &lt;
-          </button>
-          <Label className="font-bold text-sm">{props.label}</Label>
-          {/*<div className="md:hidden">*/}
-          {/*  <YearTermSelector />*/}
-          {/*</div>*/}
-          <button
-            className="rounded-full shadow px-4 py-2 ml-4 pb-2.5"
+          </Button>
+          <Label className="font-bold text-sm md:text-base mx-2 w-[120px] md:w-[150px] text-center">{props.label}</Label>
+          <Button
             onClick={goToNext}
+            className="hover:bg-muted text-lg"
           >
             &gt;
-          </button>
+          </Button>
         </div>
 
         <div className="">

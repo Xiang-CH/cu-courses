@@ -12,6 +12,7 @@ import {
 } from "@/lib/types.ts";
 import moment from "moment";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import { useTranslation } from "react-i18next";
 
 const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
@@ -49,6 +50,7 @@ function getCurrentTerm(terms: TermInfo): string {
 }
 
 function MyCalendar() {
+  const { t } = useTranslation();
   // const [date, setDate] = useState<Date | undefined>(new Date())
   const token = localStorage.getItem("token");
   const [currentDay, setCurrentDay] = useState(moment().toDate());
@@ -161,7 +163,7 @@ function MyCalendar() {
               currentDay={currentDay}
               setCurrentDay={setCurrentDay}
             />
-            <CourseList courses={todayCourses} label="课程" />
+            <CourseList courses={todayCourses} label={t("calendar.course-list")} />
           </div>
         </ScrollArea>
 
