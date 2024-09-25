@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import Home from "@/pages/home/home.tsx";
 import Apps from "@/pages/home/apps.tsx";
+import Article from "@/pages/article/article.tsx";
 import Courses from "@/pages/courses/courses.tsx";
 import CourseDetail from "@/pages/courses/courseDetail.tsx";
 import { request } from "@/lib/api.ts";
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "home/apps",
         element: <Apps />,
+      },
+      {
+        path: "article/:articleId",
+        element: <Article />,
       },
       {
         path: "courses",

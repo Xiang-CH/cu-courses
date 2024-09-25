@@ -13,9 +13,9 @@ import CourseSearch from "@/components/courseSearch/courseSearch.tsx";
 import CourseList from "@/components/courseList/courseList.tsx";
 import CalendarCoursesView from "@/components/calendarCoursesView/calendarCoursesView.tsx";
 import { useEffect, useState } from "react";
-import { request } from "@/lib/api.ts";
+import { getAvailable, getCalendar, request } from "@/lib/api.ts";
 import { CalendarListApiResponse, Announcement } from "@/lib/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import moment from "moment";
 
@@ -83,7 +83,7 @@ const directory_contents = [
   },
   {
     title: "map",
-    url: "https://www.google.com/maps",
+    url: "https://www.cuhk.edu.hk/english/campus/cuhk-campus-map.html",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -99,6 +99,8 @@ const directory_contents = [
     ),
   },
 ];
+
+const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 function CurrWeekCard({
   week,
@@ -133,7 +135,7 @@ function TodayCourses({
   // const cur_date = new Date();
   const { t } = useTranslation();
   return (
-    <Card className="flex lg:h-full flex-col md:flex-row lg:flex-col w-full md:p-2 text-parimary-forground bg-primary text-center relative items-start pb-2 pt-3 md:pt-6 md:pb-4 overflow-y-auto flex-grow">
+    <Card className="flex lg:h-full flex-col md:flex-row lg:flex-col w-full md:p-2 text-parimary-forground bg-primary text-center relative items-start pb-2 pt-3 md:pt-4 md:pb-4 overflow-y-auto flex-grow">
       <ScrollArea className="max-h-full h-full w-full">
         <CardContent className="p-0">
           <div className="hidden w-2/5 lg:w-full md:flex items-start md:pt-1">
@@ -210,6 +212,7 @@ function AnnouncementCard({
   announcements: Announcement[];
 }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
@@ -225,6 +228,9 @@ function AnnouncementCard({
                 <Card
                   key={index}
                   className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
+                  onClick={() => {
+                    navigate(`/article/${announcement.article_id}`);
+                  }}
                 >
                   <CardContent className="flex flex-col justify-between p-0 mx-2">
                     <p className="text-sm font-bold leading-tight truncate">
@@ -246,7 +252,11 @@ function AnnouncementCard({
   );
 }
 
-function CalendarCoursesViewCard() {
+function CalendarCoursesViewCard({
+  events,
+}: {
+  events: CalendarListApiResponse[];
+}) {
   const { t } = useTranslation();
   return (
     <Card className="flex-col overflow-y-hidden w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3 min-h-40">
@@ -257,7 +267,7 @@ function CalendarCoursesViewCard() {
           </CardTitle>
 
           <div className="w-full px-1.5 text-left my-2">
-            <CalendarCoursesView compact events={[]} />
+            <CalendarCoursesView compact events={events} />
           </div>
         </CardContent>
       </ScrollArea>
@@ -267,23 +277,56 @@ function CalendarCoursesViewCard() {
 
 function Home() {
   // const { t } = useTranslation();
-  const week = "11";
-  const total_weeks = "12";
-  const [today_course, setTodayCourse] = useState<CalendarListApiResponse[]>(
+  const [week, setWeek] = useState("");
+  const [totalWeeks, setTotalWeeks] = useState("");
+  const [todayCourses, setTodayCourses] = useState<CalendarListApiResponse[]>(
     [],
   );
+  const [calendarEvents, setCalendarEvents] = useState<
+    CalendarListApiResponse[]
+  >([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const token = localStorage.getItem("token") || "";
   const logged_in = !!token;
 
   useEffect(() => {
-    if (!token) return;
-    request("/calendar/today.php", { token: token }).then((res) => {
-      if (res.code === 200) {
-        setTodayCourse(res.calendar_list);
-      }
+    getAvailable().then((res) => {
+      if (!res) return;
+
+      const currentTerm = res.currentTerm;
+      const currentYear = res.currentYear;
+      const calendarDates = res.calendarAvailable[currentYear][currentTerm];
+
+      const t1 = new Date(calendarDates.start_date).getTime();
+      const t2 = new Date(calendarDates.end_date).getTime();
+      const total_weeks = Math.ceil((t2 - t1) / (24 * 3600 * 1000 * 7));
+      const week = Math.ceil(
+        (new Date().getTime() - t1) / (24 * 3600 * 1000 * 7),
+      );
+
+      setWeek(week.toString());
+      setTotalWeeks(total_weeks.toString());
+
+      getCalendar(currentYear, currentTerm).then((calendar_list) => {
+        setCalendarEvents(calendar_list);
+        const d = new Date();
+        const today_course = calendar_list.filter(
+          (course: CalendarListApiResponse) =>
+            course.calendar_weekday == weekday[d.getDay()],
+        );
+        setTodayCourses(today_course);
+      });
     });
   }, []);
+
+  // useEffect(() => {
+  //   if (!token) return;
+  //   request("/calendar/today.php", { token: token }).then((res) => {
+  //     if (res.code === 200) {
+  //       setTodayCourses(res.calendar_list);
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     request("/info/announcement.php", { token: token }).then((res) => {
@@ -298,7 +341,7 @@ function Home() {
       {/* 左边 */}
       <div className="flex flex-col flex-grow lg:w-[65%] w-full space-y-4">
         <div className="hidden md:flex w-full space-x-4 relative h-72">
-          <CurrWeekCard week={week} total_weeks={total_weeks} />
+          <CurrWeekCard week={week} total_weeks={totalWeeks} />
           <DirectoryCard />
           <AnnouncementCard announcements={announcements} />
         </div>
@@ -307,12 +350,16 @@ function Home() {
           <DirectoryCard />
           <AnnouncementCard announcements={announcements} />
         </div>
-        {logged_in ? <CalendarCoursesViewCard /> : <CourseSearchCard />}
+        {logged_in ? (
+          <CalendarCoursesViewCard events={calendarEvents} />
+        ) : (
+          <CourseSearchCard />
+        )}
       </div>
 
       {/* 右边 */}
       <div className="lg:flex lg:flex-col w-[35%] max-w-96 hidden relative">
-        <TodayCourses today_courses={today_course} />
+        <TodayCourses today_courses={todayCourses} />
       </div>
     </div>
   );
