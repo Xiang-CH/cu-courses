@@ -13,6 +13,7 @@ function App() {
   const navigation = useNavigation();
   const [isDark, setIsDark] = useState(false);
   const isInFrame = window.location !== window.parent.location;
+
   useEffect(() => {
     console.log(
       "isInFrame",
@@ -22,6 +23,12 @@ function App() {
     );
     document.title = t("app-name");
     setIsDark(false);
+
+    if (isInFrame) {
+      (
+        document.getElementsByClassName("ka-wrapper")[0] as HTMLElement
+      ).style.height = "calc(100% - 3.5rem)";
+    }
   }, []);
 
   // if (window.matchMedia) {
@@ -48,9 +55,7 @@ function App() {
         id={location.pathname + location.search}
         name={location.pathname}
       >
-        <div
-          className={`h-[calc(100svh-3.5em)] md:${isInFrame ? "" : "h-screen"} relative flex`}
-        >
+        <div className={`h-full relative flex`}>
           {navigation.state == "loading" && (
             <div className="w-full h-full absolute flex justify-center items-center z-40">
               <div className="w-full h-full bg-muted opacity-60 absolute"></div>

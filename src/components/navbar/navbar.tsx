@@ -222,7 +222,7 @@ function NavBar() {
 
       {/* top-menu */}
       <div
-        className={`md:${isInFrame ? "flex" : "hidden"} h-screen flex flex-col absolute top-0 w-[170px] shadow z-[100] bg-primary transition-[left] ${
+        className={`md:${isInFrame ? "flex" : "hidden"} h-full flex flex-col absolute top-0 w-[170px] shadow z-[100] bg-primary transition-[left] ${
           showMenu ? "left-0" : "left-[-170px]"
         }`}
       >
@@ -284,7 +284,7 @@ function NavBar() {
       {/* top-mask */}
       <div
         onClick={() => setShowMenu(false)}
-        className={`md:${isInFrame ? "" : "hidden"} h-screen flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
+        className={`md:${isInFrame ? "" : "hidden"} h-full flex flex-col absolute top-0 w-screen transition-all shadow z-[99] bg-muted opacity-80 ${
           showMenu ? "" : "hidden"
         }`}
       ></div>
@@ -294,7 +294,7 @@ function NavBar() {
         className={`hidden md:${isInFrame ? "hidden" : "flex"} justify-end lg:max-w-48 lg:min-w-44 min-w-20 w-20 max-w-20 bg-primary relative px-0 transition-[width,margin,padding,transform,min-width] overflow-hidden border-r-[1px] flex-grow`}
       >
         <div
-          className={`w-full flex-col flex justify-between h-screen items-center lg:items-start`}
+          className={`w-full flex-col flex justify-between h-full items-center lg:items-start`}
         >
           <div className="my-6 bg-primary flex flex-start justify-center lg:items-start lg:justify-start">
             <Link to="/home">

@@ -154,18 +154,79 @@
   },
 
   "errors": {
-      "error": "错误",
-      "404": "页面未找到",
-      "404-description": "抱歉，您访问的页面不存在",
-      "500": "服务器错误",
-      "login-failed": "登录失败, 请重试",
-      "unknown": "未知错误",
-      "back-to-home": "返回主页",
-      "not-logged-in": "未登陆",
-      "not-logged-in-description": "请登陆后访问当前页面"
+    "error": "错误",
+    "404": "页面未找到",
+    "404-description": "抱歉，您访问的页面不存在",
+    "500": "服务器错误",
+    "login-failed": "登录失败, 请重试",
+    "unknown": "未知错误",
+    "back-to-home": "返回主页",
+    "not-logged-in": "未登陆",
+    "not-logged-in-description": "请登陆后访问当前页面",
+
+    "800": "该接口需要登录",
+    "801": "用户不存在",
+    "802": "用户被封禁",
+    "901": "系统维护中",
+    "903": "参数错误",
+
+    "/calendar/get": {
+      "400": "年份错误",
+      "401": "学期错误"
+    },
+    "/course/detail": {
+      "400": "无法找到该课程",
+      "500": "课程代码为空"
+    },
+    "/course/enroll": {
+      "400": "无法找到该班级",
+      "500": "班级编号为空"
+    },
+    "/review/specific": {
+      "400": "无法找到该课程",
+      "500": "课程代码为空"
+    },
+    "/review/post": {
+      "400": "无法找到该课程",
+      "401": "输入的课程评价过短",
+      "402": "输入的讲师评价过段",
+      "403": "课程工作量格式错误",
+      "404": "课程推荐度格式错误",
+      "405": "课程成绩格式错误",
+      "406": "未找到该班级",
+      "407": "评价学年错误",
+      "408": "评价学期错误",
+      "500": "课程代码为空",
+      "501": "班级编号为空",
+      "502": "评价的讲师不能为空"
+    },
+    "/user/login/sso": {
+      "401": "用户不是CUHK学生",
+      "402": "用户不是学生账户",
+      "500": "代码为空"
+    },
+    "/info/article": {
+      "400": "系统错误",
+      "500": "系统错误"
+    }
   },
 
   "calendar": {
     "course-list": "课程"
+  },
+
+  "faculties": {
+    "Arts": "文学院",
+    "Social Science": "社会科学院",
+    "Medicine": "医学院",
+    "Science": "理学院",
+    "Business Administration": "工商管理学院",
+    "Engineering": "工程学院",
+    "Education": "教育学院",
+    "Law": "法律学院",
+    "Office of University General Education": "大学通识教育部",
+    "Inter-Faculty": "跨院系",
+    "Office of Co-operative Education Programme": "在学．在职计划教育部",
+    "Others": "其他"
   }
 }

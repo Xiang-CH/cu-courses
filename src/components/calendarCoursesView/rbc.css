@@ -41,6 +41,12 @@
     height: fit-content !important;
 }
 
+.rbc-event:focus{
+    background-color: rgb(185, 232, 191) !important;
+    height: fit-content !important;
+    z-index: 1000 !important;
+}
+
 .rbc-event-content{
     height: fit-content !important;
     min-height: max-content !important;

@@ -49,9 +49,9 @@
       "faculty": "Faculty",
       "semester": "Semester",
       "class-time": "Class Time",
-      "class-select-weekday": "Select Day of Week",
-      "class-select-start-time": "Select Start Day",
-      "class-select-end-time": "Select End Time",
+      "class-select-weekday": "Day of Week",
+      "class-select-start-time": "Start Time",
+      "class-select-end-time": "End Time",
       "workload": "Course Workload",
       "workload-select": "Select Course Workload",
       "recommendation": "Course Recommendation",
@@ -163,10 +163,72 @@
     "unknown": "Unknown Error",
     "back-to-home": "Back to home",
     "not-logged-in": "Not Logged In",
-    "not-logged-in-description": "Please log in to access this page."
+    "not-logged-in-description": "Please log in to access this page.",
+  
+    "800": "Login required for this interface",
+    "801": "User does not exist",
+    "802": "User is banned",
+    "901": "System under maintenance",
+    "903": "Parameter error",
+    
+    "/calendar/get": {
+      "400": "Invalid year",
+      "401": "Invalid semester"
+    },
+    "/course/detail": {
+      "400": "Course not found",
+      "500": "Course code is empty"
+    },
+    "/course/enroll": {
+      "400": "Class not found",
+      "500": "Class ID is empty"
+    },
+    "/review/specific": {
+      "400": "Course not found",
+      "500": "Course code is empty"
+    },
+    "/review/post": {
+      "400": "Course not found",
+      "401": "Inputted Course review too short",
+      "402": "Inputted Instructor review too short",
+      "403": "Course workload format error",
+      "404": "Course recommendation format error",
+      "405": "Course Grade format error",
+      "406": "Class not found",
+      "407": "Review year error",
+      "408": "Review semester error",
+      "500": "Course code is empty",
+      "501": "Class ID is empty",
+      "502": "Instructor cannot be empty"
+    },
+    "/user/login/sso": {
+      "401": "User is not a CUHK student",
+      "402": "User is not a student account",
+      "500": "Code is empty",
+      "903": "Parameter error"
+    },
+    "/info/article": {
+      "400": "System error",
+      "500": "System error"
+    }
   },
 
   "calendar": {
     "course-list": "Courses"
+  },
+
+  "faculties": {
+    "Arts": "Arts",
+    "Social Science": "Social Science",
+    "Medicine": "Medicine",
+    "Science": "Science",
+    "Business Administration": "Business Administration",
+    "Engineering": "Engineering",
+    "Education": "Education",
+    "Law": "Law",
+    "Office of University General Education": "University General Education",
+    "Inter-Faculty": "Inter-Faculty",
+    "Office of Co-operative Education Programme": "Co-operative Education Programme",
+    "Others": "Others"
   }
 }

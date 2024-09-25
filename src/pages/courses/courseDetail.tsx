@@ -17,7 +17,6 @@ import { request } from "@/lib/api.ts";
 import { useAliveController } from "react-activation";
 
 import "./courseDetail.css";
-const weekday = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 function CourseDetail() {
   const { t, i18n } = useTranslation();
@@ -28,10 +27,7 @@ function CourseDetail() {
   const token = localStorage.getItem("token");
   const aliveController = useAliveController();
 
-  const lang = i18n.language.replace("-", "_") as
-    | "en"
-    | "zh_CN"
-    | "zh_HK";
+  const lang = i18n.language.replace("-", "_") as "en" | "zh_CN" | "zh_HK";
 
   const courseInfoKeys = [
     "course_add_consent",
@@ -68,6 +64,9 @@ function CourseDetail() {
       if (res.code === 200) {
         toast.success(t("courseDetail.add-class-success"));
         const newCourse = { ...course };
+        Object.keys(sessionStorage)
+          .filter((key) => key.startsWith("calendarList_"))
+          .forEach((key) => sessionStorage.removeItem(key));
 
         request("/course/detail.php", {
           course_code: courseId || "",
@@ -78,20 +77,9 @@ function CourseDetail() {
             setCourse(newCourse);
             aliveController.refresh(new RegExp("^/calendar")).finally(() => {
               console.log("Calendar page cache refreshed");
-              if (
-                newCourse.subclass_list
-                  .filter(
-                    (item) => item.subclass_id.toString() == subclass_id,
-                  )[0]
-                  .timeslot_list.filter(
-                    (item) =>
-                      item.timeslot_weekday == weekday[new Date().getDay()],
-                  ).length > 0
-              ) {
-                aliveController.refresh(new RegExp("^/home")).finally(() => {
-                  console.log("Home page cache refreshed");
-                });
-              }
+              aliveController.refresh(new RegExp("^/home")).finally(() => {
+                console.log("Home page cache refreshed");
+              });
             });
           } else {
             toast.error(t("courseDetail.add-class-fail") + ": " + res.msg);
@@ -121,7 +109,7 @@ function CourseDetail() {
           </Button>
           <Label className="text-2xl md:text-3xl font-black text-secondary">
             {courseId} - {course.course_title}
-            {lang !== 'en' && course.course_title_translation[lang] ? (
+            {lang !== "en" && course.course_title_translation[lang] ? (
               <span className="text-xl md:text-2xl text-muted-foreground">
                 <br />
                 {course.course_title_translation[lang]}
@@ -144,7 +132,8 @@ function CourseDetail() {
                   {courseDetailKeys.map((key: string) => {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
-                        {t(`courseDetail.${key}`)}: {course[key] || t("courseDetail.course-no-data")}
+                        {t(`courseDetail.${key}`)}:{" "}
+                        {course[key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -160,7 +149,8 @@ function CourseDetail() {
                   {courseInfoKeys.map((key) => {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
-                        {t(`courseDetail.${key}`)}: {course[key] || t("courseDetail.course-no-data")}
+                        {t(`courseDetail.${key}`)}:{" "}
+                        {course[key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -171,7 +161,9 @@ function CourseDetail() {
                 <Label className="text-lg">
                   {t("courseDetail.course-description")}
                 </Label>
-                <div className="text-sm py-1">{course.course_description_translation[lang]}</div>
+                <div className="text-sm py-1">
+                  {course.course_description_translation[lang]}
+                </div>
               </div>
             </Card>
 
@@ -180,7 +172,9 @@ function CourseDetail() {
                 <Label className="text-lg">
                   {t("courseDetail.course-description")}
                 </Label>
-                <div className="text-sm py-1">{course.course_description_translation[lang]}</div>
+                <div className="text-sm py-1">
+                  {course.course_description_translation[lang]}
+                </div>
               </div>
             </Card>
 
@@ -245,45 +239,50 @@ function CourseDetail() {
           </div>
 
           {/*Classes*/}
-          <Card className="pt-3 pb-0 px-4 bg-primary w-max-full">
-            <Label className="text-lg  text-secondary">
-              {t("courseDetail.course-classes")}
-            </Label>
-            <div className="flex">
-              <ScrollArea className="my-2 w-1 flex-1 overflow-x-auto pb-3">
-                <div className="flex gap-2.5 lg:gap-5">
-                  {course.subclass_list &&
-                    course.subclass_list.map((item) => {
+          {course.subclass_list && course.subclass_list.length > 0 && (
+            <Card className="pt-3 pb-0 px-4 bg-primary w-max-full">
+              <Label className="text-lg  text-secondary">
+                {t("courseDetail.course-classes")}
+              </Label>
+              <div className="flex">
+                <ScrollArea className="my-2 w-1 flex-1 overflow-x-auto pb-3">
+                  <div className="flex gap-2.5 lg:gap-5">
+                    {course.subclass_list.map((item) => {
                       return (
                         <Card
                           key={item.subclass_id}
                           className="border-none bg-muted shadow-none w-40 lg:w-60 pt-1.5 lg:pt-3 pb-2 lg:pb-4 px-2 lg:px-3 min-h-full"
                         >
-                          <div className="flex justify-between items-center mb-2">
+                          <div className="flex justify-between items-start mb-2">
                             <Label>
-                              <span className="text-base lg:text-lg font-bold">{`${item.subclass_section}-${item.subclass_type}`}<br /></span>
-                              <span className="text-xs lg:text-sm leading-3">{item.subclass_term}</span>
+                              <span className="text-base lg:text-lg font-bold">
+                                {`${item.subclass_section}-${item.subclass_type}`}
+                                <br />
+                              </span>
+                              <span className="text-xs lg:text-sm leading-3">
+                                {item.subclass_term}
+                              </span>
                             </Label>
                             {item.subclass_enrollment_status ===
                               "available" && (
-                                <Button
-                                  onClick={addClassToCalendar}
-                                  id={item.subclass_id.toString()}
-                                  className="bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
-                                >
-                                  <span className="noHover">
-                                    {t("courseDetail.class-available")}
-                                  </span>
-                                  <span className="onHover">
-                                    {t("courseDetail.add-class-to-calendar")}
-                                  </span>
-                                </Button>
-                              )}
+                              <Button
+                                onClick={addClassToCalendar}
+                                id={item.subclass_id.toString()}
+                                className="mt-1 bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                              >
+                                <span className="noHover">
+                                  {t("courseDetail.class-available")}
+                                </span>
+                                <span className="onHover">
+                                  {t("courseDetail.add-class-to-calendar")}
+                                </span>
+                              </Button>
+                            )}
                             {item.subclass_enrollment_status === "enrolled" && (
                               <Button
                                 onClick={addClassToCalendar}
                                 id={item.subclass_id.toString()}
-                                className="bg-gray-300 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                                className="mt-1 bg-gray-300 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
                               >
                                 <span className="noHover">
                                   {t("courseDetail.enrolled-class")}
@@ -297,7 +296,7 @@ function CourseDetail() {
                               <Button
                                 onClick={addClassToCalendar}
                                 id={item.subclass_id.toString()}
-                                className="bg-red-400 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                                className="mt-1 bg-red-400 py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
                               >
                                 <span className="noHover">
                                   {t("courseDetail.class-clashed")}
@@ -310,24 +309,33 @@ function CourseDetail() {
                           </div>
                           <div className="flex flex-col lg:gap-1.5 mt-2 lg:mt-4">
                             <div className="text-xs lg:text-sm">
-                              <span className="font-bold">{t("courseDetail.class-instructor")}:</span><br />
-                              {
-                                (item.subclass_instructor_list[0] &&
-                                  item.subclass_instructor_list
-                                    .map(
-                                      (instructor) =>
-                                        instructor.instructor_name,
-                                    )
-                                    .join(", ")) ||
-                                "N/A"
-                              }<br /><br />
-                              <span className="font-bold">{t("courseDetail.class-time")}:</span><br />
+                              <span className="font-bold">
+                                {t("courseDetail.class-instructor")}:
+                              </span>
+                              <br />
+                              {(item.subclass_instructor_list[0] &&
+                                item.subclass_instructor_list
+                                  .map(
+                                    (instructor) => instructor.instructor_name,
+                                  )
+                                  .join(", ")) ||
+                                "N/A"}
+                              <br />
+                              <br />
+                              <span className="font-bold">
+                                {t("courseDetail.class-time")}:
+                              </span>
+                              <br />
                               {item.timeslot_list.map((value, index) => {
                                 return (
                                   <>
-                                    {value.timeslot_weekday} - {value.timeslot_display}<br />
-                                    {value.timeslot_venue}<br />
-                                    {index !== item.timeslot_list.length - 1 && <br />}
+                                    {value.timeslot_weekday} -{" "}
+                                    {value.timeslot_display}
+                                    <br />
+                                    {value.timeslot_venue}
+                                    <br />
+                                    {index !==
+                                      item.timeslot_list.length - 1 && <br />}
                                   </>
                                 );
                               })}
@@ -336,11 +344,12 @@ function CourseDetail() {
                         </Card>
                       );
                     })}
-                </div>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </div>
-          </Card>
+                  </div>
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+              </div>
+            </Card>
+          )}
 
           {/*Comments*/}
           <Card className="py-3 px-4 bg-primary w-max-full">

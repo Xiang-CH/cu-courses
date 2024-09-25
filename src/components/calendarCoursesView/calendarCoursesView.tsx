@@ -83,7 +83,6 @@ const CalendarCoursesView = ({
         newEvents.push(newEvent);
       });
     });
-    console.log(newEvents);
     if (newEvents && newEvents.length > 0) {
       setCalEvents(newEvents);
     }
@@ -140,8 +139,6 @@ const CalendarCoursesView = ({
 
   const onMouseOverEvent = () => {
     if (!eventRefs.current) return;
-    console.log(eventRefs.current);
-    console.log(calEvents);
     Object.values(eventRefs.current).forEach((el) => {
       if (!el?.parentElement?.parentElement) return;
       el.parentElement.parentElement.style.minHeight =

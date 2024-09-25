@@ -66,7 +66,21 @@ function CommentIcon() {
   );
 }
 
-function CourseSearch({ compact }: { compact?: boolean }) {
+function CourseSearch({
+  compact,
+  selectedFaculties,
+  selectedTerm,
+  selectedWeekday,
+  selectedStartTime,
+  selectedEndTime,
+}: {
+  compact?: boolean;
+  selectedFaculties?: string[];
+  selectedTerm?: string;
+  selectedWeekday?: string;
+  selectedStartTime?: string;
+  selectedEndTime?: string;
+}) {
   const { t, i18n } = useTranslation();
   const [searchParam, setSearchParam] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -79,10 +93,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
   const navigate = useNavigate();
 
-  const lang = i18n.language.replace("-", "_") as
-    | "en"
-    | "zh_CN"
-    | "zh_HK";
+  const lang = i18n.language.replace("-", "_") as "en" | "zh_CN" | "zh_HK";
 
   useEffect(() => {
     getCourses(page, query || "").then((res) => {
@@ -103,6 +114,20 @@ function CourseSearch({ compact }: { compact?: boolean }) {
     });
   }, [page, query]);
 
+  useEffect(() => {
+    setLoading(true);
+    getCourses(1, query || "").then((res) => {
+      setCourseList(res);
+      setLoading(false);
+    });
+  }, [
+    selectedFaculties,
+    selectedTerm,
+    selectedWeekday,
+    selectedStartTime,
+    selectedEndTime,
+  ]);
+
   async function getCourses(page: number, query?: string) {
     if (query) {
       const newQueryParams = new URLSearchParams(searchParam);
@@ -115,6 +140,11 @@ function CourseSearch({ compact }: { compact?: boolean }) {
       page_size: "30",
       page: page.toString(),
       keyword: query ? query : "",
+      course_faculty: JSON.stringify(selectedFaculties),
+      subclass_term: selectedTerm || "",
+      timeslot_weekday: selectedWeekday || "",
+      timeslot_start_time: selectedStartTime || "",
+      timeslot_end_time: selectedEndTime || "",
     });
     if (res.code == 200) {
       setTotalPage(res.page_count);
@@ -158,7 +188,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
               <GridLoader color="var(--secondary)" />
             </div>
           )}
-          {courseList.length > 0
+          {courseList.length > 0 && !loading
             ? courseList.map((course, index) => {
                 if (compact && index >= compactLimit) {
                   return;
@@ -166,7 +196,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                   return (
                     <div key={course.course_code}>
                       <Link
-                          to={{
+                        to={{
                           pathname: `/courses/${course.course_code}`,
                         }}
                         className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
@@ -182,9 +212,10 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                             {course.course_title}
                           </Label>
                           <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
-                            {lang !== 'en' && course.course_title_translation[lang] ? (
+                            {lang !== "en" &&
                             course.course_title_translation[lang]
-                          ) : course.course_department}
+                              ? course.course_title_translation[lang]
+                              : course.course_department}
                           </Label>
                         </div>
                         <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
@@ -206,7 +237,7 @@ function CourseSearch({ compact }: { compact?: boolean }) {
               )}
         </div>
 
-        {!compact && courseList.length > 0 && (
+        {!compact && courseList.length > 0 && !loading && (
           <Pagination className="hidden md:block my-6 ml-6">
             <PaginationContent>
               {!(page === 1) && (
@@ -227,23 +258,8 @@ function CourseSearch({ compact }: { compact?: boolean }) {
 
               {page < 3
                 ? Array.from(
-                  { length: Math.min(5, totalPage) },
-                  (_, i) => i + 1,
-                ).map((i) => (
-                  <PaginationItem key={i}>
-                    <PaginationLink
-                      onClick={() => setPage(i)}
-                      to="#"
-                      isActive={page === i}
-                    >
-                      {i}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))
-                : page < totalPage - 3
-                  ? Array.from(
                     { length: Math.min(5, totalPage) },
-                    (_, i) => i + page - 2,
+                    (_, i) => i + 1,
                   ).map((i) => (
                     <PaginationItem key={i}>
                       <PaginationLink
@@ -255,20 +271,35 @@ function CourseSearch({ compact }: { compact?: boolean }) {
                       </PaginationLink>
                     </PaginationItem>
                   ))
+                : page < totalPage - 3
+                  ? Array.from(
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + page - 2,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))
                   : Array.from(
-                    { length: Math.min(5, totalPage) },
-                    (_, i) => i + totalPage - 4,
-                  ).map((i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        onClick={() => setPage(i)}
-                        to="#"
-                        isActive={page === i}
-                      >
-                        {i}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                      { length: Math.min(5, totalPage) },
+                      (_, i) => i + totalPage - 4,
+                    ).map((i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          onClick={() => setPage(i)}
+                          to="#"
+                          isActive={page === i}
+                        >
+                          {i}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
 
               {page < totalPage - 3 && totalPage > 5 && (
                 <PaginationItem>
