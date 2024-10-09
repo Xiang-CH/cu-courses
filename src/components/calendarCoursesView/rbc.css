@@ -2,77 +2,85 @@
     display: none;
 }
 
-.rbc-header{
+.rbc-header {
     padding-bottom: 0.3rem;
     padding-top: 0.4rem;
     border-bottom: none;
 }
 
-.rbc-header button{
+.rbc-header button {
     cursor: default;
 }
 
-.rbc-day-slot .rbc-events-container{
-    margin-right: 0;
+.rbc-day-slot .rbc-events-container {
+    margin-right: 10px;
 }
 
-.rbc-event{
+.rbc-event {
     background-color: rgba(176, 234, 181, 0.7) !important;
-    border: 1px solid #29CC39 !important;
+    border: 1.5px solid #29CC39 !important;
     color: #000;
-    border-radius: 5px;
-    padding: 2px 5px;
+    border-radius: 8px;
+    padding: 3px 5px;
     display: block !important;
     transition: all 200ms ease-in-out;
 }
 
-.rbc-event:hover{
+.rbc-event:hover {
     background-color: rgb(185, 232, 191) !important;
-    position: absolute;
-    /*width: 6rem;*/
     width: 100% !important;
-    overflow: visible ;
+    overflow: visible;
     height: fit-content !important;
-    box-shadow: #a6a6a6 0px 0px 5px 0px;
     z-index: 1000;
 }
 
-.expanded-event:hover{
+.expanded-event {
+    transition: all 200ms ease-in-out;
+}
+
+.expanded-event:hover {
     height: fit-content !important;
 }
 
-.rbc-event:focus{
+.rbc-event:focus {
     background-color: rgb(185, 232, 191) !important;
     height: fit-content !important;
     z-index: 1000 !important;
 }
 
-.rbc-event-content{
+.rbc-event-content {
     height: fit-content !important;
     min-height: max-content !important;
 }
 
-.rbc-current-time-indicator{
+.rbc-current-time-indicator {
     background-color: var(--accent);
+    height: 1.5px;
 }
 
-.rbc-time-header-gutter{
+.rbc-time-header-gutter {
     background: url("../../assets/clock.svg") center no-repeat;
 }
 
-.rbc-time-slot .rbc-label{
+.rbc-time-slot .rbc-label {
     margin-left: 1rem;
     color: #888888;
 }
 
-.custom-day-header{
+.custom-day-header {
     white-space: pre-wrap;
 }
 
-.rbc-time-view{
+.rbc-time-view {
     border: 0;
 }
 
-.rbc-today{
+.rbc-today {
     background-color: rgba(202, 200, 200, 0.11);
+}
+
+@media (max-width: 648px) {
+    .rbc-day-slot .rbc-events-container {
+        margin-right: 0px;
+    }
 }

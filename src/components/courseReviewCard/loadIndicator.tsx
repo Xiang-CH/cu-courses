@@ -26,9 +26,9 @@ function LoadIndicator({ rate, type }: { rate: number; type: "wl" | "rc" }) {
   }
 
   return (
-    <div className="flex h-fit items-center justify-start md:w-full w-fit min-w-fit">
-      <div className={`rounded-full h-2 w-2 ${color}`}></div>
-      <div className="text-xs text-secondary ml-1 min-w-fit">{description}</div>
+    <div className="flex h-fit items-center justify-start w-fit min-w-fit">
+      <div className={`rounded-full h-2.5 w-2.5 ${color}`}></div>
+      <div className="text-sm text-secondary ml-1 min-w-fit">{description}</div>
     </div>
   );
 }

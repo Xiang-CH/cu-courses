@@ -126,6 +126,9 @@
   "courseReview": {
     "course-review": "Course Evaluation",
     "instructor-review": "Professor Evaluation",
+    "grade": "Grade",
+    "workload": "Course Workload",
+    "recommend": "Course Recommendation",
     "recommend-levels": [
       "Highly Reserved",
       "Reserved",

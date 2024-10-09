@@ -26,6 +26,7 @@ interface Subclass {
 
 interface Review {
   review_id: number;
+  review_title: string;
   course_code?: string;
   course_title?: string;
   review_course_content: string;

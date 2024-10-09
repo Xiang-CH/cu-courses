@@ -15,6 +15,7 @@ import {
   CalendarEvent,
 } from "@/lib/types.ts";
 import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const localizer = momentLocalizer(moment);
 
@@ -146,17 +147,19 @@ const CalendarCoursesView = ({
     });
   };
 
+  const navigate = useNavigate();
+
   const CustomEvent = ({ event }: { event: CalendarEvent }) => {
     return (
       <div
         className="custom-event"
         onMouseEnter={onMouseOverEvent}
+        onClick={() => navigate("/courses/" + event.course_code)}
         id={event.subclass_id.toString()}
         ref={(el) => (eventRefs.current[event.date + event.subclass_id] = el)}
       >
         <p className="text-xs font-bold">{event.course_code}</p>
         <p className="text-xs">{event.calendar_venue}</p>
-        <p className="text-xs text-gray-700">{event.course_title}</p>
       </div>
     );
   };
@@ -183,7 +186,7 @@ const CalendarCoursesView = ({
         min={minTime}
         max={maxTime}
         formats={formats}
-        // step={60}
+        step={60}
         components={{
           toolbar: CustomToolbarWrapper,
           week: {

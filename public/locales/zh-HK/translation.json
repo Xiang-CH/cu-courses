@@ -127,6 +127,9 @@
   "courseReview": {
     "course-review": "課程評價",
     "instructor-review": "教授評價",
+    "grade": "課程成績",
+    "workload": "課程工作量",
+    "recommend": "課程推薦度",
     "recommend-levels": ["極度保留", "保留", "適中","推薦", "極度推薦"],
     "workload-levels": ["非常重", "較重", "適中", "較輕", "非常輕"],
     "no-data": "暫無"
