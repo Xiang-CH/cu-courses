@@ -72,6 +72,50 @@ interface CourseDetails {
     zh_HK: string;
     en: string;
   };
+  course_translation: {
+    zh_CN: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    },
+    zh_HK: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    },
+    en: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    },
+  }
 }
 
 interface CourseDetailApiResponse {

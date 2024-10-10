@@ -102,7 +102,7 @@ function AddReview({ courseId }: { courseId: string }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="bg-accent py-1.5 px-4 h-fit text-xs font-normal hover:shadow">
+        <Button className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight">
           <span>{t("courseDetail.add-course-review")}</span>
         </Button>
       </DialogTrigger>

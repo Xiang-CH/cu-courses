@@ -112,7 +112,7 @@ function CourseDetail() {
             {lang !== "en" && course.course_title_translation[lang] ? (
               <span className="text-xl md:text-2xl text-muted-foreground">
                 <br />
-                {course.course_title_translation[lang]}
+                {course.course_translation[lang].course_title}
               </span>
             ) : null}
           </Label>
@@ -133,7 +133,7 @@ function CourseDetail() {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
                         {t(`courseDetail.${key}`)}:{" "}
-                        {course[key] || t("courseDetail.course-no-data")}
+                        {course.course_translation[lang][key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -150,7 +150,7 @@ function CourseDetail() {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
                         {t(`courseDetail.${key}`)}:{" "}
-                        {course[key] || t("courseDetail.course-no-data")}
+                        {course.course_translation[lang][key] || t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -251,7 +251,7 @@ function CourseDetail() {
                       return (
                         <Card
                           key={item.subclass_id}
-                          className="border-none bg-muted shadow-none w-40 lg:w-60 pt-1.5 lg:pt-3 pb-2 lg:pb-4 px-2 lg:px-3 min-h-full"
+                          className="border-none bg-muted shadow-none w-40 lg:w-60 p-2 lg:p-3 min-h-full"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <Label>
@@ -365,15 +365,15 @@ function CourseDetail() {
               ) : (
                 <Button
                   onClick={() =>
-                    toast.warning(t("courseDetail.login-to-review"))
+                    window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`
                   }
-                  className="bg-accent py-1.5 px-4 h-fit text-xs font-normal hover:shadow"
+                  className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight"
                 >
                   <span>{t("courseDetail.add-course-review")}</span>
                 </Button>
               )}
             </div>
-            <div className="flex flex-col gap-4 mt-3">
+            <div className="grid grid-cols-1 gap-4 mt-3 lg:grid-cols-2">
               {course.review_list &&
                 course.review_list.map((review, index) => {
                   return (

@@ -362,7 +362,7 @@ function NavBar() {
                   className="w-full px-4"
                   to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
                 >
-                  <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-muted menuItem w-full transition duration-200 ease-in-out">
+                  <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-accentlight menuItem w-full transition duration-200 ease-in-out">
                     <EnterIcon className="w-4 h-4 lg:mr-3" />
                     <span className="hidden lg:block">
                       {t("navbar.login-register")}

@@ -23,6 +23,7 @@
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: #F9DD47;
+    --accent-light: #FAE77D;
     --accent-foreground: #222D43;
 
     --text-grey: #bbbbbb;
@@ -60,6 +61,7 @@
     --text-grey: #bbbbbb;
 
     --accent: #F9DD47;
+    --accent-light: #FAE77D;
     --accent-foreground: #222D43;
 
     --destructive: 0 84.2% 60.2%;

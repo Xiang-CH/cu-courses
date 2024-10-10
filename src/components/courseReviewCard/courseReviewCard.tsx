@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import moment from "moment";
 import { Card } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import LoadIndicator from "@/components/courseReviewCard/loadIndicator.tsx";
@@ -8,7 +7,7 @@ import { Review } from "@/lib/types.ts";
 function CourseReviewCard({ course_data }: { course_data: Review }) {
   const { t } = useTranslation();
   return (
-    <Card className="border-none bg-muted shadow-none py-3 px-3">
+    <Card className="border-none bg-muted shadow-none p-3">
       <div className="flex justify-between items-start mb-2">
         <Label>
           <span className="text-base lg:text-lg font-bold">
@@ -28,7 +27,7 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
               {t("courseReview.course-review")}:
             </span>
             <div className="whitespace-pre-line">{course_data.review_course_content}</div>
-            <br/>
+            {(course_data.review_instructor_content || course_data.review_grade || course_data.review_workload_level || course_data.review_recommend_level) && <br />}
           </div>
         )}
 
@@ -38,7 +37,7 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
               {t("courseReview.instructor-review")}:
             </span>
             <div className="whitespace-pre-line">{course_data.review_instructor_content}</div>
-            <br/>
+            {(course_data.review_grade || course_data.review_workload_level || course_data.review_recommend_level) && <br />}
           </div>
         )}
 
@@ -69,37 +68,7 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
           </div>
         )}
 
-
-
       </div>
-      {/* <CardContent className="pt-3 pb-0 px-4 bg-primary w-max-full">
-        <div className="flex flex-col w-3/4 pb-3 md:pb-0">
-          <CardTitle className="text-md text-secondary">
-            毫克
-          </CardTitle>
-          <CardDescription className="text-xs text-secondary mt-2 min-h-16">
-            <span>moment.unix(course_data.review_create_time).format("DD-MM-YYYY")</span>
-            <span className="font-bold">{t("courseReview.course-review")}</span>
-            {": "}
-            {course_data.review_course_content}
-          </CardDescription>
-          <CardDescription className="text-xs text-secondary mt-3 min-h-16">
-            <span className="font-bold">
-              {t("courseReview.instructor-review")}
-            </span>
-            {": "}
-            {course_data.review_instructor_content}
-          </CardDescription>
-        </div>
-      </CardContent>
-      <CardFooter className="flex-row flex md:flex-col absolute right-4 bottom-3 p-0 m-0">
-        <LoadIndicator rate={course_data.review_workload_level} type="wl" />
-        <div className="md:hidden w-3" />
-        <LoadIndicator rate={course_data.review_recommend_level} type="rc" />
-        <div className="text-xs text-muted-foreground ml-3 block min-w-fit">
-          {}
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }
