@@ -28,7 +28,7 @@ async function request(location: string, params: params) {
   try {
     const response = await fetch(url, requestOptions);
     if (!response.ok) {
-      throw response;
+      return;
     }
 
     const data = await response.json();
@@ -45,7 +45,7 @@ async function request(location: string, params: params) {
       //需要登陆
       if (
         data.code == 800 &&
-        window.location.pathname in ["/calendar", "/profile"]
+        !(window.location.pathname in ["/calendar", "/profile"])
       ) {
         setTimeout(() => {
           window.location.href = `https://login.tripleuni.com/CUCampusDev?callback=${encodeURIComponent(window.location.pathname)}&language=${i18n.language}`;
