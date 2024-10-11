@@ -175,6 +175,7 @@ function CourseSearch({
       <div className="flex-col w-full md:mx-3 relative">
         <form onSubmit={handleSearch} className="relative">
           <Input
+            type="search"
             ref={inputRef}
             value={queryInput}
             onChange={(e) => setQueryInput(e.target.value)}
