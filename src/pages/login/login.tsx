@@ -26,6 +26,7 @@ function Login() {
   const getToken = (url: string, code: string) => {
     request(url, {
       code: code,
+      is_dev: "true",
     }).then((res) => {
       console.log(res);
       if (res.code == 200) {

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "@/lib/api.ts";
@@ -84,12 +85,14 @@ function CourseSearch({
   const { t, i18n } = useTranslation();
   const [searchParam, setSearchParam] = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [query, setQuery] = useState(searchParam.get("q") || "");
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [courseList, setCourseList] = useState<Course[]>([]);
-  const [compactLimit, setCompactLimit] = useState(20);
+  // const [compactLimit, setCompactLimit] = useState(20);
   const [loading, setLoading] = useState(true);
+  const [queryInput, setQueryInput] = useState(query.toString());
 
   const navigate = useNavigate();
 
@@ -99,18 +102,18 @@ function CourseSearch({
     getCourses(page, query || "").then((res) => {
       setCourseList(res);
       setLoading(false);
-      console.log(document.getElementById("topOfPage"));
       document
         .getElementById("topOfPage")
         ?.scrollIntoView({ behavior: "smooth" });
 
-      const card_height =
-        document.getElementById("CourseSearchCard")?.offsetHeight;
-      if (compact && card_height) {
-        if (window.innerWidth < 648)
-          setCompactLimit(Math.floor((card_height - 100) / 72));
-        else setCompactLimit(Math.floor((card_height - 200) / 50));
-      }
+      // const card_height =
+      //   document.getElementById("course-search-list")?.offsetHeight;
+      // // document.getElementById("CourseSearchCard")?.offsetHeight;
+      // if (compact && card_height) {
+      //   if (window.innerWidth < 648)
+      //     setCompactLimit(Math.floor((card_height - 100) / 72));
+      //   else setCompactLimit(Math.floor((card_height - 200) / 50));
+      // }
     });
   }, [page, query]);
 
@@ -157,8 +160,8 @@ function CourseSearch({
     return [];
   }
 
-  function handleSearch(event: React.FormEvent) {
-    event.preventDefault();
+  function handleSearch(event?: React.FormEvent) {
+    event?.preventDefault();
     if (compact) {
       navigate("/courses?q=" + inputRef.current?.value);
       return;
@@ -170,13 +173,30 @@ function CourseSearch({
   return (
     <div className="flex w-full relative">
       <div className="flex-col w-full md:mx-3 relative">
-        <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch} className="relative">
           <Input
+            type="search"
             ref={inputRef}
+            value={queryInput}
+            onChange={(e) => setQueryInput(e.target.value)}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
             className={`bg-muted border-none transition duration-200 ease-in-out ${compact ? "w-[98%] mx-[1%] py-3" : "w-[96%] mx-[2%] py-2.5 md:py-5 md:px-6"}`}
           />
+          {queryInput && (
+            <button
+              type="button"
+              onClick={() => {
+                setQueryInput("");
+                setQuery("");
+                setPage(1);
+                setLoading(true);
+              }}
+              className="bg-muted absolute right-[2rem] top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full p-0"
+            >
+              <CrossCircledIcon width="16px" height="16px" />
+            </button>
+          )}
         </form>
         <div
           className={`w-full bg-primary rounded-lg pb-0  ${compact ? "mt-1 p-0" : "mt-3 p-1"} min-h-[80%]`}
@@ -189,46 +209,50 @@ function CourseSearch({
             </div>
           )}
           {courseList.length > 0 && !loading
-            ? courseList.map((course, index) => {
-                if (compact && index >= compactLimit) {
-                  return;
-                } else {
-                  return (
-                    <div key={course.course_code}>
-                      <Link
-                        to={{
-                          pathname: `/courses/${course.course_code}`,
-                        }}
-                        className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
-                      >
-                        <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
-                          <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
-                            {course.course_code} - {course.course_title}
-                          </Label>
-                          <Label className="md:hidden font-bold hover:cursor-pointer text-[0.85em] md:text-md">
-                            {course.course_code}
-                          </Label>
-                          <Label className="md:hidden font-bold hover:cursor-pointer text-xs md:text-md">
-                            {course.course_title}
-                          </Label>
-                          <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
-                            {lang !== "en" &&
-                            course.course_title_translation[lang]
-                              ? course.course_title_translation[lang]
-                              : course.course_department}
-                          </Label>
-                        </div>
-                        <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
-                          <CommentIcon />
-                          <Label className="text-xs ml-1 hover:cursor-pointer">
-                            {course.course_review_count || 0}
-                          </Label>
-                        </div>
-                      </Link>
-                      {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
-                    </div>
-                  );
-                }
+            ? courseList.map((course) => {
+                // if (compact && index >= compactLimit) {
+
+                // if (
+                //   compact
+                // ) {
+                //   return;
+                // } else {
+                return (
+                  <div key={course.course_code} className="search-course-item">
+                    <Link
+                      to={{
+                        pathname: `/courses/${course.course_code}`,
+                      }}
+                      className={`flex justify-between items-center py-1 relative hover:bg-muted hover:cursor-pointer transition duration-200 ease-in-out rounded-sm ${compact ? "px-1" : "md:px-4"}`}
+                    >
+                      <div className="flex flex-col my-1 hover:cursor-pointer px-2 md:px-0">
+                        <Label className="hidden font-bold md:block leading-7 hover:cursor-pointer text-sm md:text-md">
+                          {course.course_code} - {course.course_title}
+                        </Label>
+                        <Label className="md:hidden font-bold hover:cursor-pointer text-[0.85em] md:text-md">
+                          {course.course_code}
+                        </Label>
+                        <Label className="md:hidden font-bold hover:cursor-pointer text-xs md:text-md">
+                          {course.course_title}
+                        </Label>
+                        <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
+                          {lang !== "en" &&
+                          course.course_title_translation[lang]
+                            ? course.course_title_translation[lang]
+                            : course.course_department}
+                        </Label>
+                      </div>
+                      <div className="flex items-center justify-start w-fit mr-3 md:mr-1">
+                        <CommentIcon />
+                        <Label className="text-xs ml-1 hover:cursor-pointer">
+                          {course.course_review_count || 0}
+                        </Label>
+                      </div>
+                    </Link>
+                    {!compact && <Separator className="w-[99%] mx-[0.5%]" />}
+                  </div>
+                );
+                // }
               })
             : !loading && (
                 <div className="flex justify-center items-center h-10 text-md text-muted-foreground">

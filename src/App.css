@@ -59,10 +59,11 @@
   height: 92%;
 }
 
-@media (max-width: 440px) {
+
+@media (max-width: 648px) {
   .ka-wrapper{
     width: 100%;
     max-width: 100%;
-    height: calc(100% - 3.5rem) ;
+    height: calc(100svh - 3.5rem) ;
   }
 }

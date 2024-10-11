@@ -15,6 +15,10 @@ function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     request("/review/my.php", { token: token || "" }).then((res) => {
       if (res.code == 200) {
         console.log(res.review_list);

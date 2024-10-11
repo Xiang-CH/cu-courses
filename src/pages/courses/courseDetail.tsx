@@ -89,10 +89,10 @@ function CourseDetail() {
 
   return (
     <ScrollArea
-      className="w-full h-[calc(100vh-60px)] md:h-screen text-left gap-1"
+      className="w-full h-full md:h-screen text-left gap-1"
       scrollHideDelay={100}
     >
-      <div className="px-2 md:px-8 md:py-4 w-full">
+      <div className="px-2 md:px-8 md:py-4 w-full pb-4">
         {/*Header*/}
         <div className="flex my-4 items-start">
           <Button
