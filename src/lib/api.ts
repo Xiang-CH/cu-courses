@@ -43,7 +43,10 @@ async function request(location: string, params: params) {
       console.log("error", data);
 
       //需要登陆
-      if (data.code == 800) {
+      if (
+        data.code == 800 &&
+        window.location.pathname in ["/calendar", "/profile"]
+      ) {
         setTimeout(() => {
           window.location.href = `https://login.tripleuni.com/CUCampusDev?callback=${encodeURIComponent(window.location.pathname)}&language=${i18n.language}`;
         }, 200);

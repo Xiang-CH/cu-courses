@@ -31,6 +31,7 @@ function Login() {
       if (res.code == 200) {
         localStorage.setItem("token", res.token);
         toast(t("login.success"));
+        console.log("callback", searchParams.get("callback"));
         const redirect = searchParams.get("callback");
         setTimeout(() => {
           if (redirect) navigate(decodeURIComponent(redirect));
@@ -53,6 +54,7 @@ function Login() {
       navigate("/");
       return;
     }
+    console.log(code, triple_uni_token);
 
     if (code) {
       getToken("/user/login/sso.php", code);
