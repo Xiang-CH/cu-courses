@@ -260,17 +260,17 @@ function CalendarCoursesViewCard({
   const { t } = useTranslation();
   return (
     <Card className="flex-col overflow-y-hidden w-full flex-grow p-0 text-parimary-forground bg-primary text-center relative items-center pt-6 pb-3 min-h-40">
-      <ScrollArea className="max-h-full h-full">
-        <CardContent className="px-2 md:px-4 w-full pb-1">
+      <CardContent className="px-2 md:px-4 w-full h-full pb-1 flex flex-col">
+        <ScrollArea className="calendar-card-scroll-area h-full">
           <CardTitle className="text-xl text-left px-2">
             {t("home.calendar")}
           </CardTitle>
 
-          <div className="w-full px-1.5 text-left my-2">
+          <div className="w-full px-1.5 text-left my-2 relative h-full flex-grow">
             <CalendarCoursesView compact events={events} />
           </div>
-        </CardContent>
-      </ScrollArea>
+        </ScrollArea>
+      </CardContent>
     </Card>
   );
 }
@@ -307,6 +307,7 @@ function Home() {
       setWeek(week.toString());
       setTotalWeeks(total_weeks.toString());
 
+      if (!token) return;
       getCalendar(currentYear, currentTerm).then((calendar_list) => {
         setCalendarEvents(calendar_list);
         const d = new Date();

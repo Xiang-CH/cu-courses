@@ -360,7 +360,7 @@ function NavBar() {
               ) : (
                 <Link
                   className="w-full px-4"
-                  to={`https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`}
+                  to={`https://login.tripleuni.com/CUCampus?callback=${encodeURIComponent(location.pathname)}&language=${i18n.language}`}
                 >
                   <Button className="bg-accent self-center text-accent-foreground px-3 hover:text-secondary hover:bg-accentlight menuItem w-full transition duration-200 ease-in-out">
                     <EnterIcon className="w-4 h-4 lg:mr-3" />

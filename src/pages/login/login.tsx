@@ -23,6 +23,29 @@ function Login() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const getToken = (url: string, code: string) => {
+    request(url, {
+      code: code,
+    }).then((res) => {
+      console.log(res);
+      if (res.code == 200) {
+        localStorage.setItem("token", res.token);
+        toast(t("login.success"));
+        const redirect = searchParams.get("callback");
+        setTimeout(() => {
+          if (redirect) navigate(decodeURIComponent(redirect));
+          navigate("/");
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          const redirect = searchParams.get("callback");
+          if (redirect) navigate(decodeURIComponent(redirect));
+          navigate("/");
+        }, 2000);
+      }
+    });
+  };
+
   useEffect(() => {
     const code = searchParams.get("code");
     const triple_uni_token = searchParams.get("token");
@@ -32,64 +55,53 @@ function Login() {
     }
 
     if (code) {
-      request("/user/login/sso.php", {
-        code: code,
-      }).then((res) => {
-        console.log(res);
-        if (res.code == 200) {
-          localStorage.setItem("token", res.token);
-          toast(t("login.success"));
-          const redirect = searchParams.get("callback");
-          setTimeout(() => {
-            if (redirect) navigate(redirect);
-            navigate("/");
-          }, 1000);
-        } else {
-          console.log("Token获取失败", res.msg);
-          toast(t("errors.error"), {
-            description: t("errors.login-failed"),
-          });
-          setTimeout(() => {
-            const redirect = searchParams.get("callback");
-            if (redirect) navigate(redirect);
-            navigate("/");
-          }, 2000);
-        }
-      });
-    }
-
-    else if (triple_uni_token) {
-      request("/user/login/tripleuni.php", {
-        token: triple_uni_token,
-      }).then((res) => {
-        console.log(res);
-        if (res.code == 200) {
-          localStorage.setItem("token", res.token);
-          toast(t("login.success"));
-          const redirect = searchParams.get("callback");
-          setTimeout(() => {
-            if (redirect) navigate(redirect);
-            navigate("/");
-          }, 1000);
-        } else {
-          console.log("Token获取失败", res.msg);
-          toast(t("errors.error"), {
-            description: t("errors.login-failed"),
-          });
-          setTimeout(() => {
-            const redirect = searchParams.get("callback");
-            if (redirect) navigate(redirect);
-            navigate("/");
-          }, 2000);
-        }
-      });
-    }
-
-    else {
+      getToken("/user/login/sso.php", code);
+      // request("/user/login/sso.php", {
+      //   code: code,
+      // }).then((res) => {
+      //   console.log(res);
+      //   if (res.code == 200) {
+      //     localStorage.setItem("token", res.token);
+      //     toast(t("login.success"));
+      //     const redirect = searchParams.get("callback");
+      //     setTimeout(() => {
+      //       if (redirect) navigate(decodeURIComponent(redirect));
+      //       navigate("/");
+      //     }, 1000);
+      //   } else {
+      //     setTimeout(() => {
+      //       const redirect = searchParams.get("callback");
+      //       if (redirect) navigate(decodeURIComponent(redirect));
+      //       navigate("/");
+      //     }, 2000);
+      //   }
+      // });
+    } else if (triple_uni_token) {
+      getToken("/user/login/tripleuni.php", triple_uni_token);
+      // request("/user/login/tripleuni.php", {
+      //   token: triple_uni_token,
+      // }).then((res) => {
+      //   console.log(res);
+      //   if (res.code == 200) {
+      //     localStorage.setItem("token", res.token);
+      //     toast(t("login.success"));
+      //     const redirect = searchParams.get("callback");
+      //     setTimeout(() => {
+      //       if (redirect) navigate(redirect);
+      //       navigate("/");
+      //     }, 1000);
+      //   } else {
+      //     setTimeout(() => {
+      //       const redirect = searchParams.get("callback");
+      //       if (redirect) navigate(redirect);
+      //       navigate("/");
+      //     }, 2000);
+      //   }
+      // });
+    } else {
       navigate("/");
       return;
     }
-
   }, []);
 
   return (

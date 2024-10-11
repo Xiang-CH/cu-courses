@@ -33,14 +33,21 @@ async function request(location: string, params: params) {
 
     const data = await response.json();
     if (data.code != 200) {
-      toast.error(i18n.t("errors.error"), {
-        description: i18n.t(
+      toast.error(
+        i18n.t(
           ["8", "9"].includes(data.code.toString()[0])
             ? `errors.${data.code}`
             : `errors.${url}.${data.code}`,
         ),
-      });
+      );
       console.log("error", data);
+
+      //需要登陆
+      if (data.code == 800) {
+        setTimeout(() => {
+          window.location.href = `https://login.tripleuni.com/CUCampusDev?callback=${encodeURIComponent(window.location.pathname)}&language=${i18n.language}`;
+        }, 200);
+      }
     }
     return data;
   } catch (error) {

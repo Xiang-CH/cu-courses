@@ -81,12 +81,8 @@ function CourseDetail() {
                 console.log("Home page cache refreshed");
               });
             });
-          } else {
-            toast.error(t("courseDetail.add-class-fail") + ": " + res.msg);
           }
         });
-      } else {
-        toast.error(t("courseDetail.add-class-fail") + ": " + res.msg);
       }
     });
   }
@@ -133,7 +129,8 @@ function CourseDetail() {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
                         {t(`courseDetail.${key}`)}:{" "}
-                        {course.course_translation[lang][key] || t("courseDetail.course-no-data")}
+                        {course.course_translation[lang][key] ||
+                          t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -150,7 +147,8 @@ function CourseDetail() {
                     return (
                       <div className="text-sm mb-0.5" key={key}>
                         {t(`courseDetail.${key}`)}:{" "}
-                        {course.course_translation[lang][key] || t("courseDetail.course-no-data")}
+                        {course.course_translation[lang][key] ||
+                          t("courseDetail.course-no-data")}
                       </div>
                     );
                   })}
@@ -365,7 +363,7 @@ function CourseDetail() {
               ) : (
                 <Button
                   onClick={() =>
-                    window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`
+                    (window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`)
                   }
                   className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight"
                 >

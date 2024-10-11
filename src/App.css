@@ -52,6 +52,13 @@
   height: 100%;
 }
 
+
+.calendar-card-scroll-area div[style*="min-width: 100%"][style*="display: table;"] {
+  /* Your CSS rules here */
+  /*background-color: yellow; !* Example: changing background color *!*/
+  height: 92%;
+}
+
 @media (max-width: 440px) {
   .ka-wrapper{
     width: 100%;
