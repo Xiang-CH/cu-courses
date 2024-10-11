@@ -77,7 +77,7 @@ function Apps() {
   }, []);
 
   return (
-    <div className="w-full h-[100vh-3.5em] md:h-screen md:p-4 text-left flex flex-col">
+    <div className="w-full h-full max-h-[100svh] md:p-4 text-left flex flex-col">
       <div className="flex my-2 md:my-4">
         <Button onClick={() => navigate("/home")}>
           <ChevronLeftIcon className="w-5 h-5 md:w-7 md:h-7 mb-1.5 md:mb-0" />
@@ -87,7 +87,7 @@ function Apps() {
         </Label>
       </div>
 
-      <div className="mx-1.5 lg:mx-10 mt-1 md:mt-3">
+      <div className="mx-1.5 lg:mx-10 mt-1 md:mt-3 flex-grow">
         <Tabs defaultValue="all" className="w-full self-center">
           <TabsList className="w-full">
             <TabsTrigger value="all" className="min-w-30 w-1/4">
@@ -104,7 +104,7 @@ function Apps() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="all">
-            <ScrollArea className="w-full h-[80vh]">
+            <ScrollArea className="w-full h-[calc(100svh-11rem)]">
               <div className="flex flex-col">
                 {apps.map((app) => (
                   <AppCard app={app} lang={lang} />
@@ -113,7 +113,7 @@ function Apps() {
             </ScrollArea>
           </TabsContent>
           <TabsContent value="campus">
-            <ScrollArea className="w-full h-[80vh]">
+            <ScrollArea className="w-full h-[calc(100svh-11rem)]">
               <div className="flex flex-col">
                 {apps
                   .filter((app) => app.app_category === "campus")
@@ -124,7 +124,7 @@ function Apps() {
             </ScrollArea>
           </TabsContent>
           <TabsContent value="study">
-            <ScrollArea className="w-full h-[80vh]">
+            <ScrollArea className="w-full h-[calc(100svh-11rem)]">
               <div className="flex flex-col">
                 {apps
                   .filter((app) => app.app_category === "study")
@@ -135,7 +135,7 @@ function Apps() {
             </ScrollArea>
           </TabsContent>
           <TabsContent value="job">
-            <ScrollArea className="w-full h-[80vh]">
+            <ScrollArea className="w-full h-[calc(100svh-11rem)]">
               <div className="flex flex-wrap">
                 {apps
                   .filter((app) => app.app_category === "job")

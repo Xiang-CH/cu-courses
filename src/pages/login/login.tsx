@@ -26,23 +26,28 @@ function Login() {
   const getToken = (url: string, code: string) => {
     request(url, {
       code: code,
+      is_dev: "true",
     }).then((res) => {
-      console.log(res);
       if (res.code == 200) {
         localStorage.setItem("token", res.token);
         toast(t("login.success"));
         console.log("callback", searchParams.get("callback"));
         const redirect = searchParams.get("callback");
         setTimeout(() => {
-          if (redirect) navigate(decodeURIComponent(redirect));
-          navigate("/");
+          if (redirect) {
+            console.log("redirect", redirect);
+            navigate(redirect);
+          } else {
+            console.log("redirect", "/");
+            navigate("/");
+          }
         }, 1000);
       } else {
         setTimeout(() => {
           const redirect = searchParams.get("callback");
-          if (redirect) navigate(decodeURIComponent(redirect));
-          navigate("/");
-        }, 2000);
+          if (redirect) navigate(redirect);
+          else navigate("/");
+        }, 1000);
       }
     });
   };
@@ -54,7 +59,6 @@ function Login() {
       navigate("/");
       return;
     }
-    console.log(code, triple_uni_token);
 
     if (code) {
       getToken("/user/login/sso.php", code);

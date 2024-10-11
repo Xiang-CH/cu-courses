@@ -11,7 +11,7 @@ function NotLoggedIn() {
   return (
     <div className="w-full absolute top-0 left-0 z-[50]">
       <div className="w-full h-full absolute top-0 left-0 opacity-80 bg-gray-200 z-[0]"></div>
-      <div className="flex min-h-[100svh] flex-col items-center justify-center p-4 text-center z-[100]">
+      <div className="flex min-h-[calc(100svh-3.5rem)] md:min-h-[100svh] flex-col items-center justify-center p-4 text-center z-[100]">
         <div className="mb-8 z-[100]">
           <img
             src={logo}
