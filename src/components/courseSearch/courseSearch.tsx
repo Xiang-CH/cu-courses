@@ -16,6 +16,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { GridLoader } from "react-spinners";
+import { useAliveController } from "react-activation";
 
 interface Course {
   course_code: string;
@@ -94,6 +95,7 @@ function CourseSearch({
   const [queryInput, setQueryInput] = useState(query.toString());
 
   const navigate = useNavigate();
+  const aliveController = useAliveController();
 
   const lang = i18n.language.replace("-", "_") as "en" | "zh_CN" | "zh_HK";
 
@@ -170,13 +172,12 @@ function CourseSearch({
       <div className="flex-col w-full md:mx-3 relative">
         <form onSubmit={handleSearch} className="relative">
           <Input
-            type="search"
             ref={inputRef}
             value={queryInput}
             onChange={(e) => setQueryInput(e.target.value)}
             defaultValue={searchParam.get("q") || undefined}
             placeholder={t("courses.search.placeholder")}
-            className={`bg-muted border-none transition duration-200 ease-in-out ${compact ? "w-[98%] mx-[1%] py-3" : "w-[96%] mx-[2%] py-2.5 md:py-5 md:px-6"}`}
+            className={`bg-muted border-none transition duration-200 ease-in-out ${compact ? "w-[98%] mx-[1%] py-3" : "w-[96%] mx-[2%] py-2.5 md:py-5 md:px-6"} pr-8 md:pr-10`}
           />
           {queryInput && (
             <button
@@ -185,9 +186,16 @@ function CourseSearch({
                 setQueryInput("");
                 setQuery("");
                 setPage(1);
-                setLoading(true);
+                if (searchParam.get("q")) {
+                  setLoading(true);
+                  aliveController
+                    .refresh(new RegExp("^/courses"))
+                    .finally(() => {
+                      setSearchParam("");
+                    });
+                }
               }}
-              className="bg-muted absolute right-[2rem] top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full p-0"
+              className="bg-muted absolute right-[1.2rem] md:right-[2rem] top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full p-0"
             >
               <CrossCircledIcon width="16px" height="16px" />
             </button>
