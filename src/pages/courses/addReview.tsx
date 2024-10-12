@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -33,7 +34,11 @@ function AddReview({ courseId }: { courseId: string }) {
   const aliveController = useAliveController();
   const years = [];
 
-  for (let year = moment().year(); year >= moment().year() - 10; year--) {
+  let latestYear = moment().year();
+  if (moment().month() > 8) {
+    latestYear++;
+  }
+  for (let year = latestYear; year >= latestYear - 7; year--) {
     years.push(year);
   }
   const terms = ["Term 1", "Term 2", "Term 3", "Term 4", "Summer Session"];
@@ -61,6 +66,24 @@ function AddReview({ courseId }: { courseId: string }) {
   const [courseReviewValue, setCourseReviewValue] = useState("");
   const [instructorValue, setInstructorValue] = useState("");
   const [instructorReviewValue, setInstructorReviewValue] = useState("");
+  const [specific, setSpecific] = useState({
+    [yearValue]: { [termValue]: [] },
+  });
+  const [specificSubclass, setSpecificSubclass] = useState("");
+  const [loadingSpecific, setLoadingSpecific] = useState(true);
+
+  useEffect(() => {
+    request("/review/specific.php", {
+      token: localStorage.getItem("token") || "",
+      course_code: courseId,
+    }).then((res) => {
+      if (res.code == 200) {
+        setSpecific(res.specific_available_list);
+      }
+      setLoadingSpecific(false);
+    });
+  }, []);
+
   function submitReview(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     // submit review
@@ -68,15 +91,18 @@ function AddReview({ courseId }: { courseId: string }) {
       !yearValue ||
       !termValue ||
       !courseReviewValue ||
-      !instructorValue ||
+      !(instructorValue || specificSubclass) ||
       !instructorReviewValue
     ) {
       toast.error(t("courseDetail.warning"));
       setShowWarning(true);
       return;
     }
+
     request("/review/post.php", {
       token: localStorage.getItem("token") || "",
+      is_specific: specificSubclass ? "true" : "false",
+      subclass_id: specificSubclass,
       review_year: yearValue,
       review_term: termValue,
       review_course_content: courseReviewValue,
@@ -110,6 +136,9 @@ function AddReview({ courseId }: { courseId: string }) {
         className="max-h-[90%] pb-4 overflow-y-auto"
         aria-describedby={undefined}
       >
+        {loadingSpecific && (
+          <div className="bg-gray-200 opacity-50 absolute w-full h-full" />
+        )}
         <DialogHeader>
           <DialogTitle>
             {t("courseDetail.course-review-card-title")}
@@ -117,7 +146,9 @@ function AddReview({ courseId }: { courseId: string }) {
         </DialogHeader>
         <form className="px-1">
           <div className="grid w-full items-center gap-4">
+            {/*第一行*/}
             <div className="flex gap-2">
+              {/*选择学年*/}
               <div className="flex flex-col space-y-1.5 w-1/2">
                 <Label htmlFor="year" className="my-0.5">
                   {t("courseDetail.class-year")}
@@ -145,6 +176,8 @@ function AddReview({ courseId }: { courseId: string }) {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/*选择学期*/}
               <div className="flex flex-col space-y-1.5 w-1/2">
                 <Label htmlFor="term" className="my-0.5">
                   {t("courseDetail.class-term")}
@@ -159,18 +192,36 @@ function AddReview({ courseId }: { courseId: string }) {
                     <SelectValue placeholder={t("courseDetail.select-term")} />
                   </SelectTrigger>
                   <SelectContent>
-                    {terms.map((term) => (
-                      <SelectItem
-                        className="hover:bg-muted"
-                        value={term}
-                        key={term}
-                      >
-                        {term}
-                      </SelectItem>
-                    ))}
+                    {terms.map((term) => {
+                      if (yearValue && specific[yearValue]) {
+                        if (Object.keys(specific[yearValue]).includes(term)) {
+                          return (
+                            <SelectItem
+                              className="hover:bg-muted"
+                              value={term}
+                              key={term}
+                            >
+                              {term}
+                            </SelectItem>
+                          );
+                        }
+                      } else {
+                        return (
+                          <SelectItem
+                            className="hover:bg-muted"
+                            value={term}
+                            key={term}
+                          >
+                            {term}
+                          </SelectItem>
+                        );
+                      }
+                    })}
                   </SelectContent>
                 </Select>
               </div>
+
+              {/*选择成绩*/}
               <div className="flex flex-col space-y-1.5 w-24">
                 <Label htmlFor="term" className="my-0.5">
                   {t("courseDetail.grade")}
@@ -194,6 +245,7 @@ function AddReview({ courseId }: { courseId: string }) {
               </div>
             </div>
 
+            {/*第二行：课程推荐度*/}
             <div className="flex flex-col space-y-1.5 items-center">
               <Label htmlFor="recommend" className="my-0.5 self-start">
                 {t("courseDetail.course-recommendation")}
@@ -207,6 +259,7 @@ function AddReview({ courseId }: { courseId: string }) {
               ></SliderWithMarks>
             </div>
 
+            {/*第三行：课程工作量*/}
             <div className="flex flex-col space-y-1.5 items-center">
               <Label htmlFor="workload" className="my-0.5 self-start">
                 {t("courseDetail.course-workload")}
@@ -220,6 +273,7 @@ function AddReview({ courseId }: { courseId: string }) {
               ></SliderWithMarks>
             </div>
 
+            {/*第四行：课程评价*/}
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="course-review" className="my-0.5">
                 {t("courseReview.course-review")}
@@ -234,19 +288,79 @@ function AddReview({ courseId }: { courseId: string }) {
               />
             </div>
 
+            {/*第五行：选择讲师*/}
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="instructor" className="my-0.5">
                 {t("courseDetail.class-instructor")}
               </Label>
-              <Input
-                id="instructor"
-                placeholder={t("courseDetail.select-instructor")}
-                onChange={(e) => setInstructorValue(e.target.value)}
-                className={
-                  showWarning && !instructorValue ? "border-red-500" : ""
-                }
-              />
+              {yearValue &&
+              termValue &&
+              specific[yearValue] &&
+              specific[yearValue][termValue] ? (
+                <Select
+                  value={specificSubclass}
+                  onValueChange={setSpecificSubclass}
+                >
+                  <SelectTrigger
+                    id="instructor"
+                    className={
+                      showWarning && !specificSubclass ? "border-red-500" : ""
+                    }
+                  >
+                    <SelectValue
+                      placeholder={t("courseDetail.select-instructor")}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {specific[yearValue][termValue].map(
+                      ({
+                        subclass_id,
+                        subclass_type,
+                        subclass_section,
+                        subclass_instructor_list,
+                      }: {
+                        subclass_id: number;
+                        subclass_type: string;
+                        subclass_section: string;
+                        subclass_instructor_list: {
+                          instructor_name: string;
+                          instructor_id: number;
+                        }[];
+                      }) => (
+                        <SelectGroup
+                          key={"select_group_" + subclass_id.toString()}
+                        >
+                          <SelectLabel>
+                            {subclass_type} - {subclass_section}
+                          </SelectLabel>
+                          {subclass_instructor_list.map(
+                            ({ instructor_name, instructor_id }) => (
+                              <SelectItem
+                                value={subclass_id.toString()}
+                                key={instructor_id.toString()}
+                              >
+                                {instructor_name}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectGroup>
+                      ),
+                    )}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  id="instructor"
+                  placeholder={t("courseDetail.select-instructor")}
+                  onChange={(e) => setInstructorValue(e.target.value)}
+                  className={
+                    showWarning && !instructorValue ? "border-red-500" : ""
+                  }
+                />
+              )}
             </div>
+
+            {/*第六行：讲师评价*/}
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="instructor-review" className="my-0.5">
                 {t("courseDetail.instructor-review")}

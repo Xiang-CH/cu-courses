@@ -26,7 +26,7 @@ function Login() {
   const getToken = (url: string, code: string) => {
     request(url, {
       code: code,
-      is_dev: "true",
+      // is_dev: "true",
     }).then((res) => {
       if (res.code == 200) {
         localStorage.setItem("token", res.token);
@@ -35,10 +35,10 @@ function Login() {
         const redirect = searchParams.get("callback");
         setTimeout(() => {
           if (redirect) {
-            console.log("redirect", redirect);
+            console.log("navigating to", redirect);
             navigate(redirect);
           } else {
-            console.log("redirect", "/");
+            console.log("navigating to", "/");
             navigate("/");
           }
         }, 1000);
@@ -62,48 +62,8 @@ function Login() {
 
     if (code) {
       getToken("/user/login/sso.php", code);
-      // request("/user/login/sso.php", {
-      //   code: code,
-      // }).then((res) => {
-      //   console.log(res);
-      //   if (res.code == 200) {
-      //     localStorage.setItem("token", res.token);
-      //     toast(t("login.success"));
-      //     const redirect = searchParams.get("callback");
-      //     setTimeout(() => {
-      //       if (redirect) navigate(decodeURIComponent(redirect));
-      //       navigate("/");
-      //     }, 1000);
-      //   } else {
-      //     setTimeout(() => {
-      //       const redirect = searchParams.get("callback");
-      //       if (redirect) navigate(decodeURIComponent(redirect));
-      //       navigate("/");
-      //     }, 2000);
-      //   }
-      // });
     } else if (triple_uni_token) {
       getToken("/user/login/tripleuni.php", triple_uni_token);
-      // request("/user/login/tripleuni.php", {
-      //   token: triple_uni_token,
-      // }).then((res) => {
-      //   console.log(res);
-      //   if (res.code == 200) {
-      //     localStorage.setItem("token", res.token);
-      //     toast(t("login.success"));
-      //     const redirect = searchParams.get("callback");
-      //     setTimeout(() => {
-      //       if (redirect) navigate(redirect);
-      //       navigate("/");
-      //     }, 1000);
-      //   } else {
-      //     setTimeout(() => {
-      //       const redirect = searchParams.get("callback");
-      //       if (redirect) navigate(redirect);
-      //       navigate("/");
-      //     }, 2000);
-      //   }
-      // });
     } else {
       navigate("/");
       return;

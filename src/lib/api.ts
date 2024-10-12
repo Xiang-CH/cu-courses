@@ -45,7 +45,7 @@ async function request(location: string, params: params) {
       //需要登陆
       if (data.code == 800) {
         setTimeout(() => {
-          window.location.href = `https://login.tripleuni.com/CUCampusDev?callback=${encodeURIComponent(window.location.pathname)}&language=${i18n.language}`;
+          window.location.href = `https://login.tripleuni.com/CUCampus?callback=${encodeURIComponent(window.location.pathname)}&language=${i18n.language}`;
         }, 200);
       }
     }

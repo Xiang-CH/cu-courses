@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import React, { useEffect, useRef, useState } from "react";
 import { request } from "@/lib/api.ts";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import {
   Pagination,
   PaginationContent,
@@ -153,10 +152,6 @@ function CourseSearch({
       setTotalPage(res.page_count);
       return res.course_list;
     }
-    toast(t("errors.error"), {
-      icon: "error",
-      description: res.msg,
-    });
     return [];
   }
 

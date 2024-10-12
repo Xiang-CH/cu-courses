@@ -105,10 +105,34 @@ const CalendarCoursesView = ({
   };
 
   const minTime: Date = new Date();
-  minTime.setHours(9, 0, 0);
 
   const maxTime: Date = new Date();
-  maxTime.setHours(22, 0, 0);
+  if (events.length > 0) {
+    let maxHour = 0;
+    let minHour = 24;
+
+    events.forEach((event: CalendarListApiResponse) => {
+      const startHours = Math.floor(event.calendar_start_time / 60) - 1;
+      const endHours = Math.floor(event.calendar_end_time / 60) + 1;
+      if (endHours > maxHour) {
+        maxHour = endHours;
+      }
+      if (startHours < minHour) {
+        minHour = startHours;
+      }
+    });
+
+    if (compact) {
+      minTime.setHours(Math.min(minHour, 11), 0, 0);
+      maxTime.setHours(Math.max(maxHour, 18), 0, 0);
+    } else {
+      minTime.setHours(Math.min(minHour, 9), 0, 0);
+      maxTime.setHours(Math.max(maxHour, 19), 0, 0);
+    }
+  } else {
+    minTime.setHours(9, 0, 0);
+    maxTime.setHours(22, 0, 0);
+  }
 
   const formats: Formats = {
     timeGutterFormat: "HH",

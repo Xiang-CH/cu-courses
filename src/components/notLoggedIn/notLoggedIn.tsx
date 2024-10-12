@@ -28,7 +28,7 @@ function NotLoggedIn() {
           {t("errors.not-logged-in-description")}
         </p>
         <div className="flex flex-col md:flex-row w-fit gap-4 mb-16">
-          <Link to="/" className="inline-block text-sm z-[100]">
+          <Link to="/home" className="inline-block text-sm z-[100]">
             <Button
               variant="default"
               className="bg-gray-300 text-secondary hover:shadow-lg px-8"
@@ -38,7 +38,7 @@ function NotLoggedIn() {
           </Link>
           <Link
             className="inline-block text-sm z-[100]"
-            to={`https://login.tripleuni.com/CUCampus?callback${location.pathname}&language=${i18n.language}`}
+            to={`https://login.tripleuni.com/CUCampus?callback${encodeURIComponent(location.pathname)}&language=${i18n.language}`}
           >
             <Button
               variant="default"
