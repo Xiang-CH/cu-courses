@@ -175,7 +175,7 @@ function CourseSearchCard() {
 function DirectoryCard() {
   const { t } = useTranslation();
   return (
-    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start ml-0">
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start ml-0 min-w-36">
       <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.directory")}</CardTitle>
         <CardDescription>{t("home.directory-description")}</CardDescription>
@@ -215,25 +215,25 @@ function AnnouncementCard({
   const navigate = useNavigate();
 
   return (
-    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start">
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start max-w-[40%]">
       <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
         <CardDescription>{t("home.announcement-description")}</CardDescription>
       </CardHeader>
-      <CardContent className="text-left w-full relative px-0">
-        <ScrollArea className="h-44 px-2 md:px-4" scrollHideDelay={10}>
-          <div className="w-full h-fit flex flex-col justify-center space-y-2.5">
+      <CardContent className="text-left w-full max-w-full relative px-0">
+        <ScrollArea className="h-[10.5rem] px-2 md:px-4 w-full max-w-full" scrollHideDelay={10}>
+          <div className="w-full max-w-full h-fit flex flex-col justify-center space-y-2.5">
             {announcements.map((announcement, index) => {
               return (
                 <Card
                   key={index}
-                  className="w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
+                  className="w-full max-w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
                   onClick={() => {
                     navigate(`/article/${announcement.article_id}`);
                   }}
                 >
-                  <CardContent className="flex flex-col justify-between p-0 mx-2">
-                    <p className="text-sm font-bold leading-tight truncate">
+                  <CardContent className="flex flex-col justify-between p-0 mx-2 ">
+                    <p className="text-sm font-bold leading-tight truncate max-w-full whitespace-pre-wrap">
                       {announcement.announcement_title}
                     </p>
                     <p className="text-xs font-light leading-tight">
