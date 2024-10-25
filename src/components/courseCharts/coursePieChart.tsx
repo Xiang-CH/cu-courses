@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { chartConfigRC, chartConfigWL } from "@/pages/courses/chartConfig.ts";
+import { chartConfigRC, chartConfigWL } from "@/components/courseCharts/chartConfig";
 import {
   ChartContainer,
   ChartTooltip,

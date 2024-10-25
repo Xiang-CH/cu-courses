@@ -233,7 +233,7 @@ function AnnouncementCard({
                   }}
                 >
                   <CardContent className="flex flex-col justify-between p-0 mx-2 ">
-                    <p className="text-sm font-bold leading-tight truncate max-w-full whitespace-pre-wrap">
+                    <p className="text-sm font-semibold leading-tight truncate max-w-full whitespace-pre-wrap">
                       {announcement.announcement_title}
                     </p>
                     <p className="text-xs font-light leading-tight">

@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label.tsx";
 import { Card } from "@/components/ui/card.tsx";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.tsx";
 import CourseReviewCard from "@/components/courseReviewCard/courseReviewCard.tsx";
-import CoursePieChart from "@/components/coursePieChart/coursePieChart.tsx";
+import CoursePieChart from "@/components/courseCharts/coursePieChart";
+import CourseBarChart from "@/components/courseCharts/courseBarChart";
 import { Separator } from "@/components/ui/separator.tsx";
 import React, { useState } from "react";
 import { CourseDetailApiResponse, CourseDetails } from "@/lib/types.ts";
@@ -17,6 +18,21 @@ import { request } from "@/lib/api.ts";
 import { useAliveController } from "react-activation";
 
 import "./courseDetail.css";
+
+const course_grades = {
+  "a": 1,
+  "a-": 5,
+  "b+": 1,
+  "b": 10,
+  "b-": 40,
+  "c+": 0,
+  "c": 0,
+  "c-": 0,
+  "d+": 0,
+  "d": 0,
+  "pass": 0,
+  "fail": 0,
+}
 
 function CourseDetail() {
   const { t, i18n } = useTranslation();
@@ -211,28 +227,13 @@ function CourseDetail() {
                   />
                 </div>
               </Card>
-              {/*Course Readings*/}
-              {/* <Card className="hidden md:flex w-full py-3 px-4 bg-primary justify-between h-full gap-2 overflow-hidden">
-                <div className="flex flex-col items-center h-full w-1/2">
-                  <Label className="text-md mb-2">
-                    {t("courseDetail.course-must_reads")}
+              {/*Course grades*/}
+              <Card className="flex flex-col w-full py-3 px-4 bg-primary justify-between h-full gap-4 overflow-hidden">
+                 <Label className="text-lg self-start">
+                    {t("courseDetail.course-grades-chart")}
                   </Label>
-                  <Card className="w-full h-full py-2 px-4 shadow-none">
-                    <div className="text-xs">{course.must_reads || "N/A"}</div>
-                  </Card>
-                </div>
-                <div className="w-[1px] bg-gray-400 mt-7 mx-2"></div>
-                <div className="flex flex-col items-center h-full w-1/2">
-                  <Label className="text-md mb-2">
-                    {t("courseDetail.course-recommended_books")}
-                  </Label>
-                  <Card className="w-full h-full py-2 px-4 shadow-none">
-                    <div className="text-xs">
-                      {course.recommended_books || "N/A"}
-                    </div>
-                  </Card>
-                </div>
-              </Card> */}
+                  <CourseBarChart data={course_grades} />
+              </Card>
             </div>
           </div>
 
