@@ -18,6 +18,7 @@ import { CalendarListApiResponse, Announcement } from "@/lib/types";
 import { Link, useNavigate } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import moment from "moment";
+import i18n from "i18next";
 
 const icon_size = "1.5em";
 const directory_contents = [
@@ -221,7 +222,10 @@ function AnnouncementCard({
         <CardDescription>{t("home.announcement-description")}</CardDescription>
       </CardHeader>
       <CardContent className="text-left w-full max-w-full relative px-0">
-        <ScrollArea className="h-[10.5rem] px-2 md:px-4 w-full max-w-full" scrollHideDelay={10}>
+        <ScrollArea
+          className="h-[10.5rem] px-2 md:px-4 w-full max-w-full"
+          scrollHideDelay={10}
+        >
           <div className="w-full max-w-full h-fit flex flex-col justify-center space-y-2.5">
             {announcements.map((announcement, index) => {
               return (
@@ -332,6 +336,17 @@ function Home() {
   useEffect(() => {
     request("/info/announcement.php", { token: token }).then((res) => {
       if (res.code === 200) {
+        if (i18n.language === "zh-CN") {
+          res.announcement_list.forEach((announcement: Announcement) => {
+            announcement.announcement_title =
+              announcement[`announcement_title_zh_cn`];
+          });
+        } else if (i18n.language === "zh-HK") {
+          res.announcement_list.forEach((announcement: Announcement) => {
+            announcement.announcement_title =
+              announcement[`announcement_title_zh_hk`];
+          });
+        }
         setAnnouncements(res.announcement_list);
       }
     });

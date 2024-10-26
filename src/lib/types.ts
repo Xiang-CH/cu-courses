@@ -33,7 +33,19 @@ interface Review {
   review_instructor_content: string;
   review_workload_level: 1 | 2 | 3 | 4 | 5;
   review_recommend_level: 1 | 2 | 3 | 4 | 5;
-  review_grade: string;
+  review_grade:
+    | "a"
+    | "a-"
+    | "b+"
+    | "b"
+    | "b-"
+    | "c+"
+    | "c"
+    | "c-"
+    | "d+"
+    | "d"
+    | "pass"
+    | "fail";
   review_create_time: number;
   review_year: string;
   review_term: string;
@@ -86,7 +98,7 @@ interface CourseDetails {
       course_drop_consent: string | null;
       course_requirement: string;
       course_description: string;
-    },
+    };
     zh_HK: {
       [key: string]: any;
       course_title: string;
@@ -100,7 +112,7 @@ interface CourseDetails {
       course_drop_consent: string | null;
       course_requirement: string;
       course_description: string;
-    },
+    };
     en: {
       [key: string]: any;
       course_title: string;
@@ -114,8 +126,8 @@ interface CourseDetails {
       course_drop_consent: string | null;
       course_requirement: string;
       course_description: string;
-    },
-  }
+    };
+  };
 }
 
 interface CourseDetailApiResponse {
@@ -161,6 +173,8 @@ interface App {
 
 interface Announcement {
   announcement_title: string;
+  announcement_title_zh_cn: string;
+  announcement_title_zh_hk: string;
   article_id: string;
   announcement_create_time: number;
 }
@@ -186,5 +200,5 @@ export type {
   CourseDetails,
   CourseDetailApiResponse,
   CalendarListApiResponse,
-  Subclass
+  Subclass,
 };

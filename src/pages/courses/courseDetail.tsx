@@ -9,8 +9,8 @@ import CourseReviewCard from "@/components/courseReviewCard/courseReviewCard.tsx
 import CoursePieChart from "@/components/courseCharts/coursePieChart";
 import CourseBarChart from "@/components/courseCharts/courseBarChart";
 import { Separator } from "@/components/ui/separator.tsx";
-import React, { useState } from "react";
-import { CourseDetailApiResponse, CourseDetails } from "@/lib/types.ts";
+import React, { useEffect, useState } from "react";
+import { CourseDetailApiResponse, CourseDetails, Review } from "@/lib/types.ts";
 import PageNotFound from "@/pages/errors/404.tsx";
 import AddReview from "@/pages/courses/addReview.tsx";
 import { toast } from "sonner";
@@ -19,20 +19,20 @@ import { useAliveController } from "react-activation";
 
 import "./courseDetail.css";
 
-const course_grades = {
-  "a": 1,
-  "a-": 5,
-  "b+": 1,
-  "b": 10,
-  "b-": 40,
+const initial_course_grades = {
+  a: 0,
+  "a-": 0,
+  "b+": 0,
+  b: 0,
+  "b-": 0,
   "c+": 0,
-  "c": 0,
+  c: 0,
   "c-": 0,
   "d+": 0,
-  "d": 0,
-  "pass": 0,
-  "fail": 0,
-}
+  d: 0,
+  pass: 0,
+  fail: 0,
+};
 
 function CourseDetail() {
   const { t, i18n } = useTranslation();
@@ -40,6 +40,7 @@ function CourseDetail() {
   const navigate = useNavigate();
   const courseData = useLoaderData() as CourseDetailApiResponse;
   const [course, setCourse] = useState<CourseDetails>(courseData.course_detail);
+  const [courseGrades, setCourseGrades] = useState(initial_course_grades);
   const token = localStorage.getItem("token");
   const aliveController = useAliveController();
 
@@ -58,6 +59,19 @@ function CourseDetail() {
     "course_faculty",
     "course_department",
   ];
+
+  useEffect(() => {
+    const new_course_grades = { ...initial_course_grades };
+    for (const review in course.review_list) {
+      const reviewItem = course.review_list[review] as Review;
+      if (!reviewItem.review_grade) continue;
+      const gradeKey =
+        reviewItem.review_grade.toLowerCase() as keyof typeof initial_course_grades;
+      new_course_grades[gradeKey] += 1;
+    }
+    console.log(new_course_grades);
+    setCourseGrades(new_course_grades);
+  }, [course]);
 
   const pattern = /^[A-Za-z]{4}\d{4}$/;
   if (!courseId || !pattern.test(courseId) || courseData.code == 400) {
@@ -229,10 +243,10 @@ function CourseDetail() {
               </Card>
               {/*Course grades*/}
               <Card className="flex flex-col w-full py-3 px-4 bg-primary justify-between h-full gap-4 overflow-hidden">
-                 <Label className="text-lg self-start">
-                    {t("courseDetail.course-grades-chart")}
-                  </Label>
-                  <CourseBarChart data={course_grades} />
+                <Label className="text-lg self-start">
+                  {t("courseDetail.course-grades-chart")}
+                </Label>
+                <CourseBarChart data={courseGrades} />
               </Card>
             </div>
           </div>

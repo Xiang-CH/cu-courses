@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { chartConfigRC, chartConfigWL } from "@/components/courseCharts/chartConfig";
+import {
+  chartConfigRC,
+  chartConfigWL,
+} from "@/components/courseCharts/chartConfig";
 import {
   ChartContainer,
   ChartTooltip,
@@ -134,7 +137,9 @@ function CoursePieChart({
         <div className="flex flex-col gap-3 ml-1.5 mr-4 md:mr-0 h-full justify-center">
           {chartData.map((item, index) => {
             if (item.count === 0) return;
-            return <LoadIndicator rate={index + 1} type={chat_type} />;
+            return (
+              <LoadIndicator key={index} rate={index + 1} type={chat_type} />
+            );
           })}
         </div>
       )}
