@@ -135,7 +135,7 @@ function CourseDetail() {
           </Button>
           <Label className="text-2xl md:text-3xl font-black text-secondary">
             {courseId} - {course.course_title}
-            {lang !== "en" && course.course_title_translation[lang] ? (
+            {lang !== "en" && course.course_translation[lang].course_title ? (
               <span className="text-xl md:text-2xl text-muted-foreground">
                 <br />
                 {course.course_translation[lang].course_title}
@@ -190,7 +190,7 @@ function CourseDetail() {
                   {t("courseDetail.course-description")}
                 </Label>
                 <div className="text-sm py-1">
-                  {course.course_description_translation[lang]}
+                  {course.course_translation[lang].course_description}
                 </div>
               </div>
             </Card>
@@ -201,7 +201,7 @@ function CourseDetail() {
                   {t("courseDetail.course-description")}
                 </Label>
                 <div className="text-sm py-1">
-                  {course.course_description_translation[lang]}
+                  {course.course_translation[lang].course_description}
                 </div>
               </div>
             </Card>

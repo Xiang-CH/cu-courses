@@ -31,15 +31,49 @@ interface Course {
   course_requirement: string;
   course_description: string;
   course_review_count?: number;
-  course_title_translation: {
-    zh_CN: string;
-    zh_HK: string;
-    en: string;
-  };
-  course_description_translation: {
-    zh_CN: string;
-    zh_HK: string;
-    en: string;
+  course_translation: {
+    zh_CN: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    };
+    zh_HK: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    };
+    en: {
+      [key: string]: any;
+      course_title: string;
+      course_type: string;
+      course_department?: string;
+      course_faculty?: string;
+      course_career: string;
+      course_unit: string;
+      course_grading_basis: string;
+      course_add_consent: string | null;
+      course_drop_consent: string | null;
+      course_requirement: string;
+      course_description: string;
+    };
   };
 }
 
@@ -240,8 +274,8 @@ function CourseSearch({
                         </Label>
                         <Label className="text-xs md:text-sm text-muted-foreground hover:cursor-pointer">
                           {lang !== "en" &&
-                          course.course_title_translation[lang]
-                            ? course.course_title_translation[lang]
+                          course.course_translation[lang].course_title
+                            ? course.course_translation[lang].course_title
                             : course.course_department}
                         </Label>
                       </div>
