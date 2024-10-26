@@ -57,47 +57,47 @@ const chartConfigRC: { [key: string]: { label: string; color: string } } = {
 const chartConfigGrades: { [key: string]: { label: string; color: string } } = {
   a: {
     label: "A",
-    color: "#00C577",
+    color: "#006400",
   },
   "a-": {
     label: "A-",
-    color: "#B2F66E",
+    color: "#228B22",
   },
   "b+": {
     label: "B+",
-    color: "#F9DD47",
+    color: "#32CD32",
   },
   b: {
     label: "B",
-    color: "#FCFF7C",
+    color: "#7CFC00",
   },
   "b-": {
     label: "B-",
-    color: "#FF8753",
+    color: "#ADFF2F",
   },
   "c+": {
     label: "C+",
-    color: "#FF3C3C",
+    color: "#FFFF00",
   },
   c: {
     label: "C",
-    color: "#FF6915",
+    color: "#FFD700",
   },
   "c-": {
     label: "C-",
-    color: "#FF623F",
+    color: "#FFA500",
   },
   "d+": {
     label: "D+",
-    color: "#0038FF",
+    color: "#FF4500",
   },
   d: {
     label: "D",
-    color: "#9E00FF",
+    color: "#FF0000",
   },
   pass: {
     label: "Pass",
-    color: "#AC6ABD",
+    color: "#D3D3D3",
   },
   fail: {
     label: "Fail",
