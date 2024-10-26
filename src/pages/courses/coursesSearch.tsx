@@ -69,7 +69,7 @@ const terms = ["Term 1", "Term 2", "Term 3", "Term 4", "Summer Session"];
 //   { value: 1350, display: "22:30" },
 // ];
 
-function Courses() {
+function CoursesSearch() {
   const { t } = useTranslation();
   // const navigate = useNavigate();
   // const location = useLocation();
@@ -333,4 +333,4 @@ function Courses() {
   );
 }
 
-export default Courses;
+export default CoursesSearch;

@@ -233,7 +233,7 @@ function AnnouncementCard({
                   key={index}
                   className="w-full max-w-full h-fit border-none bg-muted shadow-none p-2 hover:bg-card hover:cursor-pointer transition duration-200 ease-in-out"
                   onClick={() => {
-                    navigate(`/article/${announcement.article_id}`);
+                    navigate(`/home/article/${announcement.article_id}`);
                   }}
                 >
                   <CardContent className="flex flex-col justify-between p-0 mx-2 ">

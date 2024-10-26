@@ -2,7 +2,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { request } from "@/lib/api.ts";
-import i18n from "@/i18n";
+import i18n from "@/i18n.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 // import { Label } from "@/components/ui/label.tsx";
@@ -58,6 +58,20 @@ export default function Article() {
             margin: "0 auto",
           }}
           className="w-full"
+          wrapperElement={{
+            "data-color-mode": "light",
+          }}
+          rehypeRewrite={(node, _, parent) => {
+            if (
+              parent &&
+              "tagName" in node &&
+              "tagName" in parent &&
+              node.tagName === "a" &&
+              /^h([1-6])/.test(parent.tagName)
+            ) {
+              parent.children = parent.children.slice(1);
+            }
+          }}
         />
       </div>
     </ScrollArea>

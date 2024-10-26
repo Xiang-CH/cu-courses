@@ -11,9 +11,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "@/pages/home/home.tsx";
-import Apps from "@/pages/home/apps.tsx";
-import Article from "@/pages/article/article.tsx";
-import Courses from "@/pages/courses/courses.tsx";
+import Apps from "@/pages/home/apps/apps.tsx";
+import Article from "@/pages/home/article/article.tsx";
+import CoursesSearch from "@/pages/courses/coursesSearch.tsx";
 import CourseDetail from "@/pages/courses/courseDetail.tsx";
 import { request } from "@/lib/api.ts";
 import MyCalendar from "@/pages/myCalendar/myCalendar.tsx";
@@ -43,12 +43,12 @@ const router = createBrowserRouter([
         element: <Apps />,
       },
       {
-        path: "article/:articleId",
+        path: "home/article/:articleId",
         element: <Article />,
       },
       {
         path: "courses",
-        element: <Courses />,
+        element: <CoursesSearch />,
       },
       {
         path: "courses/:courseId",

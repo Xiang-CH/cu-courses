@@ -1,12 +1,17 @@
 import { Label } from "@/components/ui/label.tsx";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { Link2Icon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { App } from "@/lib/types";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs.tsx";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import { App } from "@/lib/types.ts";
 import { request } from "@/lib/api.ts";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
