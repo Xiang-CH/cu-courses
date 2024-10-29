@@ -216,7 +216,7 @@ function AnnouncementCard({
   const navigate = useNavigate();
 
   return (
-    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start max-w-[40%]">
+    <Card className="w-full p-1 text-parimary-forground bg-primary text-center relative flex-col content-start md:max-w-[40%] max-w-[55%]">
       <CardHeader className="px-1">
         <CardTitle className="text-xl">{t("home.announcement")}</CardTitle>
         <CardDescription>{t("home.announcement-description")}</CardDescription>

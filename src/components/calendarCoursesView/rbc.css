@@ -13,7 +13,7 @@
 }
 
 .rbc-day-slot .rbc-events-container {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .rbc-event {
@@ -23,15 +23,25 @@
     border-radius: 8px;
     padding: 3px 5px;
     display: block !important;
-    transition: all 200ms ease-in-out;
+    min-width: 3rem !important;
+    transition: width 200ms ease-in-out, min-width 200ms ease-in-out, max-height 400ms ease-in-out;
 }
 
-.rbc-event:hover {
+.rbc-event:hover,.rbc-event:focus {
     background-color: rgb(185, 232, 191) !important;
     width: 100% !important;
-    /* overflow: visible; */
-    height: fit-content !important;
     z-index: 1000;
+    min-width: 5rem !important;
+    max-height: 50% !important;
+}
+
+.custom-event{
+    /*height: inherit;*/
+    min-height: 100%;
+}
+
+.rbc-event-content{
+    position: relative;
 }
 
 .expanded-event {
@@ -46,11 +56,6 @@
     background-color: rgb(185, 232, 191) !important;
     height: fit-content !important;
     z-index: 1000 !important;
-}
-
-.rbc-event-content {
-    height: fit-content !important;
-    min-height: max-content !important;
 }
 
 .rbc-current-time-indicator {

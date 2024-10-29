@@ -45,6 +45,7 @@ const CalendarCoursesView = ({
   availability?: AvailableCalendar;
 }) => {
   // const [view, setView] = useState(Views.WORK_WEEK);
+  const navigate = useNavigate();
   const eventRefs = useRef<EventRefs>({});
   const [currentView, setCurrentView] = useState<View>(Views.WORK_WEEK);
   const [calEvents, setCalEvents] = useState<CalendarEvent[]>([]);
@@ -84,9 +85,28 @@ const CalendarCoursesView = ({
         newEvents.push(newEvent);
       });
     });
+
     if (newEvents && newEvents.length > 0) {
       setCalEvents(newEvents);
     }
+
+    if (!eventRefs.current) return;
+    setTimeout(() => {
+      Object.values(eventRefs.current).forEach((el) => {
+        if (!el?.parentElement?.parentElement) return;
+        el.parentElement.parentElement.style.minHeight =
+          el.parentElement.parentElement.style.height;
+        el.parentElement.parentElement.style.maxHeight =
+          el.parentElement.parentElement.style.height;
+      });
+    }, 30);
+
+    setTimeout(() => {
+      Object.values(eventRefs.current).forEach((el) => {
+        if (!el?.parentElement?.parentElement) return;
+        el.parentElement.parentElement.style.height = "";
+      });
+    }, 50);
   }, [events]);
 
   const CustomToolbarWrapper: React.FC<ToolbarProps> = (props) => {
@@ -162,23 +182,10 @@ const CalendarCoursesView = ({
     );
   };
 
-  const onMouseOverEvent = () => {
-    if (!eventRefs.current) return;
-    Object.values(eventRefs.current).forEach((el) => {
-      if (!el?.parentElement?.parentElement) return;
-      el.parentElement.parentElement.style.minHeight =
-        el.parentElement.parentElement.style.height;
-    });
-  };
-
-  const navigate = useNavigate();
-
   const CustomEvent = ({ event }: { event: CalendarEvent }) => {
     return (
       <div
-        className="custom-event"
-        onMouseEnter={onMouseOverEvent}
-        onClick={() => navigate("/courses/" + event.course_code)}
+        className="custom-event h-full"
         id={event.subclass_id.toString()}
         ref={(el) => (eventRefs.current[event.date + event.subclass_id] = el)}
       >
@@ -199,10 +206,19 @@ const CalendarCoursesView = ({
         startAccessor="calendar_start_date_time"
         endAccessor="calendar_end_date_time"
         style={{ height: "100%", width: "100%" }}
+        onSelectEvent={(event) => {
+          if ("ontouchstart" in window || navigator.maxTouchPoints) {
+            return;
+          }
+          navigate("/courses/" + event.course_code);
+        }}
+        onDoubleClickEvent={(event) => {
+          navigate("/courses/" + event.course_code);
+        }}
         // views={[hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK]}
         // header={{ left: "", center: "", right: "" }}
         views={[Views.WORK_WEEK, Views.WEEK]}
-        // view={currentView}
+        view={currentView}
         defaultView={currentView}
         // defaultView={hasWeekendEvents ? Views.WEEK : Views.WORK_WEEK}
         toolbar={!compact}
