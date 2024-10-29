@@ -2,12 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="CU Campus">
+
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
     <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png">
+
     <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, " />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "CU Campus",
+        "alternateName": ["CU 选课助手", "CU 课程表", "CU Courses"],
+        "url": "https://cucampus.one/"
+      }
+    </script>
+
+
     <title>CU Campus</title>
   </head>
   <body>
+    <noscript>
+      <strong>We're sorry but CU Campus doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

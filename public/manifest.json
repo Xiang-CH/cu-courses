@@ -1,11 +1,29 @@
 {
+  "short_name": "CU Campus",
   "name": "CU Campus",
   "icons": [
     {
       "src": "/logo.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
-  "start_url": "/home"
+
+  "start_url": "/home",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#ffffff",
+  "shortcuts": [
+    {
+      "name": "我的课程",
+      "url": "/calendar"
+    },
+    {
+      "name": "课程平台",
+      "url": "/courses"
+    }
+  ],
+  "description": ""
 }
