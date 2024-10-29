@@ -31,7 +31,7 @@ export default function Article() {
       className="w-full h-full md:h-screen text-left gap-1"
       scrollHideDelay={100}
     >
-      <div className="px-2 md:px-8 md:py-4 w-full">
+      <div className="px-2 md:px-8 md:py-4 w-full relative">
         {/*Header*/}
         <div className="flex my-4 items-start">
           <Button
@@ -57,7 +57,7 @@ export default function Article() {
             maxWidth: 800,
             margin: "0 auto",
           }}
-          className="w-full"
+          className="w-[calc(100vw-1rem)] md:w-[calc(100vw-9rem-20px)]"
           wrapperElement={{
             "data-color-mode": "light",
           }}
