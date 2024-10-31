@@ -136,7 +136,8 @@
     "recommend": "课程推荐度",
     "recommend-levels": ["极度保留", "保留", "适中", "推荐", "极度推荐"],
     "workload-levels": ["非常重", "较重", "适中", "较轻", "非常轻"],
-    "no-data": "暂无"
+    "no-data": "暂无",
+    "review-title-null": "课程评价"
   },
 
   "profile": {

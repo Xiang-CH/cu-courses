@@ -133,7 +133,8 @@
     "recommend": "課程推薦度",
     "recommend-levels": ["極度保留", "保留", "適中","推薦", "極度推薦"],
     "workload-levels": ["非常重", "較重", "適中", "較輕", "非常輕"],
-    "no-data": "暫無"
+    "no-data": "暫無",
+    "review-title-null": "課程評價"
   },
 
   "profile": {

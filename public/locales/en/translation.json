@@ -138,7 +138,8 @@
       "Highly Recommended"
     ],
     "workload-levels": ["Very Heavy", "Heavy", "Average", "Light", "Very Light"],
-    "no-data": "No Data"
+    "no-data": "No Data",
+    "review-title-null": "Course Evaluation"
   },
 
   "profile": {

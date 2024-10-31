@@ -11,7 +11,7 @@ function CourseReviewCard({ course_data }: { course_data: Review }) {
       <div className="flex justify-between items-start mb-2">
         <Label>
           <span className="text-base lg:text-lg font-bold">
-            {course_data.review_title}
+            {course_data.review_title || t("courseReview.review-title-null")}
             <br />
           </span>
           <span className="text-xs lg:text-sm leading-3">
