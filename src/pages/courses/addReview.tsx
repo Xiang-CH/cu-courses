@@ -28,7 +28,7 @@ import { request } from "@/lib/api.ts";
 import { useNavigate } from "react-router-dom";
 import { useAliveController } from "react-activation";
 
-function AddReview({ courseId }: { courseId: string }) {
+function AddReview({ courseId, size }: { courseId: string, size?: string }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const aliveController = useAliveController();
@@ -128,13 +128,16 @@ function AddReview({ courseId }: { courseId: string }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight">
+        <Button className={`bg-accent py-1.5 px-4 h-fit hover:bg-accentlight ${
+            size === "big" ? "py-2 px-6" : ""
+          }`}>
           <span>{t("courseDetail.add-course-review")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         className="max-h-[90%] pb-4 overflow-y-auto"
         aria-describedby={undefined}
+        onPointerDownOutside={(event) => event.preventDefault()}
       >
         {loadingSpecific && (
           <div className="bg-gray-200 opacity-50 absolute w-full h-full" />

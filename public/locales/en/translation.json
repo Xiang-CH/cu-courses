@@ -114,8 +114,10 @@
     "submit-review": "Submit Review",
 
     "course-review": "Course Review",
-    "add-course-review": "Review",
+    "add-course-review": "Add Review",
     "course-review-card-title": "Course Review",
+    "no-review-1": "No one has reviewed this course yet",
+    "no-review-2": "Would you like to be the first to share your experience?",
 
     "warning": "Please fill in the required fields",
     "submit-review-success": "Successfully submitted review",

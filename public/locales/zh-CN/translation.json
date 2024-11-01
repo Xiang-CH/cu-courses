@@ -118,8 +118,10 @@
     "submit-review": "提交评价",
 
     "course-review": "课程评价",
-    "add-course-review": "评价",
+    "add-course-review": "写评价",
     "course-review-card-title": "课程评价",
+    "no-review-1": "还没有人评价这门课程",
+    "no-review-2": "想成为第一个分享体验的人吗？",
 
     "warning": "请填写必填项目",
     "submit-review-success": "评价成功",

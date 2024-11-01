@@ -114,8 +114,10 @@
     "submit-review": "提交評價",
 
     "course-review": "課程評價",
-    "add-course-review": "評價",
+    "add-course-review": "寫評價",
     "course-review-card-title": "課程評價",
+    "no-review-1": "尚未有人評價此課程",
+    "no-review-2": "想成為第一位分享體驗的人嗎？",
 
     "warning": "請填寫必填項目",
     "submit-review-success": "評價成功",

@@ -16,7 +16,7 @@ import AddReview from "@/pages/courses/addReview.tsx";
 import { toast } from "sonner";
 import { request } from "@/lib/api.ts";
 import { useAliveController } from "react-activation";
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 
 import "./courseDetail.css";
 
@@ -279,19 +279,19 @@ function CourseDetail() {
                             </Label>
                             {item.subclass_enrollment_status ===
                               "available" && (
-                              <Button
-                                onClick={addClassToCalendar}
-                                id={item.subclass_id.toString()}
-                                className="mt-1 bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
-                              >
-                                <span className="noHover">
-                                  {t("courseDetail.class-available")}
-                                </span>
-                                <span className="onHover">
-                                  {t("courseDetail.add-class-to-calendar")}
-                                </span>
-                              </Button>
-                            )}
+                                <Button
+                                  onClick={addClassToCalendar}
+                                  id={item.subclass_id.toString()}
+                                  className="mt-1 bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                                >
+                                  <span className="noHover">
+                                    {t("courseDetail.class-available")}
+                                  </span>
+                                  <span className="onHover">
+                                    {t("courseDetail.add-class-to-calendar")}
+                                  </span>
+                                </Button>
+                              )}
                             {item.subclass_enrollment_status === "enrolled" && (
                               <Button
                                 onClick={addClassToCalendar}
@@ -374,34 +374,58 @@ function CourseDetail() {
                 </Label>
               </div>
 
-              {token && courseId ? (
-                <AddReview courseId={courseId} />
-              ) : (
-                <Button
-                  onClick={() =>
-                    (window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`)
-                  }
-                  className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight"
-                >
-                  <span>{t("courseDetail.add-course-review")}</span>
-                </Button>
-              )}
-            </div>
+              {(course.review_list && course.review_list.length > 0) ? (
+                token && courseId ? (
+                  <AddReview courseId={courseId} />
+                ) : (
+                  <Button
+                    onClick={() =>
+                      (window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`)
+                    }
+                    className="bg-accent py-1.5 px-4 h-fit hover:bg-accentlight"
+                  >
+                    <span>{t("courseDetail.add-course-review")}</span>
+                  </Button>
+                )
+              ) : null}
 
-            <ResponsiveMasonry className="mt-3" columnsCountBreakPoints={{100: 1, 900: 2, 1200: 3}}>
+            </div>
+            {course.review_list && course.review_list.length > 0 ? (
+              <ResponsiveMasonry className="mt-3" columnsCountBreakPoints={{ 100: 1, 900: 2, 1200: 3 }}>
                 <Masonry gutter="10px">
-                {course.review_list &&
-                course.review_list.map((review, index) => {
-                  return (
-                    <CourseReviewCard
-                      course_data={review}
-                      key={index}
-                    ></CourseReviewCard>
-                  );
-                })}
+                  {course.review_list &&
+                    course.review_list.map((review, index) => {
+                      return (
+                        <CourseReviewCard
+                          course_data={review}
+                          key={index}
+                        ></CourseReviewCard>
+                      );
+                    })}
                 </Masonry>
-            </ResponsiveMasonry>
-            
+              </ResponsiveMasonry>
+            ) : (
+              <div className="text-center py-20">
+                <p className="text-2xl font-extrabold mb-2">
+                  {t("courseDetail.no-review-1")}
+                </p>
+                <p className="text-gray-600 mb-4">
+                  {t("courseDetail.no-review-2")}
+                </p>
+                {token && courseId ? (
+                  <AddReview courseId={courseId} size="big" />
+                ) : (
+                  <Button
+                    onClick={() =>
+                      (window.location.href = `https://login.tripleuni.com/CUCampus?callback=${location.pathname}&language=${i18n.language}`)
+                    }
+                    className="bg-accent py-2 px-6 h-fit hover:bg-accentlight"
+                  >
+                    <span>{t("courseDetail.add-course-review")}</span>
+                  </Button>
+                )}
+              </div>
+            )}
           </Card>
         </div>
       </div>
