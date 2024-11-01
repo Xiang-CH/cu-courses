@@ -16,6 +16,7 @@ import AddReview from "@/pages/courses/addReview.tsx";
 import { toast } from "sonner";
 import { request } from "@/lib/api.ts";
 import { useAliveController } from "react-activation";
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 import "./courseDetail.css";
 
@@ -259,7 +260,7 @@ function CourseDetail() {
               </Label>
               <div className="flex">
                 <ScrollArea className="my-2 w-1 flex-1 overflow-x-auto pb-3">
-                  <div className="flex gap-2.5 lg:gap-5">
+                  <div className="flex gap-[10px]">
                     {course.subclass_list.map((item) => {
                       return (
                         <Card
@@ -386,8 +387,10 @@ function CourseDetail() {
                 </Button>
               )}
             </div>
-            <div className="grid grid-cols-1 gap-4 mt-3 lg:grid-cols-2">
-              {course.review_list &&
+
+            <ResponsiveMasonry className="mt-3" columnsCountBreakPoints={{100: 1, 900: 2, 1200: 3}}>
+                <Masonry gutter="10px">
+                {course.review_list &&
                 course.review_list.map((review, index) => {
                   return (
                     <CourseReviewCard
@@ -396,7 +399,9 @@ function CourseDetail() {
                     ></CourseReviewCard>
                   );
                 })}
-            </div>
+                </Masonry>
+            </ResponsiveMasonry>
+            
           </Card>
         </div>
       </div>
