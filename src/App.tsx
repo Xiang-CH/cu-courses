@@ -25,11 +25,12 @@ function App() {
     setIsDark(false);
 
     if (isInFrame) {
-      (
-        document.getElementsByClassName("ka-wrapper")[0] as HTMLElement
-      ).style.height = "calc(100% - 3.5rem)";
+      const obj = document.getElementsByClassName(
+        "ka-wrapper",
+      )[0] as HTMLElement;
+      obj.style.height = "calc(100% - 3.5rem)";
     }
-  }, []);
+  }, [location]);
 
   // if (window.matchMedia) {
   //   let colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -54,6 +55,7 @@ function App() {
       <KeepAlive
         id={location.pathname + location.search}
         name={location.pathname}
+        className={`flex-shrink`}
       >
         <div className={`h-full relative flex`}>
           {navigation.state == "loading" && (
