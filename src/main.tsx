@@ -53,6 +53,7 @@ const router = createBrowserRouter([
       {
         path: "courses/:courseId",
         element: <CourseDetail />,
+        id: "courseDetail",
         loader: async ({ params }) => {
           console.log(params);
           if (!params.courseId) {

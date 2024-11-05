@@ -16,8 +16,7 @@ import AddReview from "@/pages/courses/addReview.tsx";
 import { toast } from "sonner";
 import { request } from "@/lib/api.ts";
 import { useAliveController } from "react-activation";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-
+import Masonry from "react-masonry-css";
 import "./courseDetail.css";
 
 const initial_course_grades = {
@@ -276,19 +275,19 @@ function CourseDetail() {
                             </Label>
                             {item.subclass_enrollment_status ===
                               "available" && (
-                                <Button
-                                  onClick={addClassToCalendar}
-                                  id={item.subclass_id.toString()}
-                                  className="mt-1 bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
-                                >
-                                  <span className="noHover">
-                                    {t("courseDetail.class-available")}
-                                  </span>
-                                  <span className="onHover">
-                                    {t("courseDetail.add-class-to-calendar")}
-                                  </span>
-                                </Button>
-                              )}
+                              <Button
+                                onClick={addClassToCalendar}
+                                id={item.subclass_id.toString()}
+                                className="mt-1 bg-accent py-1 px-2 h-fit text-xs font-normal hover:shadow transition-all duration-150 addClassButton"
+                              >
+                                <span className="noHover">
+                                  {t("courseDetail.class-available")}
+                                </span>
+                                <span className="onHover">
+                                  {t("courseDetail.add-class-to-calendar")}
+                                </span>
+                              </Button>
+                            )}
                             {item.subclass_enrollment_status === "enrolled" && (
                               <Button
                                 onClick={addClassToCalendar}
@@ -363,7 +362,7 @@ function CourseDetail() {
           )}
 
           {/*Comments*/}
-          <Card className="py-3 px-4 bg-primary w-max-full">
+          <Card className="py-3 px-4 bg-primary w-max-full relative w-full">
             <div className="flex justify-between items-center">
               <div className="mx-1">
                 <Label className="text-lg">
@@ -371,7 +370,7 @@ function CourseDetail() {
                 </Label>
               </div>
 
-              {(course.review_list && course.review_list.length > 0) ? (
+              {course.review_list && course.review_list.length > 0 ? (
                 token && courseId ? (
                   <AddReview courseId={courseId} />
                 ) : (
@@ -385,22 +384,23 @@ function CourseDetail() {
                   </Button>
                 )
               ) : null}
-
             </div>
             {course.review_list && course.review_list.length > 0 ? (
-              <ResponsiveMasonry className="mt-3" columnsCountBreakPoints={{ 100: 1, 900: 2, 1200: 3 }}>
-                <Masonry gutter="10px">
-                  {course.review_list &&
-                    course.review_list.map((review, index) => {
-                      return (
-                        <CourseReviewCard
-                          course_data={review}
-                          key={index}
-                        ></CourseReviewCard>
-                      );
-                    })}
-                </Masonry>
-              </ResponsiveMasonry>
+              <Masonry
+                breakpointCols={{ 648: 1, 1024: 2, default: 3 }}
+                className="mt-3 flex w-full gap-2.5"
+                columnClassName="flex flex-col gap-2.5"
+              >
+                {course.review_list &&
+                  course.review_list.map((review, index) => {
+                    return (
+                      <CourseReviewCard
+                        course_data={review}
+                        key={index}
+                      ></CourseReviewCard>
+                    );
+                  })}
+              </Masonry>
             ) : (
               <div className="text-center py-20">
                 <p className="text-2xl font-extrabold mb-2">
